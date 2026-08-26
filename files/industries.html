@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industries — Soul Media Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body><style>
+.ind-nav{background:var(--bg2);border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:72px;z-index:100;padding:0 4rem;display:flex;gap:0;overflow-x:auto}
+.ind-nav-btn{background:none;border:none;color:var(--gray);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;padding:1.2rem 1.8rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.ind-nav-btn:hover{color:var(--white)}
+.ind-nav-btn.active{color:var(--white);border-bottom-color:var(--crimson)}
+.industry-section{padding:7rem 4rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.industry-section:nth-child(even){background:var(--bg2)}
+.industry-header{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start;max-width:1200px;margin:0 auto 5rem}
+.industry-meta{}
+.industry-icon-wrap{width:72px;height:72px;border:1px solid rgba(208,25,15,0.3);display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:2rem}
+.industry-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1;letter-spacing:0.02em;margin-bottom:1rem}
+.industry-intro{color:var(--light);font-size:0.95rem;line-height:1.9;font-weight:300;max-width:580px}
+.use-cases{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto}
+.use-case-card{background:var(--bg3);border:1px solid rgba(255,255,255,0.07);padding:2.5rem;position:relative;overflow:hidden;transition:border-color 0.3s}
+.use-case-card:hover{border-color:rgba(208,25,15,0.3)}
+.use-case-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--crimson);transition:height 0.4s}
+.use-case-card:hover::before{height:100%}
+.uc-tag{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--crimson);margin-bottom:1rem}
+.uc-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.02em;line-height:1.1;margin-bottom:1rem}
+.uc-desc{color:var(--gray);font-size:0.85rem;line-height:1.8;font-weight:300;margin-bottom:1.5rem}
+.uc-tags{display:flex;flex-wrap:wrap;gap:0.5rem}
+.uc-pill{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:0.3rem 0.7rem;color:var(--gray)}
+@media(max-width:1024px){.industry-section{padding:5rem 2rem}.industry-header{grid-template-columns:1fr;gap:2rem}.ind-nav{padding:0 1.5rem}.use-cases{grid-template-columns:1fr}}
+@media(max-width:768px){.ind-nav-btn{padding:1rem 1rem;font-size:0.65rem}.industry-name{font-size:clamp(2rem,8vw,3rem)}.use-case-card{padding:1.8rem}}
+</style><div id="scroll-bar"></div>
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+<nav>
+  <a href="index.html" class="nav-logo"><img data-logo src="" alt="Soul Media Global"></a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-en="Home" data-id="Beranda">Home</a></li>
+    <li><a href="services.html" data-en="Services" data-id="Layanan">Services</a></li>
+    <li><a href="industries.html" data-en="Industries" data-id="Industri">Industries</a></li>
+    <li><a href="clients.html" data-en="Clients" data-id="Klien">Clients</a></li>
+    <li><a href="team.html" data-en="Team" data-id="Tim">Team</a></li>
+    <li><a href="contact.html" data-en="Contact" data-id="Kontak">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('id')">ID</button>
+    </div>
+    <a href="https://wa.me/6281574555114" class="nav-cta" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span data-en="Talk to Us" data-id="Hubungi Kami">Talk to Us</span>
+    </a>
+    <button id="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div id="nav-mobile">
+  <button id="mobile-close" onclick="document.getElementById('nav-mobile').classList.remove('open')">✕</button>
+  <a href="index.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Home" data-id="Beranda">Home</a>
+  <a href="services.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Services" data-id="Layanan">Services</a>
+  <a href="industries.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Industries" data-id="Industri">Industries</a>
+  <a href="clients.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Clients" data-id="Klien">Clients</a>
+  <a href="team.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Team" data-id="Tim">Team</a>
+  <a href="contact.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Contact" data-id="Kontak">Contact</a>
+  <a href="https://wa.me/6281574555114" class="mobile-cta">WhatsApp</a>
+</div>
+<div class="page-hero">
+  <div class="page-hero-bg">INDUSTRIES</div>
+  <div class="section-label">Sectors We Serve</div>
+  <h1 class="page-hero-title" data-en="Industries" data-id="Industri">Industries</h1>
+  <p class="page-hero-sub" data-en="From public institutions to high-growth startups — we understand the unique digital challenges of each sector we serve." data-id="Dari institusi publik hingga startup berkembang pesat — kami memahami tantangan digital unik setiap sektor.">From public institutions to high-growth startups — we understand the unique digital challenges of each sector we serve.</p>
+</div>
+
+<div class="ind-nav">
+  <button class="ind-nav-btn" onclick="document.getElementById('commerce').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ind-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Commerce &amp; Service Businesses</button><button class="ind-nav-btn" onclick="document.getElementById('enterprise').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ind-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Enterprise Operations</button><button class="ind-nav-btn" onclick="document.getElementById('public').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ind-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Public Sector &amp; Institutions</button><button class="ind-nav-btn" onclick="document.getElementById('hospitality').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ind-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Hospitality &amp; Tourism</button><button class="ind-nav-btn" onclick="document.getElementById('startups').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.ind-nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Technology-Driven Startups</button>
+</div>
+
+
+<section class="industry-section" id="commerce">
+  <div class="industry-header reveal">
+    <div class="industry-meta">
+      <div class="industry-icon-wrap">🏪</div>
+      <div class="section-label">Industry Focus</div>
+      <div class="industry-name">Commerce &amp; Service Businesses</div>
+    </div>
+    <div>
+      <p class="industry-intro">From retail chains to service providers, we help commerce businesses digitize their operations — inventory, POS, customer management, and e-commerce — into unified, scalable systems.</p>
+    </div>
+  </div>
+  <div class="use-cases">
+    
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Retail Chain</div>
+        <div class="uc-title">Multi-Outlet Inventory & POS System</div>
+        <div class="uc-desc">A regional retail chain with 12 outlets needed real-time inventory visibility across locations. We built a unified POS and inventory platform with centralized reporting, automated low-stock alerts, and inter-branch transfer management.</div>
+        <div class="uc-tags"><span class="uc-pill">POS System</span><span class="uc-pill">Inventory Management</span><span class="uc-pill">Real-time Dashboard</span><span class="uc-pill">Multi-branch</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">F&B Business</div>
+        <div class="uc-title">Digital Ordering & Kitchen Display System</div>
+        <div class="uc-desc">A growing F&B brand wanted to eliminate paper orders and reduce kitchen errors. We developed an integrated digital ordering system — table QR codes, kitchen display screens, and a live order management dashboard for managers.</div>
+        <div class="uc-tags"><span class="uc-pill">QR Ordering</span><span class="uc-pill">Kitchen Display</span><span class="uc-pill">Order Management</span><span class="uc-pill">Analytics</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Service Business</div>
+        <div class="uc-title">Customer Booking & CRM Platform</div>
+        <div class="uc-desc">A professional services company struggled to manage client appointments, follow-ups, and billing manually. We built a CRM with integrated booking, automated reminders, invoicing, and client history tracking.</div>
+        <div class="uc-tags"><span class="uc-pill">CRM</span><span class="uc-pill">Booking System</span><span class="uc-pill">Invoicing</span><span class="uc-pill">Automation</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">E-Commerce</div>
+        <div class="uc-title">Custom B2B E-Commerce Portal</div>
+        <div class="uc-desc">A wholesale distributor needed a branded ordering portal for their retail partners — with tiered pricing, credit limits, and bulk order management. We built a fully custom B2B e-commerce platform integrated with their existing ERP.</div>
+        <div class="uc-tags"><span class="uc-pill">B2B Portal</span><span class="uc-pill">ERP Integration</span><span class="uc-pill">Tiered Pricing</span><span class="uc-pill">Bulk Orders</span></div>
+      </div>
+  </div>
+</section>
+<section class="industry-section" id="enterprise" style="background:var(--bg2)">
+  <div class="industry-header reveal">
+    <div class="industry-meta">
+      <div class="industry-icon-wrap">🏢</div>
+      <div class="section-label">Industry Focus</div>
+      <div class="industry-name">Enterprise Operations</div>
+    </div>
+    <div>
+      <p class="industry-intro">Large organizations with complex operational structures need systems that scale with them. We design and build enterprise-grade platforms that handle high transaction volumes, cross-department workflows, and data-intensive operations.</p>
+    </div>
+  </div>
+  <div class="use-cases">
+    
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Manufacturing</div>
+        <div class="uc-title">Production Monitoring & Quality Control System</div>
+        <div class="uc-desc">A manufacturing company needed real-time visibility into their production lines. We built an IoT-connected monitoring system with automated quality checkpoints, defect tracking, and production analytics dashboards for floor managers and executives.</div>
+        <div class="uc-tags"><span class="uc-pill">IoT Integration</span><span class="uc-pill">Production Monitoring</span><span class="uc-pill">Quality Control</span><span class="uc-pill">Analytics</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Corporate</div>
+        <div class="uc-title">Enterprise HR & Payroll Platform</div>
+        <div class="uc-desc">A multi-division corporation with 800+ employees was running payroll across three disconnected systems. We unified everything into a single platform — attendance, leave management, KPI tracking, and automated payroll processing with tax compliance.</div>
+        <div class="uc-tags"><span class="uc-pill">HR System</span><span class="uc-pill">Payroll Automation</span><span class="uc-pill">Leave Management</span><span class="uc-pill">Tax Compliance</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Logistics</div>
+        <div class="uc-title">Fleet & Delivery Management System</div>
+        <div class="uc-desc">A logistics company managing 150+ vehicles needed better dispatch control and delivery tracking. We built a fleet management system with live GPS tracking, automated route optimization, driver performance monitoring, and client delivery confirmation.</div>
+        <div class="uc-tags"><span class="uc-pill">Fleet Management</span><span class="uc-pill">GPS Tracking</span><span class="uc-pill">Route Optimization</span><span class="uc-pill">Driver App</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Finance</div>
+        <div class="uc-title">Internal Financial Reporting & Approval Platform</div>
+        <div class="uc-desc">A holding company needed to streamline budget approvals, expense claims, and financial reporting across subsidiaries. We built a custom financial platform with multi-level approval workflows, real-time budget tracking, and consolidated reporting.</div>
+        <div class="uc-tags"><span class="uc-pill">Financial Platform</span><span class="uc-pill">Approval Workflow</span><span class="uc-pill">Budget Tracking</span><span class="uc-pill">Consolidated Reports</span></div>
+      </div>
+  </div>
+</section>
+<section class="industry-section" id="public">
+  <div class="industry-header reveal">
+    <div class="industry-meta">
+      <div class="industry-icon-wrap">🏛️</div>
+      <div class="section-label">Industry Focus</div>
+      <div class="industry-name">Public Sector &amp; Institutions</div>
+    </div>
+    <div>
+      <p class="industry-intro">Government agencies and public institutions require systems that meet strict regulatory standards while serving large populations efficiently. We build compliant, secure, and accessible digital solutions for the public sector.</p>
+    </div>
+  </div>
+  <div class="use-cases">
+    
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Government Agency</div>
+        <div class="uc-title">Public Service Application & Queue Management</div>
+        <div class="uc-desc">A regional government office was overwhelmed with walk-in applicants for permits and documents. We developed an online application portal with digital queue management, status tracking for citizens, and a processing dashboard for officers.</div>
+        <div class="uc-tags"><span class="uc-pill">Public Portal</span><span class="uc-pill">Queue Management</span><span class="uc-pill">Status Tracking</span><span class="uc-pill">Officer Dashboard</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Ministry</div>
+        <div class="uc-title">Data Reporting & Monitoring Dashboard</div>
+        <div class="uc-desc">A ministry needed a centralized platform to collect, validate, and monitor data submissions from regional offices across the country. We built a reporting system with automated validation, anomaly flagging, and executive summary dashboards.</div>
+        <div class="uc-tags"><span class="uc-pill">Data Platform</span><span class="uc-pill">Automated Validation</span><span class="uc-pill">Regional Reporting</span><span class="uc-pill">Executive Dashboard</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Educational Institution</div>
+        <div class="uc-title">Student Information & Academic Management System</div>
+        <div class="uc-desc">A university with 15,000+ students needed to modernize their academic administration. We built a comprehensive student information system covering enrollment, grades, attendance, scheduling, and parent/student portals.</div>
+        <div class="uc-tags"><span class="uc-pill">Student Information System</span><span class="uc-pill">Enrollment</span><span class="uc-pill">Grade Management</span><span class="uc-pill">Parent Portal</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Public Infrastructure</div>
+        <div class="uc-title">Asset Management & Maintenance System</div>
+        <div class="uc-desc">A public infrastructure agency needed to track thousands of physical assets across multiple regions. We built an asset registry with maintenance scheduling, inspection workflows, geolocation mapping, and budget tracking per asset.</div>
+        <div class="uc-tags"><span class="uc-pill">Asset Registry</span><span class="uc-pill">Maintenance Scheduling</span><span class="uc-pill">Geolocation</span><span class="uc-pill">Budget Tracking</span></div>
+      </div>
+  </div>
+</section>
+<section class="industry-section" id="hospitality" style="background:var(--bg2)">
+  <div class="industry-header reveal">
+    <div class="industry-meta">
+      <div class="industry-icon-wrap">✈️</div>
+      <div class="section-label">Industry Focus</div>
+      <div class="industry-name">Hospitality &amp; Tourism</div>
+    </div>
+    <div>
+      <p class="industry-intro">Hotels, travel operators, and tourism businesses operate in a high-competition, experience-driven market. We build digital systems that improve guest experience, streamline operations, and increase direct booking revenue.</p>
+    </div>
+  </div>
+  <div class="use-cases">
+    
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Hotel</div>
+        <div class="uc-title">Property Management & Direct Booking System</div>
+        <div class="uc-desc">A boutique hotel group wanted to reduce OTA dependency and manage properties more efficiently. We built a custom PMS with a direct booking engine, channel manager integration, guest profile management, and housekeeping coordination tools.</div>
+        <div class="uc-tags"><span class="uc-pill">Property Management</span><span class="uc-pill">Direct Booking</span><span class="uc-pill">Channel Manager</span><span class="uc-pill">Guest Profiles</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Travel Agency</div>
+        <div class="uc-title">Custom Tour Package & Booking Platform</div>
+        <div class="uc-desc">A travel operator needed a branded platform for their curated tour packages — with real-time availability, custom itinerary builders, group booking management, and automated payment processing.</div>
+        <div class="uc-tags"><span class="uc-pill">Tour Booking</span><span class="uc-pill">Itinerary Builder</span><span class="uc-pill">Group Booking</span><span class="uc-pill">Payment Gateway</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Resort</div>
+        <div class="uc-title">Guest Experience & Activity Management App</div>
+        <div class="uc-desc">A resort wanted to digitize their in-property guest experience. We built a guest-facing app for room service orders, activity bookings, spa reservations, and concierge requests — integrated with their front desk system.</div>
+        <div class="uc-tags"><span class="uc-pill">Guest App</span><span class="uc-pill">Activity Booking</span><span class="uc-pill">Room Service</span><span class="uc-pill">Concierge Integration</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Destination Management</div>
+        <div class="uc-title">Tourism Data & Visitor Analytics Platform</div>
+        <div class="uc-desc">A regional tourism board needed insights on visitor patterns, attraction performance, and seasonal trends. We built a data aggregation platform pulling from multiple sources — ticketing, QR check-ins, partner reports — into unified analytics.</div>
+        <div class="uc-tags"><span class="uc-pill">Visitor Analytics</span><span class="uc-pill">Data Aggregation</span><span class="uc-pill">Tourism Dashboard</span><span class="uc-pill">Partner Integration</span></div>
+      </div>
+  </div>
+</section>
+<section class="industry-section" id="startups">
+  <div class="industry-header reveal">
+    <div class="industry-meta">
+      <div class="industry-icon-wrap">⚡</div>
+      <div class="section-label">Industry Focus</div>
+      <div class="industry-name">Technology-Driven Startups</div>
+    </div>
+    <div>
+      <p class="industry-intro">Startups need to move fast, validate ideas, and build scalable foundations without blowing their runway. We help technology startups go from concept to product — and from MVP to enterprise-ready platform.</p>
+    </div>
+  </div>
+  <div class="use-cases">
+    
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Fintech Startup</div>
+        <div class="uc-title">Digital Wallet & Payment Platform MVP</div>
+        <div class="uc-desc">A fintech startup needed to validate their peer-to-peer payment concept quickly. We built an MVP covering user onboarding, wallet management, P2P transfers, transaction history, and basic compliance checks — in 10 weeks.</div>
+        <div class="uc-tags"><span class="uc-pill">Digital Wallet</span><span class="uc-pill">P2P Transfer</span><span class="uc-pill">Compliance</span><span class="uc-pill">MVP</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Marketplace Startup</div>
+        <div class="uc-title">Two-Sided Marketplace Platform</div>
+        <div class="uc-desc">A startup connecting service providers with consumers needed a platform handling both sides — provider onboarding, service listings, booking flows, escrow payments, and review systems. We built and launched v1 in 3 months.</div>
+        <div class="uc-tags"><span class="uc-pill">Marketplace</span><span class="uc-pill">Escrow Payment</span><span class="uc-pill">Provider Onboarding</span><span class="uc-pill">Review System</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">SaaS Startup</div>
+        <div class="uc-title">Multi-Tenant SaaS Product Architecture</div>
+        <div class="uc-desc">A B2B SaaS startup needed to move from a single-client pilot to a scalable multi-tenant platform. We redesigned their architecture, implemented tenant isolation, built a self-serve onboarding flow, and added usage-based billing.</div>
+        <div class="uc-tags"><span class="uc-pill">Multi-Tenant</span><span class="uc-pill">Self-Serve Onboarding</span><span class="uc-pill">Usage Billing</span><span class="uc-pill">SaaS Architecture</span></div>
+      </div>
+      <div class="use-case-card reveal">
+        <div class="uc-tag">Healthtech Startup</div>
+        <div class="uc-title">Telemedicine & Patient Management Platform</div>
+        <div class="uc-desc">A healthtech startup needed a secure telemedicine platform for video consultations, prescription management, and patient record keeping. We built a HIPAA-aligned system with end-to-end encryption, doctor scheduling, and patient history.</div>
+        <div class="uc-tags"><span class="uc-pill">Telemedicine</span><span class="uc-pill">Patient Records</span><span class="uc-pill">Video Consultation</span><span class="uc-pill">Secure Platform</span></div>
+      </div>
+  </div>
+</section>
+
+<div style="background:var(--bg);padding:5rem 4rem;text-align:center">
+  <div class="section-label" style="justify-content:center;margin-bottom:1rem">Work With Us</div>
+  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);margin-bottom:1rem" data-en="Don't see your industry?" data-id="Industri Anda tidak ada di sini?">Don't see your industry?</h2>
+  <p style="color:var(--gray);margin-bottom:2rem;font-size:0.9rem;font-weight:300">We work across sectors. Tell us your challenge and we'll tell you how we can help.</p>
+  <a href="contact.html" class="btn-primary">Talk to Us →</a>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><img data-logo src="" alt="Soul Media Global"></div>
+    <div class="footer-links">
+      <a href="index.html" data-en="Home" data-id="Beranda">Home</a>
+      <a href="services.html" data-en="Services" data-id="Layanan">Services</a>
+      <a href="industries.html" data-en="Industries" data-id="Industri">Industries</a>
+      <a href="clients.html" data-en="Clients" data-id="Klien">Clients</a>
+      <a href="team.html" data-en="Team" data-id="Tim">Team</a>
+      <a href="contact.html" data-en="Contact" data-id="Kontak">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 PT Soul Media Global. All rights reserved.</div>
+    <a href="https://wa.me/6281574555114" class="footer-wa" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Soul Media Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body><style>
+.services-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;padding:7rem 4rem 5rem;align-items:end}
+.service-full{border-top:1px solid rgba(255,255,255,0.06)}
+.service-row{display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.3s;cursor:default}
+.service-row:hover{background:rgba(208,25,15,0.04)}
+.service-row-num{padding:3rem 2rem;font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(208,25,15,0.2);line-height:1;transition:color 0.3s;display:flex;align-items:flex-start;padding-top:3.2rem}
+.service-row:hover .service-row-num{color:var(--crimson)}
+.service-row-main{padding:3rem 2.5rem 3rem 0;border-right:1px solid rgba(255,255,255,0.06)}
+.service-row-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.02em;line-height:1;margin-bottom:1rem}
+.service-row-desc{color:var(--gray);font-size:0.88rem;line-height:1.8;font-weight:300}
+.service-row-detail{padding:3rem 2.5rem}
+.service-detail-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--crimson);margin-bottom:1rem}
+.service-detail-list{list-style:none}
+.service-detail-list li{font-size:0.83rem;color:var(--light);padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:0.6rem;font-weight:300}
+.service-detail-list li::before{content:'→';color:var(--crimson);font-size:0.75rem;flex-shrink:0}
+.engage-section{background:var(--bg2);padding:7rem 4rem}
+.engage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;max-width:1200px;margin-left:auto;margin-right:auto}
+.engage-card{border:1px solid rgba(255,255,255,0.07);padding:2.5rem;position:relative;overflow:hidden;transition:border-color 0.3s}
+.engage-card:hover{border-color:rgba(208,25,15,0.4)}
+.engage-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--crimson);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.engage-card:hover::before{transform:scaleX(1)}
+.engage-icon{font-size:2rem;margin-bottom:1.5rem;opacity:0.6}
+.engage-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.02em;margin-bottom:0.8rem}
+.engage-desc{color:var(--gray);font-size:0.85rem;line-height:1.7;font-weight:300}
+@media(max-width:1024px){.services-hero-grid{grid-template-columns:1fr;padding:8rem 2rem 4rem;gap:2rem}.service-row{grid-template-columns:60px 1fr}.service-row-detail{display:none}.engage-section{padding:5rem 2rem}.engage-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.service-row{grid-template-columns:50px 1fr}.service-row-num{font-size:2rem;padding:2rem 1rem}.service-row-main{padding:2rem 1.5rem 2rem 0}.service-row-title{font-size:1.4rem}.engage-grid{grid-template-columns:1fr}.services-hero-grid{padding:7rem 1.5rem 3rem}}
+</style><div id="scroll-bar"></div>
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+<nav>
+  <a href="index.html" class="nav-logo"><img data-logo src="" alt="Soul Media Global"></a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-en="Home" data-id="Beranda">Home</a></li>
+    <li><a href="services.html" data-en="Services" data-id="Layanan">Services</a></li>
+    <li><a href="industries.html" data-en="Industries" data-id="Industri">Industries</a></li>
+    <li><a href="clients.html" data-en="Clients" data-id="Klien">Clients</a></li>
+    <li><a href="team.html" data-en="Team" data-id="Tim">Team</a></li>
+    <li><a href="contact.html" data-en="Contact" data-id="Kontak">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('id')">ID</button>
+    </div>
+    <a href="https://wa.me/6281574555114" class="nav-cta" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span data-en="Talk to Us" data-id="Hubungi Kami">Talk to Us</span>
+    </a>
+    <button id="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div id="nav-mobile">
+  <button id="mobile-close" onclick="document.getElementById('nav-mobile').classList.remove('open')">✕</button>
+  <a href="index.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Home" data-id="Beranda">Home</a>
+  <a href="services.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Services" data-id="Layanan">Services</a>
+  <a href="industries.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Industries" data-id="Industri">Industries</a>
+  <a href="clients.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Clients" data-id="Klien">Clients</a>
+  <a href="team.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Team" data-id="Tim">Team</a>
+  <a href="contact.html" onclick="document.getElementById('nav-mobile').classList.remove('open')" data-en="Contact" data-id="Kontak">Contact</a>
+  <a href="https://wa.me/6281574555114" class="mobile-cta">WhatsApp</a>
+</div>
+<div class="services-hero-grid">
+  <div>
+    <div class="section-label">What We Do</div>
+    <h1 class="section-title" style="font-size:clamp(3rem,7vw,6rem)" data-en="Our Services" data-id="Layanan Kami">Our Services</h1>
+  </div>
+  <div>
+    <p style="color:var(--light);font-size:1rem;line-height:1.9;font-weight:300" data-en="We deliver end-to-end technology solutions tailored to real operational needs — from initial consulting through to long-term system management." data-id="Kami menghadirkan solusi teknologi end-to-end yang disesuaikan dengan kebutuhan operasional nyata.">We deliver end-to-end technology solutions tailored to real operational needs — from initial consulting through to long-term system management.</p>
+  </div>
+</div>
+
+<div class="service-full">
+  <div class="service-row reveal">
+    <div class="service-row-num">01</div>
+    <div class="service-row-main">
+      <div class="service-row-title" data-en="Application Development" data-id="Pengembangan Aplikasi">Application Development</div>
+      <div class="service-row-desc" data-en="Custom-built web, mobile, and enterprise applications designed around your exact workflows and user needs — not off-the-shelf templates." data-id="Aplikasi web, mobile, dan enterprise yang dibuat khusus sesuai alur kerja dan kebutuhan pengguna Anda.">Custom-built web, mobile, and enterprise applications designed around your exact workflows and user needs — not off-the-shelf templates.</div>
+    </div>
+    <div class="service-row-detail">
+      <div class="service-detail-label">Includes</div>
+      <ul class="service-detail-list">
+        <li>Web application development (React, Vue, Next.js)</li>
+        <li>Mobile apps (iOS, Android, cross-platform)</li>
+        <li>Internal tools & admin dashboards</li>
+        <li>API design & backend development</li>
+        <li>Progressive Web Apps (PWA)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="service-row reveal">
+    <div class="service-row-num">02</div>
+    <div class="service-row-main">
+      <div class="service-row-title" data-en="Enterprise Systems &amp; Platforms" data-id="Sistem &amp; Platform Enterprise">Enterprise Systems &amp; Platforms</div>
+      <div class="service-row-desc" data-en="Scalable platforms and enterprise systems built for high-volume operations — ERP, CRM, inventory, HR, and custom business management solutions." data-id="Platform skalabel dan sistem enterprise untuk operasi volume tinggi — ERP, CRM, inventaris, HR, dan solusi manajemen bisnis khusus.">Scalable platforms and enterprise systems built for high-volume operations — ERP, CRM, inventory, HR, and custom business management solutions.</div>
+    </div>
+    <div class="service-row-detail">
+      <div class="service-detail-label">Includes</div>
+      <ul class="service-detail-list">
+        <li>ERP & business management systems</li>
+        <li>CRM & customer data platforms</li>
+        <li>Inventory & supply chain systems</li>
+        <li>HR & payroll platforms</li>
+        <li>Multi-tenant SaaS architecture</li>
+      </ul>
+    </div>
+  </div>
+  <div class="service-row reveal">
+    <div class="service-row-num">03</div>
+    <div class="service-row-main">
+      <div class="service-row-title" data-en="Digital Transformation Consulting" data-id="Konsultasi Transformasi Digital">Digital Transformation Consulting</div>
+      <div class="service-row-desc" data-en="We assess your current operations, identify digital gaps, and produce a structured roadmap that bridges where you are to where you need to be — without disrupting ongoing business." data-id="Kami menilai operasi Anda saat ini, mengidentifikasi kesenjangan digital, dan menghasilkan peta jalan terstruktur.">We assess your current operations, identify digital gaps, and produce a structured roadmap that bridges where you are to where you need to be — without disrupting ongoing business.</div>
+    </div>
+    <div class="service-row-detail">
+      <div class="service-detail-label">Includes</div>
+      <ul class="service-detail-list">
+        <li>Digital maturity assessment</li>
+        <li>Technology stack audit & recommendations</li>
+        <li>Process digitization planning</li>
+        <li>Change management support</li>
+        <li>ROI modeling & phased roadmaps</li>
+      </ul>
+    </div>
+  </div>
+  <div class="service-row reveal">
+    <div class="service-row-num">04</div>
+    <div class="service-row-main">
+      <div class="service-row-title" data-en="System Integration &amp; Automation" data-id="Integrasi &amp; Otomasi Sistem">System Integration &amp; Automation</div>
+      <div class="service-row-desc" data-en="Connecting your existing tools, databases, and third-party services into a unified ecosystem — eliminating manual handoffs and reducing operational overhead." data-id="Menghubungkan alat, database, dan layanan pihak ketiga Anda yang ada ke dalam ekosistem terpadu.">Connecting your existing tools, databases, and third-party services into a unified ecosystem — eliminating manual handoffs and reducing operational overhead.</div>
+    </div>
+    <div class="service-row-detail">
+      <div class="service-detail-label">Includes</div>
+      <ul class="service-detail-list">
+        <li>API integration & middleware development</li>
+        <li>Workflow automation (RPA, triggers, pipelines)</li>
+        <li>Data synchronization across platforms</li>
+        <li>Legacy system modernization</li>
+        <li>Third-party service connectors</li>
+      </ul>
+    </div>
+  </div>
+  <div class="service-row reveal">
+    <div class="service-row-num">05</div>
+    <div class="service-row-main">
+      <div class="service-row-title" data-en="Managed &amp; Ongoing Support" data-id="Dukungan Berkelanjutan">Managed &amp; Ongoing Support</div>
+      <div class="service-row-desc" data-en="Post-launch system monitoring, maintenance, bug resolution, and continuous improvement — so your digital infrastructure stays performant and secure long-term." data-id="Pemantauan sistem pasca-peluncuran, pemeliharaan, resolusi bug, dan peningkatan berkelanjutan.">Post-launch system monitoring, maintenance, bug resolution, and continuous improvement — so your digital infrastructure stays performant and secure long-term.</div>
+    </div>
+    <div class="service-row-detail">
+      <div class="service-detail-label">Includes</div>
+      <ul class="service-detail-list">
+        <li>24/7 system monitoring & alerting</li>
+        <li>Regular security patches & updates</li>
+        <li>Performance optimization</li>
+        <li>Feature enhancements & iteration</li>
+        <li>SLA-based support agreements</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="engage-section">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-label reveal">How We Work</div>
+    <h2 class="section-title reveal">Engagement Models</h2>
+    <div class="engage-grid">
+      <div class="engage-card reveal">
+        <div class="engage-icon">◎</div>
+        <div class="engage-title" data-en="Project-Based" data-id="Berbasis Proyek">Project-Based</div>
+        <div class="engage-desc" data-en="Fixed scope, timeline, and deliverable. Ideal for well-defined builds — a new application, a system migration, or a specific integration. You know what you're getting, and when." data-id="Lingkup, timeline, dan deliverable tetap. Ideal untuk pembangunan yang terdefinisi dengan baik.">Fixed scope, timeline, and deliverable. Ideal for well-defined builds — a new application, a system migration, or a specific integration. You know what you're getting, and when.</div>
+      </div>
+      <div class="engage-card reveal">
+        <div class="engage-icon">◈</div>
+        <div class="engage-title" data-en="Contract-Based" data-id="Berbasis Kontrak">Contract-Based</div>
+        <div class="engage-desc" data-en="Dedicated capacity over a defined period. Best for ongoing development, multi-phase projects, or when you need a reliable technology team on retainer without the overhead of hiring." data-id="Kapasitas dedicated selama periode tertentu. Terbaik untuk pengembangan berkelanjutan atau proyek multi-fase.">Dedicated capacity over a defined period. Best for ongoing development, multi-phase projects, or when you need a reliable technology team on retainer without the overhead of hiring.</div>
+      </div>
+      <div class="engage-card reveal">
+        <div class="engage-icon">◉</div>
+        <div class="engage-title" data-en="Managed Services" data-id="Layanan Terkelola">Managed Services</div>
+        <div class="engage-desc" data-en="Full operational ownership of your digital systems — monitoring, maintenance, updates, and improvements handled by our team. You focus on the business; we keep the systems running." data-id="Kepemilikan operasional penuh atas sistem digital Anda — pemantauan, pemeliharaan, pembaruan, dan peningkatan ditangani tim kami.">Full operational ownership of your digital systems — monitoring, maintenance, updates, and improvements handled by our team. You focus on the business; we keep the systems running.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:var(--bg);padding:5rem 4rem;text-align:center">
+  <p style="color:var(--gray);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem">Not sure which service fits your needs?</p>
+  <a href="contact.html" class="btn-primary">Talk to Us →</a>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><img data-logo src="" alt="Soul Media Global"></div>
+    <div class="footer-links">
+      <a href="index.html" data-en="Home" data-id="Beranda">Home</a>
+      <a href="services.html" data-en="Services" data-id="Layanan">Services</a>
+      <a href="industries.html" data-en="Industries" data-id="Industri">Industries</a>
+      <a href="clients.html" data-en="Clients" data-id="Klien">Clients</a>
+      <a href="team.html" data-en="Team" data-id="Tim">Team</a>
+      <a href="contact.html" data-en="Contact" data-id="Kontak">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 PT Soul Media Global. All rights reserved.</div>
+    <a href="https://wa.me/6281574555114" class="footer-wa" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
