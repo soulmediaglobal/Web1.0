@@ -7,7 +7,7 @@ import { Leadership } from './components/Leadership';
 import { SolutionsPage } from './pages/SolutionsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
-import logo from './assets/logo.png';
+import logo from './assets/Logo.png';
 
 function HomePage() {
   return (
