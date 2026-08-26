@@ -1,17 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @theme {
-  --color-dark-bg: #0a0a0a;
-  --color-dark-card: #121212;
-  --color-crimson: #D0190F;
   --font-display: 'Bebas Neue', sans-serif;
   --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
-  background-color: var(--color-dark-bg);
-  color: #f3f4f6;
-  font-family: var(--font-sans);
+  background-color: #0a0a0a;
+  color: #e5e2e1;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
 }
