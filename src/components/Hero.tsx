@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import * as THREE from 'three';
 
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -115,27 +116,30 @@ export function Hero() {
   // 2. Three.js 3D Wireframe Animation
   useEffect(() => {
     const container = threeContainerRef.current;
-    if (!container || !(window as any).THREE) return;
+    if (!container) return;
 
-    const THREE = (window as any).THREE;
     const scene = new THREE.Scene();
+    const isMobile = window.innerWidth < 1024;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || 600;
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 2));
+    renderer.domElement.style.cursor = 'grab';
+    renderer.domElement.style.touchAction = 'none';
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
     const group = new THREE.Group();
-    const geometry = new THREE.IcosahedronGeometry(1.5, 1);
+    const geometry = new THREE.IcosahedronGeometry(isMobile ? 2.25 : 3.2, isMobile ? 1 : 2);
     const material = new THREE.MeshPhongMaterial({
       color: 0xD0190F,
       wireframe: true,
       transparent: true,
-      opacity: 0.4
+      opacity: isMobile ? 0.3 : 0.48
     });
 
     const mesh = new THREE.Mesh(geometry, material);
@@ -143,10 +147,59 @@ export function Hero() {
 
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.05
+      size: isMobile ? 0.05 : 0.065
     });
     const points = new THREE.Points(geometry, pointsMaterial);
     group.add(points);
+
+    // Animated signals travel between network vertices to suggest connected
+    // business processes becoming one digital system.
+    const sourcePositions = geometry.getAttribute('position');
+    const signalCount = isMobile ? 42 : 110;
+    const signalPositions = new Float32Array(signalCount * 3);
+    const signalFrom: THREE.Vector3[] = [];
+    const signalTo: THREE.Vector3[] = [];
+    const signalProgress = new Float32Array(signalCount);
+    const signalSpeed = new Float32Array(signalCount);
+
+    const readVertex = (index: number) => new THREE.Vector3(
+      sourcePositions.getX(index),
+      sourcePositions.getY(index),
+      sourcePositions.getZ(index)
+    );
+
+    for (let i = 0; i < signalCount; i += 1) {
+      const fromIndex = Math.floor(Math.random() * sourcePositions.count);
+      let toIndex = Math.floor(Math.random() * sourcePositions.count);
+      if (toIndex === fromIndex) toIndex = (toIndex + 1) % sourcePositions.count;
+      signalFrom.push(readVertex(fromIndex));
+      signalTo.push(readVertex(toIndex));
+      signalProgress[i] = Math.random();
+      signalSpeed[i] = 0.0025 + Math.random() * 0.004;
+    }
+
+    const signalGeometry = new THREE.BufferGeometry();
+    signalGeometry.setAttribute('position', new THREE.BufferAttribute(signalPositions, 3));
+    const signalMaterial = new THREE.PointsMaterial({
+      color: 0xff4b3f,
+      size: isMobile ? 0.075 : 0.105,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const signals = new THREE.Points(signalGeometry, signalMaterial);
+    group.add(signals);
+
+    const coreGeometry = new THREE.SphereGeometry(0.18, 20, 20);
+    const coreMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff3b30,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    const core = new THREE.Mesh(coreGeometry, coreMaterial);
+    group.add(core);
 
     scene.add(group);
 
@@ -157,13 +210,98 @@ export function Hero() {
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
-    camera.position.z = 5;
+    camera.position.z = isMobile ? 6.2 : 6.8;
+
+    let isDragging = false;
+    let previousX = 0;
+    let previousY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let pointerTargetX = 0;
+    let pointerTargetY = 0;
+    let isHovering = false;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      isDragging = true;
+      previousX = event.clientX;
+      previousY = event.clientY;
+      renderer.domElement.style.cursor = 'grabbing';
+      renderer.domElement.setPointerCapture(event.pointerId);
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      isHovering = true;
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointerTargetY = ((event.clientX - rect.left) / rect.width - 0.5) * 0.28;
+      pointerTargetX = ((event.clientY - rect.top) / rect.height - 0.5) * 0.18;
+
+      if (!isDragging) return;
+
+      const deltaX = event.clientX - previousX;
+      const deltaY = event.clientY - previousY;
+      velocityY = deltaX * 0.006;
+      velocityX = deltaY * 0.006;
+      previousX = event.clientX;
+      previousY = event.clientY;
+    };
+
+    const handlePointerUp = (event: PointerEvent) => {
+      isDragging = false;
+      renderer.domElement.style.cursor = 'grab';
+      if (renderer.domElement.hasPointerCapture(event.pointerId)) {
+        renderer.domElement.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    const handlePointerLeave = () => {
+      isHovering = false;
+      pointerTargetX = 0;
+      pointerTargetY = 0;
+    };
+
+    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+    renderer.domElement.addEventListener('pointermove', handlePointerMove);
+    renderer.domElement.addEventListener('pointerup', handlePointerUp);
+    renderer.domElement.addEventListener('pointercancel', handlePointerUp);
+    renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
 
     let reqId: number;
-    function animate() {
+    function animate(time = 0) {
       reqId = requestAnimationFrame(animate);
-      group.rotation.y += 0.002;
-      group.rotation.x += 0.001;
+      if (!isDragging) {
+        const autoRotation = prefersReducedMotion ? 0 : (isMobile ? 0.0012 : 0.002);
+        velocityY += (autoRotation - velocityY) * 0.025;
+        velocityX *= 0.94;
+      } else {
+        velocityY *= 0.96;
+        velocityX *= 0.96;
+      }
+      group.rotation.y += velocityY;
+      group.rotation.x += velocityX;
+      group.rotation.x += (pointerTargetX - group.rotation.x * 0.03) * 0.002;
+      group.rotation.z += (pointerTargetY - group.rotation.z) * 0.025;
+
+      const positionAttribute = signalGeometry.getAttribute('position') as THREE.BufferAttribute;
+      for (let i = 0; i < signalCount; i += 1) {
+        signalProgress[i] += signalSpeed[i] * (isHovering ? 1.8 : 1) * (prefersReducedMotion ? 0 : 1);
+        if (signalProgress[i] > 1) {
+          signalProgress[i] = 0;
+          signalFrom[i].copy(signalTo[i]);
+          signalTo[i].copy(readVertex(Math.floor(Math.random() * sourcePositions.count)));
+        }
+        const p = signalFrom[i].clone().lerp(signalTo[i], signalProgress[i]);
+        positionAttribute.setXYZ(i, p.x, p.y, p.z);
+      }
+      positionAttribute.needsUpdate = true;
+
+      const transformationCycle = (Math.sin(time * 0.00052) + 1) * 0.5;
+      const pulse = 1 + Math.pow(transformationCycle, 8) * 0.16;
+      group.scale.setScalar(pulse);
+      core.scale.setScalar(1 + transformationCycle * 3.4);
+      coreMaterial.opacity = 0.22 + transformationCycle * 0.68;
+      material.opacity = (isHovering ? 0.63 : 0.44) + transformationCycle * 0.1;
+      signalMaterial.opacity = isHovering ? 1 : 0.72 + transformationCycle * 0.2;
+      pointLight.intensity = (isHovering ? 2.4 : 1.5) + transformationCycle * 0.8;
       renderer.render(scene, camera);
     }
     animate();
@@ -182,7 +320,20 @@ export function Hero() {
     return () => {
       cancelAnimationFrame(reqId);
       window.removeEventListener('resize', handleResize);
+      renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
+      renderer.domElement.removeEventListener('pointermove', handlePointerMove);
+      renderer.domElement.removeEventListener('pointerup', handlePointerUp);
+      renderer.domElement.removeEventListener('pointercancel', handlePointerUp);
+      renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
+      geometry.dispose();
+      material.dispose();
+      pointsMaterial.dispose();
+      signalGeometry.dispose();
+      signalMaterial.dispose();
+      coreGeometry.dispose();
+      coreMaterial.dispose();
       renderer.dispose();
+      renderer.domElement.remove();
     };
   }, []);
 
@@ -198,31 +349,51 @@ export function Hero() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         
-        <div className="lg:col-span-8 flex flex-col items-start gap-8">
+        <div className="relative z-10 lg:col-span-8 flex flex-col items-start gap-8">
           <div className="flex flex-col">
             <span className="font-mono text-xs text-[#D0190F] tracking-[0.2em] uppercase mb-4 opacity-80 border-b border-[#D0190F]/30 pb-2 w-max">
-              Mission Control Enabled
+              Digital Transformation &amp; Technology Partner
             </span>
-            <h1 className="font-['Bebas_Neue'] text-6xl md:text-8xl text-white uppercase leading-none mix-blend-exclusion">
-              Architecting<br />Digital Futures
+            <h1 className="font-['Bebas_Neue'] text-6xl md:text-7xl xl:text-8xl text-white uppercase leading-[0.92] mix-blend-exclusion max-w-5xl">
+              We Build Digital Systems That Move Businesses Forward.
             </h1>
           </div>
 
           <p className="font-sans text-gray-400 text-lg max-w-2xl border-l-2 border-[#D0190F]/50 pl-6 leading-relaxed">
-            Enterprise IT consulting and digital transformation for Indonesia's market leaders. We build resilient systems for high-stakes environments.
+            From strategy and product architecture to engineering, AI, automation, and infrastructure — Soul Media Global turns complex business challenges into scalable digital systems.
           </p>
 
-          <Link to="/solutions" className="relative group mt-4">
-            <div className="absolute inset-0 bg-[#D0190F] opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-500"></div>
-            <div className="relative px-8 py-4 bg-transparent border-2 border-[#D0190F] text-white font-mono text-xs uppercase tracking-widest flex items-center gap-4 transition-all duration-300 group-hover:bg-[#D0190F]/10 cursor-pointer">
-              Explore Solutions
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-4">
+            <Link to="/work" className="relative group">
+              <div className="absolute inset-0 bg-[#D0190F] opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-500"></div>
+              <div className="relative px-8 py-4 bg-[#D0190F] border-2 border-[#D0190F] text-white font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-4 transition-all duration-300 group-hover:bg-[#b5120a] cursor-pointer">
+                Explore Our Work
+                <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
+              </div>
+            </Link>
+            <Link to="/contact" className="group px-8 py-4 bg-transparent border border-white/30 text-white font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-4 transition-all duration-300 hover:border-white hover:bg-white/5">
+              Start a Project
               <span className="text-[#D0190F] group-hover:translate-x-2 transition-transform duration-300">→</span>
-            </div>
-          </Link>
+            </Link>
+          </div>
         </div>
 
-        <div className="hidden lg:block lg:col-span-4 h-full relative">
-          <div ref={threeContainerRef} className="absolute inset-0 w-full h-[600px] -right-24 top-1/2 -translate-y-1/2"></div>
+        <div className="absolute inset-0 z-0 pointer-events-none lg:relative lg:inset-auto lg:col-span-4 lg:h-full">
+          <div className="absolute w-[125%] h-[440px] -right-[58%] top-[58%] -translate-y-1/2 opacity-55 lg:w-[190%] lg:h-[720px] lg:-right-36 lg:top-1/2 lg:opacity-100">
+            <div
+              ref={threeContainerRef}
+              aria-label="Interactive digital transformation network. Drag to rotate."
+              className="absolute inset-0 pointer-events-auto"
+            ></div>
+            <div className="hero-signal-label hero-signal-label--strategy">Strategy</div>
+            <div className="hero-signal-label hero-signal-label--product">Product</div>
+            <div className="hero-signal-label hero-signal-label--engineering">Engineering</div>
+            <div className="hero-signal-label hero-signal-label--ai">AI</div>
+            <div className="hero-signal-label hero-signal-label--infrastructure">Infrastructure</div>
+            <div className="hero-transformation-status" aria-hidden="true">
+              <span>Business input</span><i></i><span>Connected system</span><i></i><span>Operational impact</span>
+            </div>
+          </div>
         </div>
 
       </div>

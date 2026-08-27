@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Hero } from './components/Hero';
-import { VisionMission } from './components/VisionMission';
+import { SelectedWork } from './components/SelectedWork';
+import { WhySMG } from './components/WhySMG';
+import { FinalCTA } from './components/FinalCTA';
 import { Services } from './components/Services';
 import { Leadership } from './components/Leadership';
 import { SolutionsPage } from './pages/SolutionsPage';
@@ -13,10 +15,22 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <VisionMission />
       <Services />
+      <SelectedWork />
+      <WhySMG />
       <Leadership />
+      <FinalCTA />
     </>
+  );
+}
+
+function WorkPage() {
+  return (
+    <section className="min-h-[60vh] flex items-center justify-center px-6">
+      <h1 className="font-['Bebas_Neue'] text-7xl md:text-9xl tracking-wider uppercase">
+        Work
+      </h1>
+    </section>
   );
 }
 
@@ -52,10 +66,11 @@ export function App() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-10 font-mono text-xs uppercase tracking-widest">
-            <Link to="/" className={getLinkClass('/')}>Home</Link>
-            <Link to="/solutions" className={getLinkClass('/solutions')}>Solutions</Link>
-            <Link to="/about" className={getLinkClass('/about')}>About & Leadership</Link>
-            <Link to="/contact" className={getLinkClass('/contact')}>Contact</Link>
+            <Link to="/" className={getLinkClass('/')}>HOME</Link>
+            <Link to="/solutions" className={getLinkClass('/solutions')}>SOLUTIONS</Link>
+            <Link to="/work" className={getLinkClass('/work')}>WORK</Link>
+            <Link to="/about" className={getLinkClass('/about')}>ABOUT</Link>
+            <Link to="/contact" className={getLinkClass('/contact')}>CONTACT</Link>
           </nav>
 
           <div className="hidden lg:block">
@@ -85,10 +100,11 @@ export function App() {
 
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-[#0a0a0a] border-b border-white/10 px-6 py-8 flex flex-col gap-6 font-mono text-sm uppercase tracking-widest">
-            <Link to="/" onClick={closeMenu} className={getLinkClass('/')}>// Home</Link>
-            <Link to="/solutions" onClick={closeMenu} className={getLinkClass('/solutions')}>// Solutions</Link>
-            <Link to="/about" onClick={closeMenu} className={getLinkClass('/about')}>// About & Leadership</Link>
-            <Link to="/contact" onClick={closeMenu} className={getLinkClass('/contact')}>// Contact</Link>
+            <Link to="/" onClick={closeMenu} className={getLinkClass('/')}>// HOME</Link>
+            <Link to="/solutions" onClick={closeMenu} className={getLinkClass('/solutions')}>// SOLUTIONS</Link>
+            <Link to="/work" onClick={closeMenu} className={getLinkClass('/work')}>// WORK</Link>
+            <Link to="/about" onClick={closeMenu} className={getLinkClass('/about')}>// ABOUT</Link>
+            <Link to="/contact" onClick={closeMenu} className={getLinkClass('/contact')}>// CONTACT</Link>
             
             <Link to="/contact" onClick={closeMenu} className="mt-4">
               <button className="w-full py-3 border border-[#D0190F] bg-[#D0190F]/10 text-[#D0190F] font-mono text-xs uppercase hover:bg-[#D0190F] hover:text-white transition-all">
@@ -104,49 +120,52 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/solutions" element={<SolutionsPage />} />
+          <Route path="/work" element={<WorkPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
 
-      {/* Global Corporate Footer */}
-      <footer className="w-full bg-[#0e0e0e] border-t border-white/5 py-16">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-28">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
-            
-            <div className="flex flex-col gap-4">
-              <span className="font-['Bebas_Neue'] text-4xl text-white tracking-wider">
-                SOUL MEDIA GLOBAL
-              </span>
-              <p className="font-sans text-sm text-gray-400 max-w-xs leading-relaxed">
-                Architecting digital futures and enterprise-grade resilience for high-stakes environments.
+      <footer className="relative w-full overflow-hidden border-t border-white/5 bg-[#0a0a0a] py-16 md:py-24">
+        <div className="pointer-events-none absolute -bottom-28 -left-8 font-['Bebas_Neue'] text-[15rem] leading-none text-white/[0.018] md:text-[24rem]" aria-hidden="true">SMG</div>
+        <div className="relative mx-auto max-w-[1440px] px-6 md:px-16">
+          <div className="grid grid-cols-1 gap-12 border-b border-white/10 pb-16 md:grid-cols-12 md:pb-20">
+            <div className="md:col-span-6">
+              <Link to="/" className="font-['Bebas_Neue'] text-4xl uppercase tracking-wider text-white md:text-5xl">
+                Soul Media Global
+              </Link>
+              <p className="mt-5 font-sans text-base text-gray-300">
+                Digital Transformation &amp; Technology Partner
+              </p>
+              <p className="mt-3 max-w-xl font-mono text-[10px] uppercase leading-6 tracking-[0.14em] text-gray-500">
+                Strategy. Product. Engineering. AI. Infrastructure.
               </p>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <span className="font-mono text-xs text-[#D0190F] uppercase tracking-widest">
-                HQ Yogyakarta
-              </span>
-              <p className="font-sans text-sm text-gray-400 leading-relaxed">
-                RUKO DE MERCY<br />
-                Jl. Kapten Haryadi Ngebel Gede No.R.02<br />
-                Kec. Ngaglik, Kab. Sleman, DI Yogyakarta 55581
-              </p>
+            <div className="md:col-span-2">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">Navigate</p>
+              <nav aria-label="Footer navigation" className="flex flex-col items-start gap-3 font-sans text-sm text-gray-400">
+                <Link className="transition-colors hover:text-white" to="/solutions">Solutions</Link>
+                <Link className="transition-colors hover:text-white" to="/work">Work</Link>
+                <Link className="transition-colors hover:text-white" to="/about">About</Link>
+                <Link className="transition-colors hover:text-white" to="/contact">Contact</Link>
+              </nav>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <span className="font-mono text-xs text-[#D0190F] uppercase tracking-widest">
-                Jakarta Office
-              </span>
-              <p className="font-sans text-sm text-gray-400 leading-relaxed">
-                [soon]
-              </p>
+            <div className="md:col-span-2">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">Location</p>
+              <p className="font-sans text-sm leading-6 text-gray-400">Yogyakarta,<br />Indonesia</p>
             </div>
 
+            <div className="md:col-span-2">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">Social</p>
+              <span className="font-sans text-sm text-gray-400">LinkedIn</span>
+            </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-white/5 text-center font-mono text-xs text-gray-500 uppercase tracking-widest">
-            © 2026 PT SOUL MEDIA GLOBAL. ALL RIGHTS RESERVED.
+          <div className="flex flex-col gap-4 pt-8 font-mono text-[9px] uppercase tracking-[0.14em] text-gray-600 sm:flex-row sm:items-center sm:justify-between">
+            <span>© 2026 Soul Media Global. All rights reserved.</span>
+            <span>Yogyakarta, Indonesia</span>
           </div>
         </div>
       </footer>
