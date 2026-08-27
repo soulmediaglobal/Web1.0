@@ -4,6 +4,7 @@ import strategyVisual from '../assets/services/strategy.png';
 import productVisual from '../assets/services/product.png';
 import aiIntegrationVisual from '../assets/services/ai-integration.png';
 import cloudPlatformVisual from '../assets/services/cloud-platform.png';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 
 const capabilities = [
   {
@@ -45,11 +46,12 @@ const capabilities = [
 ];
 
 export function Services() {
+  const sectionRef = useScrollProgress<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState(0);
   const active = capabilities[activeIndex];
 
   return (
-    <section id="services" className="relative w-full overflow-hidden border-y border-white/5 bg-[#0e0e0e] py-24 md:py-36" aria-labelledby="services-title">
+    <section ref={sectionRef} id="services" className="parallax-section services-parallax relative z-10 w-full overflow-hidden border-y border-white/5 bg-[#0e0e0e] py-24 md:py-36" aria-labelledby="services-title">
       <div className="pointer-events-none absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:48px_48px]" />
       <div className="pointer-events-none absolute right-[-20rem] top-[-16rem] h-[50rem] w-[50rem] rounded-full bg-[#D0190F]/10 blur-[170px]" />
 
@@ -102,7 +104,7 @@ export function Services() {
               <div className="services-orbit services-orbit--middle" />
               <div className="services-orbit services-orbit--inner" />
               <div key={active.node} className="services-visual-image">
-                <img src={active.image} alt={active.imageAlt} />
+                <img src={active.image} alt={active.imageAlt} loading="lazy" decoding="async" />
               </div>
               <div className="services-core">
                 <span>{active.node}</span>

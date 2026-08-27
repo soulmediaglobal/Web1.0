@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 
 const pillars = [
   {
@@ -22,11 +23,12 @@ const pillars = [
 ];
 
 export function WhySMG() {
+  const sectionRef = useScrollProgress<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState(0);
   const active = pillars[activeIndex];
 
   return (
-    <section className="relative overflow-hidden border-y border-white/5 bg-[#101010] py-24 md:py-36" aria-labelledby="why-smg-title">
+    <section ref={sectionRef} className="parallax-section why-parallax relative overflow-hidden border-y border-white/5 bg-[#101010] py-24 md:py-36" aria-labelledby="why-smg-title">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_65%,rgba(208,25,15,.11),transparent_38%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[48rem] w-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.025]" />
 

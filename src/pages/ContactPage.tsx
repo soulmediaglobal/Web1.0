@@ -124,14 +124,15 @@ export const ContactPage: React.FC = () => {
 
                   <div className="flex flex-col gap-3">
                     <label className="font-mono text-xs text-gray-400 uppercase">
-                      Strategic Domain (Select Multiple)
+                      Service (Select Multiple)
                     </label>
                     <div className="flex flex-wrap gap-3">
                       {[
-                        { id: 'cloud', label: 'Cloud Infrastructure' },
-                        { id: 'engineering', label: 'Custom Engineering' },
-                        { id: 'audit', label: 'Cyber Security Audit' },
-                        { id: 'architecture', label: 'Architecture Review' }
+                        { id: 'strategy-product', label: 'Digital Strategy & Product Architecture' },
+                        { id: 'software-enterprise', label: 'Custom Software & Enterprise Applications' },
+                        { id: 'ai-automation', label: 'AI, Automation & System Integration' },
+                        { id: 'cloud-platform', label: 'Cloud & Platform Engineering' },
+                        { id: 'challenging-project', label: 'Another Challenging Project' }
                       ].map(domain => {
                         const isSelected = selectedDomains.includes(domain.id);
                         return (

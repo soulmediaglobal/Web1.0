@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 
 export function Hero() {
+  const sectionRef = useScrollProgress<HTMLElement>('exit');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const threeContainerRef = useRef<HTMLDivElement>(null);
 
@@ -20,9 +22,8 @@ export function Hero() {
       }
     }
 
-    if (typeof ResizeObserver !== 'undefined' && canvas) {
-      new ResizeObserver(syncSize).observe(canvas);
-    }
+    const resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(syncSize) : null;
+    resizeObserver?.observe(canvas);
     syncSize();
 
     const gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
@@ -110,6 +111,11 @@ export function Hero() {
 
     return () => {
       cancelAnimationFrame(animId);
+      resizeObserver?.disconnect();
+      if (buf) gl.deleteBuffer(buf);
+      gl.deleteShader(vertShader);
+      gl.deleteShader(fragShader);
+      gl.deleteProgram(prog);
     };
   }, []);
 
@@ -338,9 +344,9 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative w-full h-[80vh] min-h-[600px] flex items-center pt-20 overflow-hidden bg-[#0e0e0e]">
+    <section ref={sectionRef} className="parallax-section hero-parallax relative z-20 flex min-h-[calc(100svh-6rem)] w-full items-center bg-[#0e0e0e] pt-20">
       
-      <div className="absolute inset-0 w-full h-full mix-blend-screen opacity-40">
+      <div className="parallax-hero-grid absolute inset-0 h-full w-full mix-blend-screen opacity-40">
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }}></canvas>
       </div>
 
@@ -349,12 +355,12 @@ export function Hero() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         
-        <div className="relative z-10 lg:col-span-8 flex flex-col items-start gap-8">
+        <div className="parallax-hero-copy relative z-10 flex flex-col items-start gap-8 lg:col-span-8">
           <div className="flex flex-col">
-            <span className="font-mono text-xs text-[#D0190F] tracking-[0.2em] uppercase mb-4 opacity-80 border-b border-[#D0190F]/30 pb-2 w-max">
+            <span className="mb-4 max-w-full border-b border-[#D0190F]/30 pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#D0190F] opacity-80 sm:w-max sm:text-xs sm:tracking-[0.2em]">
               Digital Transformation &amp; Technology Partner
             </span>
-            <h1 className="font-['Bebas_Neue'] text-6xl md:text-7xl xl:text-8xl text-white uppercase leading-[0.92] mix-blend-exclusion max-w-5xl">
+            <h1 className="max-w-5xl font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] text-white mix-blend-exclusion sm:text-6xl md:text-7xl xl:text-8xl">
               We Build Digital Systems That Move Businesses Forward.
             </h1>
           </div>
@@ -378,20 +384,22 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="absolute inset-0 z-0 pointer-events-none lg:relative lg:inset-auto lg:col-span-4 lg:h-full">
+        <div className="parallax-hero-object pointer-events-none absolute inset-0 z-30 lg:relative lg:inset-auto lg:col-span-4 lg:h-full">
           <div className="absolute w-[125%] h-[440px] -right-[58%] top-[58%] -translate-y-1/2 opacity-55 lg:w-[190%] lg:h-[720px] lg:-right-36 lg:top-1/2 lg:opacity-100">
             <div
               ref={threeContainerRef}
               aria-label="Interactive digital transformation network. Drag to rotate."
               className="absolute inset-0 pointer-events-auto"
             ></div>
-            <div className="hero-signal-label hero-signal-label--strategy">Strategy</div>
-            <div className="hero-signal-label hero-signal-label--product">Product</div>
-            <div className="hero-signal-label hero-signal-label--engineering">Engineering</div>
-            <div className="hero-signal-label hero-signal-label--ai">AI</div>
-            <div className="hero-signal-label hero-signal-label--infrastructure">Infrastructure</div>
-            <div className="hero-transformation-status" aria-hidden="true">
-              <span>Business input</span><i></i><span>Connected system</span><i></i><span>Operational impact</span>
+            <div className="hero-network-labels">
+              <div className="hero-signal-label hero-signal-label--strategy">Strategy</div>
+              <div className="hero-signal-label hero-signal-label--product">Product</div>
+              <div className="hero-signal-label hero-signal-label--engineering">Engineering</div>
+              <div className="hero-signal-label hero-signal-label--ai">AI</div>
+              <div className="hero-signal-label hero-signal-label--infrastructure">Infrastructure</div>
+              <div className="hero-transformation-status" aria-hidden="true">
+                <span>Business input</span><i></i><span>Connected system</span><i></i><span>Operational impact</span>
+              </div>
             </div>
           </div>
         </div>

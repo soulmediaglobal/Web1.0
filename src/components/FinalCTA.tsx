@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 
 export function FinalCTA() {
+  const sectionRef = useScrollProgress<HTMLElement>();
   return (
-    <section className="final-cta relative isolate overflow-hidden bg-[#D0190F] py-24 text-white md:py-36" aria-labelledby="final-cta-title">
+    <section ref={sectionRef} className="parallax-section final-cta cta-parallax relative isolate overflow-hidden bg-[#D0190F] py-24 text-white md:py-36" aria-labelledby="final-cta-title">
       <div className="final-cta-grid pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="final-cta-orbit final-cta-orbit--one pointer-events-none" aria-hidden="true" />
       <div className="final-cta-orbit final-cta-orbit--two pointer-events-none" aria-hidden="true" />

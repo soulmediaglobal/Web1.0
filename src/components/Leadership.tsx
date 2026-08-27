@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import tomyImg from '../assets/tomy.png';
 import rayhanImg from '../assets/ray.png';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 
 const founders = [
   {
@@ -23,10 +24,11 @@ const founders = [
 ];
 
 export function Leadership() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useScrollProgress<HTMLElement>();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section id="founders" className="relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="founders-title">
+    <section ref={sectionRef} id="founders" className="parallax-section founders-parallax relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="founders-title">
       <div className="pointer-events-none absolute left-[-12rem] top-1/4 h-[34rem] w-[34rem] rounded-full bg-[#D0190F]/8 blur-[150px]" />
 
       <div className="relative mx-auto max-w-[1440px] px-6 md:px-16">
@@ -45,7 +47,7 @@ export function Leadership() {
           </p>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 md:mt-24 lg:h-[720px] lg:flex-row">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:mt-24 lg:grid-cols-2">
           {founders.map((founder, index) => {
             const isActive = activeIndex === index;
             return (
@@ -53,46 +55,49 @@ export function Leadership() {
                 key={founder.name}
                 role="button"
                 tabIndex={0}
-                aria-pressed={isActive}
-                onMouseEnter={() => setActiveIndex(index)}
+                aria-expanded={isActive}
+                onMouseEnter={() => {
+                  if (window.matchMedia('(hover: hover)').matches) setActiveIndex(index);
+                }}
+                onMouseLeave={() => {
+                  if (window.matchMedia('(hover: hover)').matches) setActiveIndex(null);
+                }}
                 onFocus={() => setActiveIndex(index)}
-                onClick={() => setActiveIndex(index)}
+                onBlur={() => setActiveIndex(null)}
+                onClick={() => {
+                  if (!window.matchMedia('(hover: hover)').matches) setActiveIndex(isActive ? null : index);
+                }}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault();
-                    setActiveIndex(index);
+                    setActiveIndex(isActive ? null : index);
                   }
                 }}
-                className={`founder-panel group relative min-h-[570px] cursor-pointer overflow-hidden border border-white/10 bg-[#171717] transition-[flex] duration-700 ease-out lg:min-h-0 ${isActive ? 'lg:flex-[1.15]' : 'lg:flex-[0.85]'}`}
+                className="founder-panel group cursor-pointer overflow-hidden border border-white/10 bg-[#111] transition-colors duration-500 hover:border-white/20 focus-visible:border-[#D0190F] focus-visible:outline-none"
               >
-                <img
-                  src={founder.image}
-                  alt={founder.name}
-                  className={`absolute inset-0 h-full w-full ${founder.position} object-cover grayscale transition-all duration-700 ${isActive ? 'opacity-85 grayscale-0' : 'opacity-45'}`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/38 to-black/5" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/70 via-[#080808]/15 to-transparent" />
-
-                <div className="absolute left-0 top-0 flex w-full items-center justify-between p-6 md:p-8">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">Founder {founder.number}</span>
-                  <span className={`h-2 w-2 rounded-full transition-all duration-500 ${isActive ? 'bg-[#D0190F] shadow-[0_0_18px_#D0190F]' : 'border border-white/30'}`} />
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#0b0b0b] md:aspect-[5/4] lg:aspect-[4/5]">
+                  <img
+                    src={founder.image}
+                    alt={founder.name}
+                    loading="lazy"
+                    decoding="async"
+                    className={`founder-image h-full w-full ${founder.position} object-cover grayscale transition-[filter,opacity] duration-700 opacity-75 group-hover:opacity-90 group-hover:grayscale-0`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/5" />
+                  <span className="absolute left-6 top-6 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8] md:left-8 md:top-8">Founder {founder.number}</span>
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 p-7 md:p-10">
-                  <p className={`mb-4 font-mono text-[10px] uppercase tracking-[0.16em] text-[#ffb4a8] transition-all duration-500 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0 lg:opacity-0'}`}>
-                    {founder.role}
-                  </p>
-                  <h3 className={`font-['Bebas_Neue'] uppercase leading-[0.88] tracking-wide text-white transition-all duration-700 ${isActive ? 'text-6xl md:text-8xl' : 'text-5xl md:text-6xl'}`}>
+                <div className="border-t border-white/10 p-7 md:p-9">
+                  <h3 className="font-['Bebas_Neue'] text-5xl uppercase leading-[0.9] tracking-wide text-white md:text-6xl">
                     {founder.name}
                   </h3>
-                  <div className={`overflow-hidden transition-all duration-700 ${isActive ? 'mt-6 max-h-40 opacity-100' : 'mt-0 max-h-0 opacity-0'}`}>
-                    <p className="max-w-2xl border-l border-[#D0190F] pl-5 font-sans text-sm leading-6 text-gray-300 md:text-base md:leading-7">
+                  <div className={`overflow-hidden transition-all duration-500 ease-out ${isActive ? 'mt-6 max-h-64 opacity-100' : 'mt-0 max-h-0 opacity-0'}`}>
+                    <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.16em] text-[#ffb4a8]">{founder.role}</p>
+                    <p className="max-w-2xl border-l border-[#D0190F] pl-5 font-sans text-sm leading-6 text-gray-400 md:text-base md:leading-7">
                       {founder.description}
                     </p>
                   </div>
                 </div>
-
-                <div className={`absolute bottom-0 left-0 h-1 bg-[#D0190F] transition-all duration-700 ${isActive ? 'w-full' : 'w-0'}`} />
               </article>
             );
           })}

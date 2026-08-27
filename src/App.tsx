@@ -16,8 +16,10 @@ import logo from './assets/Logo.png';
 function HomePage() {
   return (
     <>
-      <Hero />
-      <Services />
+      <div className="hero-services-journey relative">
+        <Hero />
+        <Services />
+      </div>
       <SelectedWork />
       <WhySMG />
       <Leadership />

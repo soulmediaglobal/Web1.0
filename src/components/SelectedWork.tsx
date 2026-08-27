@@ -1,9 +1,44 @@
 import { Link } from 'react-router-dom';
-import { caseStudies } from '../data/caseStudies';
+import minerbaOneVisual from '../assets/projects/minerba-one.png';
+import briCommandCenterVisual from '../assets/projects/bri-command-center.png';
+import networkMonitoringVisual from '../assets/projects/network-monitoring.png';
+import { useScrollProgress } from '../hooks/useScrollProgress';
+
+const projects = [
+  {
+    number: '01',
+    category: 'Mining / Government',
+    client: 'Kementerian ESDM',
+    name: 'MinerbaOne',
+    summary: 'An integrated digital platform unifying governance, licensing workflows, monitoring, and sector data for mineral and coal mining.',
+    image: minerbaOneVisual,
+    imageAlt: 'Abstract visualization of an integrated digital mining governance platform',
+    featured: true,
+  },
+  {
+    number: '02',
+    category: 'Banking / State-owned Company',
+    client: 'Bank Rakyat Indonesia',
+    name: 'BRI Digital Command Center',
+    summary: 'A centralized command center connecting real-time sentiment and audience insights with business performance indicators.',
+    image: briCommandCenterVisual,
+    imageAlt: 'Abstract visualization of a banking intelligence and digital monitoring command center',
+  },
+  {
+    number: '03',
+    category: 'Communication / Government',
+    client: 'Kementerian Komunikasi dan Informasi',
+    name: 'Internet Connection Network Monitoring',
+    summary: 'A nationwide digital map visualizing 2G and 3G coverage, performance, and network quality across regions.',
+    image: networkMonitoringVisual,
+    imageAlt: 'Abstract visualization of nationwide telecommunications network monitoring across Indonesia',
+  },
+];
 
 export function SelectedWork() {
+  const sectionRef = useScrollProgress<HTMLElement>();
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="selected-work-title">
+    <section ref={sectionRef} className="parallax-section work-parallax relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="selected-work-title">
       <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:64px_64px]" />
       <div className="pointer-events-none absolute -left-64 top-40 h-[36rem] w-[36rem] rounded-full bg-[#D0190F]/10 blur-[140px]" />
 
@@ -23,42 +58,35 @@ export function SelectedWork() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {caseStudies.map((project) => (
-            <Link
-              key={project.slug}
-              to={`/work/${project.slug}`}
-              className={`group relative overflow-hidden border border-white/10 bg-[#141313] transition-all duration-500 hover:-translate-y-1 hover:border-[#D0190F]/60 ${
-                project.featured ? 'min-h-[650px] lg:col-span-7 lg:row-span-2' : 'min-h-[310px] lg:col-span-5'
-              }`}
+        <div className="work-portfolio flex flex-col gap-16 md:gap-24">
+          {projects.map((project, projectIndex) => (
+            <article
+              key={project.number}
+              className="work-card group grid grid-cols-1 overflow-hidden border border-white/10 bg-[#101010] transition-colors duration-500 hover:border-white/20 lg:grid-cols-12"
             >
-              <div className="absolute inset-0 overflow-hidden">
-                <img src={project.image} alt={project.imageAlt} className="h-full w-full object-cover opacity-75 transition-all duration-700 group-hover:scale-105 group-hover:opacity-90" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#090909] via-[#0b0b0b]/45 to-black/10" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_30%,transparent_0%,rgba(8,8,8,.12)_38%,rgba(8,8,8,.76)_100%)]" />
+              <div className={`relative min-h-[340px] overflow-hidden md:min-h-[500px] lg:col-span-7 ${projectIndex % 2 ? 'lg:order-2' : ''}`}>
+                <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" className="work-card-image absolute inset-0 h-full w-full object-cover opacity-80 transition-[opacity,transform] duration-700 group-hover:scale-[1.025] group-hover:opacity-95" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+                <span className="absolute left-6 top-6 border border-white/15 bg-black/40 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[#ffb4a8] backdrop-blur-md md:left-8 md:top-8">
+                  Project {project.number}
+                </span>
               </div>
 
-              <div className="relative flex h-full min-h-[inherit] flex-col justify-between p-7 md:p-10">
-                <div className="flex items-start justify-between gap-5">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">{project.category}</span>
-                  <span className="font-['Bebas_Neue'] text-3xl text-white/20 transition-colors duration-300 group-hover:text-[#D0190F]">{project.number}</span>
-                </div>
-
-                <div>
+              <div className={`relative flex flex-col justify-center border-t border-white/10 p-7 md:p-10 lg:col-span-5 lg:border-t-0 ${projectIndex % 2 ? 'lg:order-1 lg:border-r' : 'lg:border-l'}`}>
+                  <span className="mb-8 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">{project.category}</span>
                   <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/50">{project.client}</p>
-                  <h3 className={`font-['Bebas_Neue'] uppercase leading-none tracking-wide text-white ${project.featured ? 'text-5xl md:text-7xl' : 'text-4xl md:text-5xl'}`}>
+                  <h3 className="max-w-xl font-['Bebas_Neue'] text-4xl uppercase leading-[0.95] tracking-wide text-white md:text-5xl">
                     {project.name}
                   </h3>
-                  <p className="mt-5 max-w-xl border-l border-[#D0190F]/60 pl-5 font-sans text-sm leading-6 text-gray-400 md:text-base">
+                  <p className="mt-6 max-w-xl border-l border-[#D0190F]/60 pl-5 font-sans text-sm leading-6 text-gray-400 md:text-base">
                     {project.summary}
                   </p>
-                  <span className="mt-7 inline-flex items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors group-hover:text-[#ffb4a8]">
+                  <Link to="/work" className="mt-9 inline-flex w-max items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors hover:text-[#ffb4a8]">
                     View Case Study
                     <span className="text-[#D0190F] transition-transform duration-300 group-hover:translate-x-1">↗</span>
-                  </span>
-                </div>
+                  </Link>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
 

@@ -14,6 +14,197 @@ body {
   overflow-x: hidden;
 }
 
+/* About: a quiet system bridge that fills the origin story without competing with it. */
+.about-bridge-grid {
+  opacity: .28;
+  background-image: linear-gradient(rgb(255 255 255 / 7%) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 7%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle, black 18%, transparent 72%);
+}
+
+.about-bridge-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.about-bridge-orbit::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #d0190f;
+  box-shadow: 0 0 16px #d0190f;
+}
+
+.about-bridge-orbit--outer { width: 260px; height: 260px; animation: about-orbit 18s linear infinite; }
+.about-bridge-orbit--inner { width: 180px; height: 180px; border-style: dashed; animation: about-orbit 13s linear infinite reverse; }
+
+.about-bridge-line {
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 64px);
+  height: 1px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 12%);
+}
+
+.about-bridge-line--left { left: 0; }
+.about-bridge-line--right { right: 0; }
+.about-bridge-line i { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #d0190f, transparent); animation: about-signal 2.8s ease-in-out infinite; }
+.about-bridge-line--right i { animation-delay: -1.4s; }
+
+.about-bridge-node,
+.about-bridge-core {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid rgb(255 255 255 / 13%);
+  background: rgb(10 10 10 / 88%);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+}
+
+.about-bridge-node { top: 50%; padding: .5rem .65rem; color: rgb(255 255 255 / 38%); font-size: .48rem; letter-spacing: .13em; transform: translateY(-50%); }
+.about-bridge-node--left { left: 1rem; }
+.about-bridge-node--right { right: 1rem; }
+.about-bridge-core { left: 50%; top: 50%; display: flex; width: 110px; height: 110px; align-items: center; justify-content: center; flex-direction: column; border-color: rgb(208 25 15 / 55%); border-radius: 999px; transform: translate(-50%, -50%); box-shadow: 0 0 60px rgb(208 25 15 / 12%); }
+.about-bridge-core span { color: white; font-size: .8rem; letter-spacing: .18em; }
+.about-bridge-core small { margin-top: .45rem; color: rgb(255 180 168 / 65%); font-size: .38rem; letter-spacing: .1em; }
+
+@keyframes about-orbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes about-signal { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-bridge-orbit,
+  .about-bridge-line i { animation: none; }
+}
+
+/* Scroll journey: a few deliberate, high-contrast transitions. */
+.parallax-section {
+  --scroll-progress: 0.5;
+  --scroll-shift: 0;
+}
+
+.parallax-hero-grid {
+  transform: translate3d(0, calc(var(--scroll-progress) * 70px), 0);
+  will-change: transform;
+}
+
+.parallax-hero-copy {
+  transform: translate3d(0, calc(var(--scroll-progress) * -110px), 0);
+  opacity: calc(1 - var(--scroll-progress) * .95);
+  will-change: transform, opacity;
+}
+
+.parallax-hero-object {
+  transform: translate3d(calc(var(--scroll-progress) * 3vw), calc(var(--scroll-progress) * 58vh), 0) scale(calc(1 + var(--scroll-progress) * .18));
+  opacity: calc(1 - var(--scroll-progress) * .5);
+  will-change: transform, opacity;
+}
+
+.hero-network-labels {
+  opacity: clamp(0, calc(1 - var(--scroll-progress) * 4), 1);
+}
+
+.work-card-image {
+  transform: translate3d(0, calc(var(--scroll-shift) * -18px), 0) scale(1.04);
+}
+
+.why-parallax .why-triad-core {
+  transform: translate(-50%, -50%) scale(calc(.65 + var(--scroll-progress) * .35));
+  opacity: calc(.2 + var(--scroll-progress) * .8);
+}
+
+.cta-parallax h2 {
+  transform: translate3d(0, calc((1 - var(--scroll-progress)) * 32px), 0);
+  opacity: clamp(.55, var(--scroll-progress), 1);
+}
+
+@media (min-width: 1024px) {
+  .services-parallax > .relative {
+    z-index: 20;
+  }
+
+}
+
+@media (max-width: 1023px) {
+  .parallax-hero-grid,
+  .parallax-hero-copy,
+  .parallax-hero-object,
+  .work-card-image,
+  .founders-parallax .founder-panel .founder-image,
+  .cta-parallax h2 {
+    transform: none;
+  }
+
+  .parallax-hero-copy,
+  .parallax-hero-object,
+  .cta-parallax h2 {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-section *,
+  .parallax-section *::before,
+  .parallax-section *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .parallax-hero-grid,
+  .parallax-hero-copy,
+  .parallax-hero-object,
+  .work-card-image,
+  .founder-image,
+  .cta-parallax h2 {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* The Why SMG geometry is drawn by scroll instead of looping into view. */
+.why-parallax .why-triad-path {
+  stroke-dasharray: 1800;
+  stroke-dashoffset: calc(1800px * (1 - var(--scroll-progress)));
+  opacity: calc(.12 + var(--scroll-progress) * .88);
+}
+
+.why-parallax .why-triad-path--inner {
+  stroke-dashoffset: calc(1300px * (1 - var(--scroll-progress)));
+}
+
+.why-parallax .why-triad-node--1 { opacity: clamp(0, calc((var(--scroll-progress) - .18) * 8), 1); }
+.why-parallax .why-triad-node--2 { opacity: clamp(0, calc((var(--scroll-progress) - .34) * 8), 1); }
+.why-parallax .why-triad-node--3 { opacity: clamp(0, calc((var(--scroll-progress) - .5) * 8), 1); }
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .services-parallax button {
+      animation: capability-enter both ease-out;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+
+    .services-parallax button:nth-child(2) { animation-range: entry 4% cover 32%; }
+    .services-parallax button:nth-child(3) { animation-range: entry 8% cover 36%; }
+    .services-parallax button:nth-child(4) { animation-range: entry 12% cover 40%; }
+  }
+}
+
+@keyframes capability-enter {
+  from { opacity: .12; transform: translateX(-48px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+
 .hero-signal-label {
   position: absolute;
   z-index: 2;
@@ -630,6 +821,19 @@ body {
   .why-triad-core-inner {
     animation: none;
   }
+}
+
+/* Final scroll-controlled overrides for the triad's legacy loop animation. */
+.why-parallax .why-triad-path {
+  animation: none;
+  stroke-dasharray: 1800;
+  stroke-dashoffset: calc(1800px * (1 - var(--scroll-progress)));
+  opacity: calc(.12 + var(--scroll-progress) * .88);
+}
+
+.why-parallax .why-triad-path--inner {
+  stroke-dasharray: 1300;
+  stroke-dashoffset: calc(1300px * (1 - var(--scroll-progress)));
 }
 
 .work-fade-in {

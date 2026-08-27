@@ -4,9 +4,13 @@ import { caseStudies } from '../data/caseStudies';
 
 const filters = [
   { key: 'all', label: 'All Work' },
-  { key: 'gov', label: 'Government' },
-  { key: 'bank', label: 'Banking' },
-  { key: 'telco', label: 'Telecom' },
+  { key: 'mining', label: 'Mining' },
+  { key: 'banking', label: 'Banking' },
+  { key: 'telecommunications', label: 'Telecommunications' },
+  { key: 'property', label: 'Property' },
+  { key: 'automotive', label: 'Automotive' },
+  { key: 'law-enforcement', label: 'Law Enforcement' },
+  { key: 'construction', label: 'Construction' },
 ];
 
 const trustedBy = [
@@ -46,7 +50,7 @@ export function WorkPage() {
         <div className="work-fade-in mb-14 border-b border-white/10 pb-10 md:mb-16" style={{ animationDelay: '60ms' }}>
           <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-[#ffb4a8]">
             <span className="mr-3 inline-block h-px w-8 bg-[#D0190F] align-middle" />
-            Case Studies
+            Portfolio
           </p>
           <h1 id="work-title" className="max-w-4xl font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] tracking-wide text-white md:text-7xl">
             Systems Built.<br />Problems Solved.
