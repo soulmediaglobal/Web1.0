@@ -9,6 +9,8 @@ import { Leadership } from './components/Leadership';
 import { SolutionsPage } from './pages/SolutionsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import { WorkPage } from './pages/WorkPage';
+import { WorkDetailPage } from './pages/WorkDetailPage';
 import logo from './assets/Logo.png';
 
 function HomePage() {
@@ -21,16 +23,6 @@ function HomePage() {
       <Leadership />
       <FinalCTA />
     </>
-  );
-}
-
-function WorkPage() {
-  return (
-    <section className="min-h-[60vh] flex items-center justify-center px-6">
-      <h1 className="font-['Bebas_Neue'] text-7xl md:text-9xl tracking-wider uppercase">
-        Work
-      </h1>
-    </section>
   );
 }
 
@@ -121,6 +113,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/solutions" element={<SolutionsPage />} />
           <Route path="/work" element={<WorkPage />} />
+          <Route path="/work/:slug" element={<WorkDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>

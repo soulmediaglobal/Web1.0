@@ -1,38 +1,5 @@
 import { Link } from 'react-router-dom';
-import minerbaOneVisual from '../assets/projects/minerba-one.png';
-import briCommandCenterVisual from '../assets/projects/bri-command-center.png';
-import networkMonitoringVisual from '../assets/projects/network-monitoring.png';
-
-const projects = [
-  {
-    number: '01',
-    category: 'Mining / Government',
-    client: 'Kementerian ESDM',
-    name: 'MinerbaOne',
-    summary: 'An integrated digital platform unifying governance, licensing workflows, monitoring, and sector data for mineral and coal mining.',
-    image: minerbaOneVisual,
-    imageAlt: 'Abstract visualization of an integrated digital mining governance platform',
-    featured: true,
-  },
-  {
-    number: '02',
-    category: 'Banking / State-owned Company',
-    client: 'Bank Rakyat Indonesia',
-    name: 'BRI Digital Command Center',
-    summary: 'A centralized command center connecting real-time sentiment and audience insights with business performance indicators.',
-    image: briCommandCenterVisual,
-    imageAlt: 'Abstract visualization of a banking intelligence and digital monitoring command center',
-  },
-  {
-    number: '03',
-    category: 'Communication / Government',
-    client: 'Kementerian Komunikasi dan Informasi',
-    name: 'Internet Connection Network Monitoring',
-    summary: 'A nationwide digital map visualizing 2G and 3G coverage, performance, and network quality across regions.',
-    image: networkMonitoringVisual,
-    imageAlt: 'Abstract visualization of nationwide telecommunications network monitoring across Indonesia',
-  },
-];
+import { caseStudies } from '../data/caseStudies';
 
 export function SelectedWork() {
   return (
@@ -57,9 +24,10 @@ export function SelectedWork() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {projects.map((project) => (
-            <article
-              key={project.number}
+          {caseStudies.map((project) => (
+            <Link
+              key={project.slug}
+              to={`/work/${project.slug}`}
               className={`group relative overflow-hidden border border-white/10 bg-[#141313] transition-all duration-500 hover:-translate-y-1 hover:border-[#D0190F]/60 ${
                 project.featured ? 'min-h-[650px] lg:col-span-7 lg:row-span-2' : 'min-h-[310px] lg:col-span-5'
               }`}
@@ -84,13 +52,13 @@ export function SelectedWork() {
                   <p className="mt-5 max-w-xl border-l border-[#D0190F]/60 pl-5 font-sans text-sm leading-6 text-gray-400 md:text-base">
                     {project.summary}
                   </p>
-                  <Link to="/work" className="mt-7 inline-flex items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors hover:text-[#ffb4a8]">
+                  <span className="mt-7 inline-flex items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors group-hover:text-[#ffb4a8]">
                     View Case Study
                     <span className="text-[#D0190F] transition-transform duration-300 group-hover:translate-x-1">↗</span>
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 
