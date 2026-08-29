@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.0
+**Document Version:** v1.1.1
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -642,7 +642,7 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Required indexes aktif.
 - `updated_at` triggers aktif.
 - `.env` dan `.env.*` di-ignore, sementara `.env.example` tetap dapat dilacak.
-- Commit `7091cc807de57037353ebf815fb70b1e7367785c` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
+- Implementation commit `dba54ae` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
 - Working tree bersih dan local branch sudah sinkron dengan remote branch.
 - `Web1.0/Development-Rules.md` menjadi canonical technical source of truth project-wide setelah merged ke `main`; versi pada task branch berstatus branch-local newer version.
 - Chapter 3 menjadi official development history setelah baseline.
@@ -658,7 +658,7 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 
 ## C6P3 — Active Work
 
-- **CMS Database Foundation** — implementation sudah selesai dan sudah committed serta pushed pada task branch. Hanya task closure dan merge governance yang masih tersisa; merge final ke `main` dilakukan manual oleh Ray setelah branch dinyatakan merge-ready.
+- None.
 
 ---
 
@@ -1093,6 +1093,25 @@ Added Chapter 8 — Documentation Structure to define documentation purpose, can
 
 **Previous Version:** v1.0.25
 **Current Version:** v1.1.0
+
+### v1.1.1 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized Chapter 6 with the completed CMS Database Foundation implementation commit `dba54ae`, retained the manual merge to `main` as a pending governance and release step owned by Ray, and cleared Active Work to `None`. Kept the Web Version at v1.0.0.
+
+**Previous Version:** v1.1.0
+**Current Version:** v1.1.1
 
 ---
 
