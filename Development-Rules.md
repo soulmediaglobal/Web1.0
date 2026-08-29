@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.5
+**Document Version:** v1.1.6
 **Web Version:** v1.2.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -65,9 +65,9 @@ Production domain: `soulmedia.id`
 - Styling: Tailwind CSS 4, CSS, PostCSS, Autoprefixer; global/custom styling berada di `src/App.css` dan `src/index.css`.
 - Typography: Bebas Neue, Inter/Sans-serif, JetBrains Mono/Monospace.
 - Routes: `/`, `/solutions`, `/work`, `/work/:slug`, `/about`, `/contact`.
-- Structured case-study data: `src/data/caseStudies.ts`, digunakan oleh `WorkPage.tsx` dan `WorkDetailPage.tsx`.
+- Content/data layer: typed read-only content layer di `src/content/` digunakan oleh public website untuk membaca approved published content dari Supabase CMS.
 - UI/visual: `lucide-react`; Three.js tersedia untuk advanced visual/3D tetapi tidak boleh digunakan secara arbitrary.
-- Backend/data capability: Supabase JS tersedia, tetapi actual database, authentication, storage, API, CMS, dan persistence harus diverifikasi sebelum diasumsikan.
+- Backend/data capability: Supabase CMS database foundation tersedia, dan public website membaca approved published content melalui typed read-only content layer. Authentication, write access, storage, dan admin UI masih pending.
 - Tooling: ESLint, TypeScript ESLint, React Hooks ESLint, React Refresh, dan Vite React Plugin.
 
 Existing stack adalah default foundation. Prioritas: **Use existing stack → Extend existing stack → Add dependency only when necessary.** Jangan menambah framework, UI kit, state-management library, animation framework, CMS framework, atau backend framework tanpa kebutuhan teknis jelas.
@@ -84,8 +84,8 @@ Primary navigation: HOME (`/`), SOLUTIONS (`/solutions`), WORK (`/work`), ABOUT 
 
 1. **Home (`/`)** — Hero, Services, Selected Work, Why SMG, Leadership, dan Final CTA; menggunakan component terkait di `src/components/` dan dirakit melalui `HomePage()`.
 2. **Solutions (`/solutions`)** — interactive capability system dengan empat pillar: Digital Strategy & Product Architecture; Custom Software & Enterprise Applications; AI, Automation & System Integration; Cloud & Platform Engineering.
-3. **Work (`/work`)** — portfolio/case-study index dari `src/data/caseStudies.ts`, termasuk project count, sector filtering, featured/standard layout, project content, dan case-study navigation.
-4. **Work Detail (`/work/:slug`)** — detail berdasarkan slug dengan Back to All Work, Project Header/Metadata, Hero Visual, The Challenge, The System, optional Client Feedback, dan adjacent project navigation. Slug yang tidak ditemukan kembali ke `/work`.
+3. **Work (`/work`)** — portfolio/case-study index dari approved published content yang dibaca melalui typed read-only content layer, termasuk project count, sector filtering, featured/standard layout, project content, dan case-study navigation.
+4. **Work Detail (`/work/:slug`)** — detail approved published project berdasarkan slug yang dibaca melalui typed read-only content layer, dengan Back to All Work, Project Header/Metadata, Hero Visual, The Challenge, The System, optional Client Feedback, dan adjacent project navigation. Slug yang tidak ditemukan kembali ke `/work`.
 5. **About (`/about`)** — halaman company/about pada public website.
 6. **Contact (`/contact`)** — halaman contact dan destination untuk Get Started CTA.
 
@@ -93,7 +93,7 @@ Perubahan global Header atau Footer harus diuji pada seluruh route. Actual curre
 
 ### B. CMS
 
-CMS belum dibangun. Keberadaan dependency Supabase tidak boleh dianggap sebagai CMS implementation. Database, authentication, storage, API, content persistence, dan admin interface harus diverifikasi dari repository sebelum dinyatakan tersedia.
+Supabase CMS database foundation dan public read integration sudah tersedia. Public website membaca approved published content melalui typed read-only content layer. Authentication, write access, storage, dan admin UI belum tersedia.
 
 ## C2P4 — Hermes, Guardian of The Document
 
@@ -177,6 +177,8 @@ Ray Approval
 Update /CHANGELOG.md
 ↓
 Commit + Push
+↓
+CI PASS
 ↓
 Merge-Ready Verification
 ↓
@@ -1162,6 +1164,24 @@ Synchronized the branch-local high-level project state after the public website 
 
 **Previous Version:** v1.1.4
 **Current Version:** v1.1.5
+
+### v1.1.6 — 30 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- C2P2
+- C2P3
+- C3P1
+- C7P1
+
+**Summary:**
+Synchronized post-merge documentation by correcting stale static-data and CMS references to reflect the Supabase CMS database foundation and typed read-only public content integration, while keeping authentication, write access, storage, and admin UI pending. Aligned the mandatory development workflow with the automated CI PASS gate.
+
+**Previous Version:** v1.1.5
+**Current Version:** v1.1.6
 
 ---
 
