@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Hero } from './components/Hero';
 import { SelectedWork } from './components/SelectedWork';
@@ -12,6 +12,7 @@ import { ContactPage } from './pages/ContactPage';
 import { WorkPage } from './pages/WorkPage';
 import { WorkDetailPage } from './pages/WorkDetailPage';
 import logo from './assets/Logo.png';
+import { useContent, useSiteCopy } from './content/ContentProvider';
 
 function HomePage() {
   return (
@@ -31,6 +32,16 @@ function HomePage() {
 export function App() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { pages } = useContent();
+  const footerTagline = useSiteCopy('shared.footer.tagline', 'Digital Transformation & Technology Partner');
+  const footerPractice = useSiteCopy('shared.footer.practice', 'Strategy. Product. Engineering. AI. Infrastructure.');
+  const footerLocation = useSiteCopy('shared.footer.location', 'Yogyakarta, Indonesia');
+
+  useEffect(() => {
+    const routeSlug = location.pathname === '/' ? 'home' : location.pathname.split('/')[1];
+    const metadata = pages.find((page) => page.slug === routeSlug);
+    if (metadata) document.title = `${metadata.title} — Soul Media Global`;
+  }, [location.pathname, pages]);
 
   const getLinkClass = (path: string) => {
     return location.pathname === path
@@ -130,10 +141,10 @@ export function App() {
                 Soul Media Global
               </Link>
               <p className="mt-5 font-sans text-base text-gray-300">
-                Digital Transformation &amp; Technology Partner
+                {footerTagline}
               </p>
               <p className="mt-3 max-w-xl font-mono text-[10px] uppercase leading-6 tracking-[0.14em] text-gray-500">
-                Strategy. Product. Engineering. AI. Infrastructure.
+                {footerPractice}
               </p>
             </div>
 
@@ -149,7 +160,7 @@ export function App() {
 
             <div className="md:col-span-2">
               <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8]">Location</p>
-              <p className="font-sans text-sm leading-6 text-gray-400">Yogyakarta,<br />Indonesia</p>
+              <p className="font-sans text-sm leading-6 text-gray-400">{footerLocation}</p>
             </div>
 
             <div className="md:col-span-2">
@@ -160,7 +171,7 @@ export function App() {
 
           <div className="flex flex-col gap-4 pt-8 font-mono text-[9px] uppercase tracking-[0.14em] text-gray-600 sm:flex-row sm:items-center sm:justify-between">
             <span>© 2026 Soul Media Global. All rights reserved.</span>
-            <span>Yogyakarta, Indonesia</span>
+            <span>{footerLocation}</span>
           </div>
         </div>
       </footer>

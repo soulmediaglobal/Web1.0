@@ -1,54 +1,29 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import strategyVisual from '../assets/services/strategy.png';
-import productVisual from '../assets/services/product.png';
-import aiIntegrationVisual from '../assets/services/ai-integration.png';
-import cloudPlatformVisual from '../assets/services/cloud-platform.png';
 import { useScrollProgress } from '../hooks/useScrollProgress';
+import { useContent, useSiteCopy } from '../content/ContentProvider';
+import { resolveMedia } from '../content/media';
+import { ContentState } from './ContentState';
 
-const capabilities = [
-  {
-    title: 'Digital Strategy & Product Architecture',
-    shortTitle: 'Strategy',
-    description: 'Define the right product direction, system structure, and roadmap before development begins.',
-    signal: 'Direction / Structure / Roadmap',
-    node: '01',
-    image: strategyVisual,
-    imageAlt: 'Abstract system architecture and strategic network visualization',
-  },
-  {
-    title: 'Custom Software & Enterprise Applications',
-    shortTitle: 'Product',
-    description: 'Build web applications, internal systems, platforms, dashboards, and business-critical tools.',
-    signal: 'Applications / Platforms / Tools',
-    node: '02',
-    image: productVisual,
-    imageAlt: 'Abstract modular software and application platform visualization',
-  },
-  {
-    title: 'AI, Automation & System Integration',
-    shortTitle: 'Intelligence',
-    description: 'Connect systems, automate workflows, and apply AI where it creates real operational value.',
-    signal: 'AI / Workflows / Integration',
-    node: '03',
-    image: aiIntegrationVisual,
-    imageAlt: 'Abstract intelligent data flow and system integration visualization',
-  },
-  {
-    title: 'Cloud & Platform Engineering',
-    shortTitle: 'Infrastructure',
-    description: 'Design reliable infrastructure, deployment environments, and scalable technical foundations.',
-    signal: 'Cloud / Deployment / Scale',
-    node: '04',
-    image: cloudPlatformVisual,
-    imageAlt: 'Abstract distributed cloud infrastructure and platform visualization',
-  },
-];
+const servicePresentation = {
+  strategy: { signal: 'Direction / Structure / Roadmap', image: 'services/strategy.png', imageAlt: 'Abstract system architecture and strategic network visualization' },
+  product: { signal: 'Applications / Platforms / Tools', image: 'services/product.png', imageAlt: 'Abstract modular software and application platform visualization' },
+  intelligence: { signal: 'AI / Workflows / Integration', image: 'services/ai-integration.png', imageAlt: 'Abstract intelligent data flow and system integration visualization' },
+  infrastructure: { signal: 'Cloud / Deployment / Scale', image: 'services/cloud-platform.png', imageAlt: 'Abstract distributed cloud infrastructure and platform visualization' },
+} as const;
 
 export function Services() {
   const sectionRef = useScrollProgress<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState(0);
+  const { solutions, status, error } = useContent();
+  const capabilities = solutions.map((solution) => ({ ...solution, node: solution.num, description: solution.desc, ...servicePresentation[solution.key as keyof typeof servicePresentation], image: resolveMedia(servicePresentation[solution.key as keyof typeof servicePresentation]?.image ?? '') }));
   const active = capabilities[activeIndex];
+  const eyebrow = useSiteCopy('home.services.eyebrow', 'What We Do');
+  const title = useSiteCopy('home.services.title', 'From Strategy to\nScalable Systems.');
+  const description = useSiteCopy('home.services.description', 'We help businesses define, build, and scale digital systems across product, engineering, automation, and infrastructure.');
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!active) return <ContentState kind="empty" />;
 
   return (
     <section ref={sectionRef} id="services" className="parallax-section services-parallax relative z-10 w-full overflow-hidden border-y border-white/5 bg-[#0e0e0e] py-24 md:py-36" aria-labelledby="services-title">
@@ -60,14 +35,14 @@ export function Services() {
           <div className="lg:col-span-7">
             <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-[#ffb4a8]">
               <span className="mr-3 inline-block h-px w-8 bg-[#D0190F] align-middle" />
-              What We Do
+              {eyebrow}
             </p>
             <h2 id="services-title" className="font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] tracking-wide text-white md:text-7xl">
-              From Strategy to<br />Scalable Systems.
+              {title.split('\n').map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}
             </h2>
           </div>
           <p className="max-w-xl font-sans text-base leading-7 text-gray-400 md:text-lg lg:col-span-5 lg:pl-10">
-            We help businesses define, build, and scale digital systems across product, engineering, automation, and infrastructure.
+            {description}
           </p>
         </div>
 

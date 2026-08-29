@@ -1,15 +1,21 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { getAdjacentCaseStudies, getCaseStudyBySlug } from '../data/caseStudies';
+import { Link, useParams } from 'react-router-dom';
+import { ContentState } from '../components/ContentState';
+import { useContent } from '../content/ContentProvider';
 
 export function WorkDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const caseStudy = getCaseStudyBySlug(slug);
+  const { caseStudies, status, error } = useContent();
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  const caseStudy = caseStudies.find((item) => item.slug === slug);
 
   if (!caseStudy) {
-    return <Navigate to="/work" replace />;
+    return <ContentState kind="not-found" />;
   }
 
-  const { prev, next } = getAdjacentCaseStudies(caseStudy.slug);
+  const index = caseStudies.findIndex((item) => item.slug === caseStudy.slug);
+  const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length];
+  const next = caseStudies[(index + 1) % caseStudies.length];
 
   return (
     <section className="relative overflow-hidden bg-[#0a0a0a] py-20 md:py-28" aria-labelledby="work-detail-title">

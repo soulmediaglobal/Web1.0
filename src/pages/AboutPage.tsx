@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import tomyImg from '../assets/tomy.png';
-import rayhanImg from '../assets/ray.png';
+import { useContent } from '../content/ContentProvider';
+import { ContentState } from '../components/ContentState';
 
 const principles = [
   { number: '01', title: 'Clarity Over Complexity', description: 'We turn complicated requirements, workflows, and constraints into a system people can understand and operate.' },
@@ -17,11 +17,6 @@ const process = [
   { number: '05', title: 'Evolve', description: 'Support iteration, adoption, and scale as the organization moves forward.' },
 ];
 
-const founders = [
-  { number: '01', name: 'Rayhan', role: 'Founder — Product & Technology', description: 'Leads product direction and technology execution, translating complex business needs into clear, scalable digital systems.', image: rayhanImg },
-  { number: '02', name: 'Tomy Galih Prasetyo', role: 'Founder — Business & Marketing', description: 'Leads business execution and market strategy, keeping every engagement connected to real operational and growth priorities.', image: tomyImg },
-];
-
 const facts = [
   { label: 'Company', value: 'PT Soul Media Global' },
   { label: 'Based In', value: 'Yogyakarta, Indonesia' },
@@ -30,6 +25,10 @@ const facts = [
 ];
 
 export function AboutPage() {
+  const { leadership: founders, status, error } = useContent();
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!founders.length) return <ContentState kind="empty" />;
   return (
     <div className="overflow-hidden bg-[#0a0a0a] text-white">
       <section className="relative isolate overflow-hidden border-b border-white/10 px-6 py-20 md:px-16 md:py-28">
@@ -140,7 +139,7 @@ export function AboutPage() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {founders.map((founder) => (
               <article key={founder.name} className="group grid grid-cols-1 overflow-hidden border border-white/10 bg-[#111] md:grid-cols-[0.8fr_1.2fr] lg:grid-cols-1 xl:grid-cols-[0.8fr_1.2fr]">
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#0b0b0b]"><img src={founder.image} alt={founder.name} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain grayscale opacity-75 transition-[filter,opacity] duration-700 group-hover:grayscale-0 group-hover:opacity-90" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" /><span className="absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[#ffb4a8]">Founder {founder.number}</span></div>
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#0b0b0b]"><img src={founder.image} alt={founder.imageAlt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain grayscale opacity-75 transition-[filter,opacity] duration-700 group-hover:grayscale-0 group-hover:opacity-90" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" /><span className="absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[#ffb4a8]">Founder {founder.number}</span></div>
                 <div className="flex min-h-[300px] flex-col justify-end border-t border-white/10 p-7 md:min-h-0 md:border-l md:border-t-0 md:p-8 lg:min-h-[280px] lg:border-l-0 lg:border-t xl:min-h-0 xl:border-l xl:border-t-0"><p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#ffb4a8]">{founder.role}</p><h3 className="mt-4 font-['Bebas_Neue'] text-5xl uppercase leading-[0.9] tracking-wide">{founder.name}</h3><p className="mt-6 border-l border-[#D0190F] pl-5 font-sans text-sm leading-6 text-gray-500 md:text-base md:leading-7">{founder.description}</p></div>
               </article>
             ))}
