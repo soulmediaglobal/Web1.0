@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.6
+**Document Version:** v1.1.7
 **Web Version:** v1.2.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -162,9 +162,13 @@ Mandatory development workflow:
 ```text
 PRD
 ↓
-GitHub Issue
+AI prepares Issue command
 ↓
-Branch
+Ray creates Issue via terminal
+↓
+AI prepares Branch command
+↓
+Ray creates Branch via terminal
 ↓
 Pre-Work Verification
 ↓
@@ -180,9 +184,15 @@ Commit + Push
 ↓
 CI PASS
 ↓
+AI prepares PR command
+↓
+Ray creates PR via terminal
+↓
 Merge-Ready Verification
 ↓
-Ray Merge
+AI prepares Merge command
+↓
+Ray merges via terminal
 ```
 
 Yang wajib dicatat mencakup feature/page/component/interaction baru; UI/UX, layout, responsive, typography, navigation, animation, content structure, route, data, backend, database, dependency, dan infrastructure changes; bug, performance, accessibility, dan security fixes; significant refactor; serta removal. Internal comment atau typo tanpa dampak production tidak wajib.
@@ -235,11 +245,15 @@ Urutan kerja:
 ```text
 PRD
 ↓
-GitHub Issue
+AI prepares Issue command
 ↓
-Branch
+Ray creates Issue via terminal
 ↓
-Verification
+AI prepares Branch command
+↓
+Ray creates Branch via terminal
+↓
+Pre-Work Verification
 ↓
 Implementation
 ```
@@ -261,12 +275,23 @@ PRD tidak boleh terlalu panjang atau dipenuhi diskusi yang belum final.
 
 Setelah PRD disepakati, bagian PRD yang relevan untuk execution dipadatkan menjadi GitHub Issue.
 
-Kamu sebagai AI wajib memberikan:
+Kamu sebagai AI wajib menyiapkan:
 
 1. Issue Title
 2. Issue Description
+3. Exact terminal command untuk membuat Issue melalui GitHub CLI
 
-Keduanya harus diberikan dalam **dua bash-formatted block terpisah** supaya Ray dapat langsung copy-paste.
+GitHub Issue creation adalah **Ray-owned terminal action**. Kamu sebagai AI tidak membuat Issue melalui GitHub tool atau external execution secara default. Kamu sebagai AI hanya menyiapkan content dan command yang siap di-copy-paste oleh Ray, serta hanya boleh membuat Issue secara langsung jika Ray secara eksplisit meminta AI melakukan GitHub operation tersebut.
+
+Contoh command:
+
+```bash
+gh issue create \
+  --title "<issue-title>" \
+  --body-file "<prepared-body-file-or-equivalent>"
+```
+
+Command harus disesuaikan dengan actual task dan repository. Setelah Ray menjalankannya, Ray mengirimkan output atau Issue URL/number kepada Kamu sebagai AI untuk diverifikasi sebelum melanjutkan ke branch creation.
 
 Issue Description hanya perlu memuat:
 
@@ -286,21 +311,11 @@ Issue Description tidak perlu memuat:
 - Rationale yang berulang
 - Detail teknis yang belum diputuskan
 
-### Branch
+### Branch and Pre-Work Verification
 
-Setelah GitHub Issue dibuat, Ray membuat dedicated branch dari terminal.
+Setelah GitHub Issue dibuat dan diverifikasi, Kamu sebagai AI menyiapkan exact git command berdasarkan Issue dan actual repository state. Ray membuat dedicated branch melalui terminal dan mengirimkan kembali output Git / branch state.
 
-Ray kemudian mengirimkan kembali output Git / branch state kepada Kamu sebagai AI.
-
-### Verification
-
-Sebelum implementation dimulai, Kamu sebagai AI wajib memastikan:
-
-- Branch sudah dibuat
-- Branch yang aktif adalah branch yang benar
-- Branch sesuai dengan task yang sedang dikerjakan
-
-Implementation tidak boleh dimulai sebelum branch terverifikasi.
+Branch creation dan Pre-Work Verification adalah satu **continuous gate**, bukan dua ceremony terpisah. Sebelum implementation dimulai, Kamu sebagai AI wajib memastikan branch berhasil dibuat, branch aktif adalah branch yang benar dan sesuai task, base branch benar, working tree aman, serta tidak ada mismatch atau error yang menghalangi implementation.
 
 ## C4P2 — Concise Communication & Check/Execution Separation
 
@@ -360,6 +375,17 @@ Harus jelas:
 - Apa yang perlu Ray kirim balik
 
 Tujuannya adalah mengurangi cognitive load dan mencegah instruction yang bercampur antara inspection dan execution.
+
+### Terminal-First GitHub Operations
+
+GitHub Issue creation, branch creation, Pull Request creation, dan final merge menggunakan terminal-first ownership model:
+
+- Kamu sebagai AI menyiapkan exact content dan command yang sesuai dengan actual task dan repository state.
+- Ray menjalankan command melalui terminal.
+- Kamu sebagai AI memverifikasi output hanya ketika diperlukan untuk gate berikutnya.
+- Kamu sebagai AI tidak menjalankan GitHub operational action tersebut secara default, kecuali Ray secara eksplisit meminta.
+
+Model ini bertujuan mengurangi tool overhead, context switching, latency, dan token usage tanpa mengurangi traceability, CI, approval gate, atau final merge ownership.
 
 ## C4P3 — Conditional Chapter 6 Update
 
@@ -445,9 +471,9 @@ Merge-Ready Verification
 Ray Merge
 ```
 
-## C4P7 — Branch Creation After GitHub Issue
+## C4P7 — Ray-Owned Branch Creation
 
-Setelah GitHub Issue selesai dibuat, **Kamu sebagai AI wajib meminta Ray membuat dedicated branch sebelum implementation dimulai**.
+Setelah GitHub Issue dibuat dan diverifikasi, dedicated task branch dibuat oleh Ray melalui terminal. Branch creation adalah **Ray-owned terminal action**.
 
 Branch name harus diturunkan dari:
 
@@ -467,7 +493,7 @@ Contoh:
 2-cms-database-foundation-supabase-content-schema
 ```
 
-Kamu sebagai AI wajib menghasilkan command terminal yang siap di-copy-paste berdasarkan issue yang baru dibuat. Command yang diberikan harus disesuaikan dengan kondisi aktual repository. Untuk branch baru, default-nya adalah membuat sekaligus berpindah ke branch tersebut.
+Kamu sebagai AI wajib menghasilkan exact terminal command yang siap di-copy-paste berdasarkan Issue number, Issue title, actual repository state, dan correct base branch. Untuk branch baru, default-nya adalah membuat sekaligus berpindah ke branch tersebut.
 
 Command harus diberikan dalam bash block terpisah:
 
@@ -478,7 +504,7 @@ git checkout -b 2-cms-database-foundation-supabase-content-schema
 
 Setelah Ray menjalankan command tersebut, Ray harus mengirim kembali output terminal.
 
-Kamu sebagai AI kemudian wajib memverifikasi:
+Branch creation dan Pre-Work Verification diperlakukan sebagai satu **continuous gate**, bukan dua ceremony terpisah. Kamu sebagai AI kemudian wajib memverifikasi:
 
 - Branch berhasil dibuat
 - Branch aktif sesuai issue
@@ -550,9 +576,11 @@ Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling be
 
 Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
 
-## C4P11 — Merge-Ready & Merge Ownership
+## C4P11 — Pull Request, Merge-Ready & Merge Ownership
 
-Kamu sebagai AI tidak boleh melakukan merge task branch ke `main`. Final merge ke `main` dilakukan manual oleh Ray.
+Pull Request creation dan final merge adalah **Ray-owned terminal actions**. Kamu sebagai AI wajib menyiapkan exact `gh pr create` command dan exact merge command yang sesuai dengan actual repository dan Pull Request state. Kamu sebagai AI tidak membuat Pull Request atau melakukan merge secara default, kecuali Ray secara eksplisit meminta AI melakukan GitHub operation tersebut.
+
+Setelah Ray menjalankan command pembuatan Pull Request, Ray mengirimkan output atau PR URL/number kepada Kamu sebagai AI untuk verifikasi bila diperlukan. Final merge ke `main` tetap dilakukan oleh Ray melalui terminal setelah Merge-Ready Verification selesai.
 
 Sebelum menyatakan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
 
@@ -562,11 +590,12 @@ Sebelum menyatakan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
 - `/CHANGELOG.md` sudah diperbarui
 - perubahan sudah committed dan pushed
 - CI telah PASS
+- Pull Request tersedia
 - working tree clean
-- local dan remote synchronized
+- local dan remote synced
 - tidak ada known conflict atau blocker
 
-Jika semua kondisi terpenuhi, Kamu sebagai AI harus menyatakan branch **Merge Ready** dan menyerahkan final merge kepada Ray.
+Jika semua kondisi terpenuhi, Kamu sebagai AI harus menyatakan branch **Merge Ready**, menyiapkan exact merge command, dan menyerahkan execution final merge kepada Ray.
 
 ---
 
@@ -1182,6 +1211,24 @@ Synchronized post-merge documentation by correcting stale static-data and CMS re
 
 **Previous Version:** v1.1.5
 **Current Version:** v1.1.6
+
+### v1.1.7 — 30 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- C4P1
+- C4P2
+- C4P7
+- C4P11
+- Mandatory Development Workflow
+
+**Summary:**
+Changed GitHub operational ownership to a terminal-first model to reduce tool overhead, context switching, latency, and token usage while preserving traceability, CI, approval gates, and Ray final merge ownership.
+
+**Previous Version:** v1.1.6
+**Current Version:** v1.1.7
 
 ---
 
