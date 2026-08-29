@@ -1,7 +1,7 @@
 # Development-Rules
 
-**Document Version:** v1.1.8
-**Web Version:** v1.2.0
+**Document Version:** v1.1.9
+**Web Version:** v1.3.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
 **Description:** Soul Media Global Website adalah official company website sekaligus portfolio platform untuk menampilkan identitas, capability, selected works, case studies, dan positioning Soul Media Global sebagai IT consulting, digital transformation, creative, digital product, and technology company. Website ini dirancang sebagai pengalaman editorial yang premium, modern, art-directed, dan portfolio-led — bukan sekadar company profile atau agency template generik.
@@ -650,11 +650,14 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 
 ## C6P1 — Existing State
 
-- Current Web Version adalah **v1.2.0**.
+- Current Web Version adalah **v1.3.0**.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
 - Supabase CMS Database Foundation tersedia dan sudah diverifikasi, termasuk sembilan CMS tables, Row Level Security, public read policies, required indexes, dan `updated_at` triggers.
 - Public website membaca approved published case studies dan relations, featured work, solutions/capabilities, leadership, pages metadata, dan essential shared/page copy dari Supabase melalui typed read-only content layer.
 - Supabase adalah canonical runtime content source; existing bundled media tetap digunakan melalui presentation mapping untuk Phase 1.
+- CMS authentication foundation tersedia menggunakan Supabase Auth dengan email/password sign-in, session persistence, protected CMS routing, dan logout.
+- CMS authorization dipisahkan dari authentication melalui active-admin allowlist pada `public.cms_users`.
+- CMS memiliki TailAdmin-based authenticated UI foundation dengan login page, responsive header/sidebar shell, dan isolated CMS styling tanpa mengubah public website.
 
 ## C6P2 — Active Work
 
@@ -662,9 +665,9 @@ None.
 
 ## C6P3 — Next / Pending
 
-- Authentication and write-access foundation.
+- CMS write-access and content-management capability.
 - Media and storage implementation.
-- CMS Admin UI.
+- CMS content CRUD, publish workflow, and related administrative features.
 
 ---
 
@@ -1261,6 +1264,25 @@ Extended the terminal-first operating model so all Git and GitHub write operatio
 
 **Previous Version:** v1.1.7
 **Current Version:** v1.1.8
+
+### v1.1.9 — 30 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized the branch-local project state after completion and Ray approval of the CMS authentication and TailAdmin administrative UI foundation. Updated the Web Version from v1.2.0 to v1.3.0, recorded Supabase Auth, explicit `cms_users` authorization, protected CMS routing, session persistence, logout, and the isolated TailAdmin CMS shell as existing capabilities, and refined the remaining pending CMS write-access, media/storage, and content-management work.
+
+**Previous Version:** v1.1.8
+**Current Version:** v1.1.9
 
 ---
 

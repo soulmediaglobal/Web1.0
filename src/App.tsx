@@ -11,7 +11,12 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { WorkPage } from './pages/WorkPage';
 import { WorkDetailPage } from './pages/WorkDetailPage';
+import { AuthProvider } from './auth/AuthProvider';
+import { RequireCmsUser } from './auth/RequireCmsUser';
+import { CmsLoginPage } from './pages/cms/CmsLoginPage';
+import { CmsShell } from './pages/cms/CmsShell';
 import logo from './assets/Logo.png';
+import { ContentProvider } from './content/ContentProvider';
 import { useContent, useSiteCopy } from './content/useContent';
 
 function HomePage() {
@@ -30,6 +35,29 @@ function HomePage() {
 }
 
 export function App() {
+  const location = useLocation();
+
+  if (location.pathname.startsWith('/cms')) {
+    return (
+      <AuthProvider>
+        <Routes>
+          <Route path="/cms/login" element={<CmsLoginPage />} />
+          <Route element={<RequireCmsUser />}>
+            <Route path="/cms" element={<CmsShell />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    );
+  }
+
+  return (
+    <ContentProvider>
+      <PublicSite />
+    </ContentProvider>
+  );
+}
+
+function PublicSite() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { pages } = useContent();
