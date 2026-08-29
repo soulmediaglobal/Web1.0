@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.18  
+**Document Version:** v1.0.20
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -48,7 +48,13 @@ Desktop, tablet, dan mobile harus terasa sebagai satu brand system yang sama. Pe
 
 ## C2P1 — Development-Rules Governance
 
-Development-Rules adalah living source of truth untuk development direction, design dan architecture decisions, page structure, technology, component behavior, coding convention, CMS development, AI collaboration, maintenance, dan future modification. Keputusan final baru harus ditambahkan. Jika rule baru secara eksplisit menggantikan rule lama, rule terbaru menjadi source of truth.
+`Web1.0/Development-Rules.md` adalah canonical technical source of truth project-wide untuk development direction, design dan architecture decisions, page structure, technology, component behavior, coding convention, CMS development, AI collaboration, maintenance, dan future modification setelah perubahan terkait merged ke `main`.
+
+Versi `Web1.0/Development-Rules.md` pada task branch boleh lebih baru daripada versi di `main`, tetapi statusnya adalah **branch-local newer version** dan belum menjadi canonical source of truth project-wide sampai merged ke `main`.
+
+Hermes tetap berperan sebagai Guardian of The Document dan reviewer yang menjaga integrity, authenticity, structure, consistency, dan correctness dokumen. Untuk development flow, AI dan developer wajib menggunakan file tracked di repository sebagai technical reference utama sesuai scope branch aktif.
+
+Keputusan final baru harus ditambahkan. Jika rule baru secara eksplisit menggantikan rule lama, rule terbaru yang sudah canonical menjadi source of truth.
 
 ## C2P2 — Current Technology Stack
 
@@ -521,6 +527,33 @@ Jika Ray setuju:
 
 Tujuannya adalah supaya working behavior yang efektif tidak hilang setelah task selesai dan dapat menjadi institutional memory untuk AI berikutnya.
 
+## C4P9 — Synchronize The Document to GitHub
+
+Setiap perubahan The Document yang sudah disetujui wajib disinkronkan ke file tracked:
+
+`Web1.0/Development-Rules.md`
+
+Perubahan dilakukan melalui Git dan mengikuti branch serta workflow aktif.
+
+Jika update dilakukan pada task branch, versi tersebut dianggap sebagai **branch-local newer version** sampai merged ke `main`. Project-wide canonical version hanya berlaku setelah perubahan masuk ke `main`.
+
+Sebelum melakukan synchronization, Kamu sebagai AI wajib:
+
+- Memeriksa current branch.
+- Memeriksa working tree.
+- Memastikan tidak menimpa existing work atau perubahan yang belum di-commit.
+- Memastikan Document Version sesuai dengan perubahan terbaru.
+
+Untuk documentation-only update yang tidak membutuhkan website deployment, gunakan approved deploy-skip mechanism pada commit message, seperti `[skip netlify]` atau `[skip ci]`, sesuai konfigurasi repository.
+
+Setelah push, Kamu sebagai AI wajib melaporkan:
+
+- Branch.
+- Commit hash.
+- Commit message.
+- File yang berubah.
+- Push status.
+
 ---
 
 # Chapter 5 — Hand Over Rule
@@ -566,17 +599,27 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Current Web Version adalah **v1.0.0**.
 - Current production website ditetapkan sebagai official development baseline.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
-- Development-Rules menjadi living source of truth untuk development dan collaboration.
+- Supabase project sudah dibuat dan repository sudah linked ke project tersebut.
+- CMS database foundation sudah diimplementasikan pada remote database dan diverifikasi.
+- Sembilan CMS tables sudah diverifikasi.
+- Row Level Security (RLS) aktif.
+- Public read policies aktif pada table yang sesuai.
+- Required indexes aktif.
+- `updated_at` triggers aktif.
+- `Web1.0/Development-Rules.md` menjadi canonical technical source of truth project-wide setelah merged ke `main`; versi pada task branch berstatus branch-local newer version.
 - Chapter 3 menjadi official development history setelah baseline.
 
 ## C6P2 — Pending Tasks
 
-- CMS belum dibangun.
-- Database, authentication, storage, API, content persistence, dan admin interface belum dinyatakan tersedia dan harus diverifikasi sebelum diasumsikan.
+- Authentication implementation.
+- Write policies.
+- Media and storage implementation.
+- CMS Admin UI.
+- Frontend migration to CMS-backed content.
 
 ## C6P3 — Active Work
 
-None.
+- **CMS Database Foundation** — database foundation sudah diimplementasikan dan remote database sudah diverifikasi. Pada current repository state, tidak ada uncommitted database implementation file; task belum memiliki repository commit selain documentation branch setup dan masih memerlukan penyelesaian Git flow atau task closure sesuai approval gate.
 
 ---
 
@@ -611,7 +654,7 @@ The Document menggunakan semantic versioning:
 
 - Initial document baseline
 
-**Summary:**  
+**Summary:**
 Established the initial Development-Rules document baseline.
 
 **Previous Version:** None  
@@ -886,3 +929,24 @@ Added mandatory capture of newly observed collaboration behavior after local ver
 
 **Previous Version:** v1.0.17  
 **Current Version:** v1.0.18
+
+### v1.0.20 — 29 August 2026
+
+**Type:** Changed / Added
+
+**Affected:**
+
+- Document Header
+- C2P1
+- C4P9
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Clarified that the repository document becomes the project-wide canonical technical source of truth only after merge to `main`, while task-branch copies remain branch-local newer versions. Preserved Hermes as Guardian and reviewer of document integrity, added the Git synchronization and deploy-skip reporting workflow, and updated the verified Supabase CMS database foundation, pending tasks, and active Git-flow state. The tracked branch moved directly from v1.0.18 to v1.0.20 because v1.0.19 was not present in repository history at the time of this update.
+
+**Previous Version:** v1.0.18
+**Current Version:** v1.0.20
