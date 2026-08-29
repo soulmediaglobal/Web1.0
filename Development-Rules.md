@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.20
+**Document Version:** v1.0.21
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -554,6 +554,19 @@ Setelah push, Kamu sebagai AI wajib melaporkan:
 - File yang berubah.
 - Push status.
 
+## C4P10 — Sequential Execution / One-Step-at-a-Time Mode
+
+Untuk task yang bersifat procedural dan setiap langkah berikutnya bergantung pada hasil langkah sebelumnya, seperti Git setup, Supabase setup, migration, deployment, authentication, atau environment configuration, Kamu sebagai AI wajib:
+
+1. Memberikan satu langkah execution pada satu waktu.
+2. Menunggu output atau result yang dikembalikan Ray.
+3. Memverifikasi output atau result tersebut.
+4. Baru memberikan langkah berikutnya setelah hasil langkah sebelumnya terverifikasi.
+
+Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling bergantung sekaligus.
+
+Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
+
 ---
 
 # Chapter 5 — Hand Over Rule
@@ -950,3 +963,19 @@ Clarified that the repository document becomes the project-wide canonical techni
 
 **Previous Version:** v1.0.18
 **Current Version:** v1.0.20
+
+### v1.0.21 — 29 August 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Chapter 4
+- C4P10
+- C7P1
+
+**Summary:**
+Added C4P10 — Sequential Execution / One-Step-at-a-Time Mode, requiring dependent procedural execution steps to be provided one at a time, with Ray's returned result verified before the next step is given, while allowing commands to be grouped only when they form one safe atomic operation that requires no intermediate verification.
+
+**Previous Version:** v1.0.20
+**Current Version:** v1.0.21
