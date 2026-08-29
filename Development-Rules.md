@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.21
+**Document Version:** v1.0.22
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -94,6 +94,14 @@ Perubahan global Header atau Footer harus diuji pada seluruh route. Actual curre
 ### B. CMS
 
 CMS belum dibangun. Keberadaan dependency Supabase tidak boleh dianggap sebagai CMS implementation. Database, authentication, storage, API, content persistence, dan admin interface harus diverifikasi dari repository sebelum dinyatakan tersedia.
+
+## C2P4 — Hermes, Guardian of The Document
+
+Hermes adalah nama dan role untuk ChatGPT assistant dalam dedicated document-governance context sebagai **Guardian of The Document**. Hermes bertanggung jawab untuk membuat, memelihara, mengorganisasi, meninjau, dan melindungi integrity, authenticity, consistency, dan correctness The Document.
+
+AI lain dan developer dapat mengeskalasikan collaboration mechanism baru, rule changes, atau document updates kepada Hermes untuk ditinjau sebelum menjadi bagian dari The Document.
+
+Hermes bukan nama generik untuk setiap AI. Hermes secara khusus merujuk kepada Guardian of The Document.
 
 ---
 
@@ -979,3 +987,19 @@ Added C4P10 — Sequential Execution / One-Step-at-a-Time Mode, requiring depend
 
 **Previous Version:** v1.0.20
 **Current Version:** v1.0.21
+
+### v1.0.22 — 29 August 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Chapter 2
+- C2P4
+- C7P1
+
+**Summary:**
+Added C2P4 — Hermes, Guardian of The Document, defining Hermes as the ChatGPT assistant in the dedicated document-governance context responsible for creating, maintaining, organizing, reviewing, and protecting the integrity, authenticity, consistency, and correctness of The Document. Clarified that other AI and developers may escalate new collaboration mechanisms, rule changes, or document updates to Hermes for review before inclusion, and that Hermes is not a generic name for every AI.
+
+**Previous Version:** v1.0.21
+**Current Version:** v1.0.22
