@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.24
+**Document Version:** v1.1.1
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -577,9 +577,17 @@ Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jik
 
 ## C4P11 — Merge Approval & Ownership
 
-Kamu sebagai AI boleh menyiapkan merge, pull request, atau merge-ready state, tetapi tidak boleh merge task branch ke `main` tanpa approval eksplisit dari Ray.
+Kamu sebagai AI boleh menyiapkan pull request atau merge-ready state, tetapi tidak boleh merge task branch ke `main`. Merge final ke `main` dilakukan manual oleh Ray.
 
-Tanpa approval tersebut, Kamu sebagai AI wajib berhenti pada branch atau pull request dan melaporkan statusnya. Setelah Ray memberikan approval eksplisit, Kamu sebagai AI boleh melakukan merge dan wajib melaporkan hasil merge.
+Sebelum melaporkan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
+
+- Working tree bersih.
+- Local branch dan remote branch sinkron.
+- Testing dan verification yang relevan sudah lolos.
+- Documentation dan changelog yang diwajibkan sudah selesai.
+- Tidak ada known conflict atau blocker terhadap merge.
+
+Setelah seluruh kondisi tersebut terpenuhi, Kamu sebagai AI wajib berhenti pada task branch atau pull request, melaporkan status **merge-ready**, dan menyerahkan merge final kepada Ray.
 
 ---
 
@@ -634,7 +642,7 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Required indexes aktif.
 - `updated_at` triggers aktif.
 - `.env` dan `.env.*` di-ignore, sementara `.env.example` tetap dapat dilacak.
-- Commit `7091cc807de57037353ebf815fb70b1e7367785c` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
+- Implementation commit `dba54ae` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
 - Working tree bersih dan local branch sudah sinkron dengan remote branch.
 - `Web1.0/Development-Rules.md` menjadi canonical technical source of truth project-wide setelah merged ke `main`; versi pada task branch berstatus branch-local newer version.
 - Chapter 3 menjadi official development history setelah baseline.
@@ -646,11 +654,11 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Media and storage implementation.
 - CMS Admin UI.
 - Frontend integration and migration to CMS-backed content.
-- Merge current task branch ke `main`, menunggu approval eksplisit dari Ray.
+- Merge current task branch ke `main`, dilakukan manual oleh Ray setelah branch dinyatakan merge-ready.
 
 ## C6P3 — Active Work
 
-- **CMS Database Foundation** — implementation sudah selesai pada task branch. Hanya task closure dan merge governance yang masih tersisa; merge ke `main` tetap menunggu approval eksplisit dari Ray.
+- None.
 
 ---
 
@@ -1048,3 +1056,163 @@ Synchronized Chapter 6 with the completed CMS Database Foundation state on the c
 
 **Previous Version:** v1.0.23
 **Current Version:** v1.0.24
+
+### v1.0.25 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 4
+- C4P11
+- Chapter 6
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Revised C4P11 so AI may prepare a pull request or merge-ready state but must never merge a task branch to `main`. Required AI to verify a clean working tree, synchronized local and remote branches, successful testing and verification, completed documentation and changelog, and no known conflict or blocker before reporting merge-ready. Assigned the final manual merge exclusively to Ray and synchronized the pending CMS Database Foundation merge state in Chapter 6 with this ownership rule.
+
+**Previous Version:** v1.0.24
+**Current Version:** v1.0.25
+
+### v1.1.0 — 29 August 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Document Header
+- Chapter 8
+- C8P1–C8P10
+- C7P1
+
+**Summary:**
+Added Chapter 8 — Documentation Structure to define documentation purpose, canonical repository locations, PRD storage and its relationship to GitHub Issues, changelog and Development-Rules storage, handover and architecture documentation, file naming conventions, and documentation synchronization. Increased the Document Version from v1.0.25 to v1.1.0 because adding a new Chapter requires a MINOR version bump.
+
+**Previous Version:** v1.0.25
+**Current Version:** v1.1.0
+
+### v1.1.1 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized Chapter 6 with the completed CMS Database Foundation implementation commit `dba54ae`, retained the manual merge to `main` as a pending governance and release step owned by Ray, and cleared Active Work to `None`. Kept the Web Version at v1.0.0.
+
+**Previous Version:** v1.1.0
+**Current Version:** v1.1.1
+
+---
+
+# Chapter 8 — Documentation Structure
+
+## C8P1 — Documentation Purpose
+
+Setiap artefak development penting harus memiliki lokasi dokumentasi yang jelas di repository dan tidak boleh bergantung pada chat history sebagai satu-satunya sumber informasi.
+
+## C8P2 — Canonical Documentation Locations
+
+Lokasi canonical untuk dokumentasi utama di repository adalah:
+
+```text
+/Development-Rules.md
+/CHANGELOG.md
+/docs/prd/
+/docs/handover/
+/docs/architecture/
+```
+
+## C8P3 — PRD Storage
+
+Semua PRD lengkap disimpan di:
+
+```text
+/docs/prd/
+```
+
+Format nama file:
+
+```text
+<issue-number>-<short-feature-name>.md
+```
+
+Contoh:
+
+```text
+2-cms-database-foundation.md
+3-cms-authentication.md
+4-media-library.md
+```
+
+## C8P4 — PRD Relationship to GitHub Issue
+
+PRD adalah source lengkap untuk kebutuhan feature atau task. GitHub Issue hanya berisi versi ringkas dan actionable dari PRD.
+
+Issue Description boleh mencantumkan path PRD:
+
+```text
+PRD: docs/prd/2-cms-database-foundation.md
+```
+
+## C8P5 — Changelog Storage
+
+Website/development changelog disimpan di:
+
+```text
+/CHANGELOG.md
+```
+
+Isinya hanya perubahan yang sudah benar-benar terjadi pada website atau development.
+
+## C8P6 — Development-Rules Storage
+
+The Document disimpan sebagai:
+
+```text
+/Development-Rules.md
+```
+
+The Document mengikuti governance yang sudah diatur di Chapter 2.
+
+## C8P7 — Handover Documentation
+
+Handover antar-AI atau developer yang cukup besar dapat disimpan di:
+
+```text
+/docs/handover/
+```
+
+Handover penting tidak boleh hanya hidup di chat.
+
+## C8P8 — Architecture Documentation
+
+Dokumen teknis yang menjelaskan architecture, schema, flow, atau system design dapat disimpan di:
+
+```text
+/docs/architecture/
+```
+
+## C8P9 — File Naming Convention
+
+Nama file dokumentasi harus:
+
+- Singkat.
+- Deskriptif.
+- Lowercase.
+- Menggunakan kebab-case.
+- Tidak menggunakan penanda seperti `final`, `latest`, `new`, atau `fix`.
+
+## C8P10 — Documentation Sync Rule
+
+Dokumentasi harus ikut diperbarui ketika task selesai atau state project berubah signifikan. Dokumen yang stale harus diperbaiki sebelum task dinyatakan selesai.
