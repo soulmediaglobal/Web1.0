@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.24
+**Document Version:** v1.0.25
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -577,9 +577,17 @@ Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jik
 
 ## C4P11 — Merge Approval & Ownership
 
-Kamu sebagai AI boleh menyiapkan merge, pull request, atau merge-ready state, tetapi tidak boleh merge task branch ke `main` tanpa approval eksplisit dari Ray.
+Kamu sebagai AI boleh menyiapkan pull request atau merge-ready state, tetapi tidak boleh merge task branch ke `main`. Merge final ke `main` dilakukan manual oleh Ray.
 
-Tanpa approval tersebut, Kamu sebagai AI wajib berhenti pada branch atau pull request dan melaporkan statusnya. Setelah Ray memberikan approval eksplisit, Kamu sebagai AI boleh melakukan merge dan wajib melaporkan hasil merge.
+Sebelum melaporkan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
+
+- Working tree bersih.
+- Local branch dan remote branch sinkron.
+- Testing dan verification yang relevan sudah lolos.
+- Documentation dan changelog yang diwajibkan sudah selesai.
+- Tidak ada known conflict atau blocker terhadap merge.
+
+Setelah seluruh kondisi tersebut terpenuhi, Kamu sebagai AI wajib berhenti pada task branch atau pull request, melaporkan status **merge-ready**, dan menyerahkan merge final kepada Ray.
 
 ---
 
@@ -646,11 +654,11 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Media and storage implementation.
 - CMS Admin UI.
 - Frontend integration and migration to CMS-backed content.
-- Merge current task branch ke `main`, menunggu approval eksplisit dari Ray.
+- Merge current task branch ke `main`, dilakukan manual oleh Ray setelah branch dinyatakan merge-ready.
 
 ## C6P3 — Active Work
 
-- **CMS Database Foundation** — implementation sudah selesai pada task branch. Hanya task closure dan merge governance yang masih tersisa; merge ke `main` tetap menunggu approval eksplisit dari Ray.
+- **CMS Database Foundation** — implementation sudah selesai dan sudah committed serta pushed pada task branch. Hanya task closure dan merge governance yang masih tersisa; merge final ke `main` dilakukan manual oleh Ray setelah branch dinyatakan merge-ready.
 
 ---
 
@@ -1048,3 +1056,23 @@ Synchronized Chapter 6 with the completed CMS Database Foundation state on the c
 
 **Previous Version:** v1.0.23
 **Current Version:** v1.0.24
+
+### v1.0.25 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 4
+- C4P11
+- Chapter 6
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Revised C4P11 so AI may prepare a pull request or merge-ready state but must never merge a task branch to `main`. Required AI to verify a clean working tree, synchronized local and remote branches, successful testing and verification, completed documentation and changelog, and no known conflict or blocker before reporting merge-ready. Assigned the final manual merge exclusively to Ray and synchronized the pending CMS Database Foundation merge state in Chapter 6 with this ownership rule.
+
+**Previous Version:** v1.0.24
+**Current Version:** v1.0.25
