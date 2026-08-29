@@ -1,7 +1,7 @@
 # Development-Rules
 
-**Document Version:** v1.1.4
-**Web Version:** v1.1.0
+**Document Version:** v1.1.5
+**Web Version:** v1.2.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
 **Description:** Soul Media Global Website adalah official company website sekaligus portfolio platform untuk menampilkan identitas, capability, selected works, case studies, dan positioning Soul Media Global sebagai IT consulting, digital transformation, creative, digital product, and technology company. Website ini dirancang sebagai pengalaman editorial yang premium, modern, art-directed, dan portfolio-led — bukan sekadar company profile atau agency template generik.
@@ -608,10 +608,11 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 
 ## C6P1 — Existing State
 
-- Current Web Version adalah **v1.1.0**.
+- Current Web Version adalah **v1.2.0**.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
 - Supabase CMS Database Foundation tersedia dan sudah diverifikasi, termasuk sembilan CMS tables, Row Level Security, public read policies, required indexes, dan `updated_at` triggers.
-- Public website masih menggunakan static dan hardcoded content sources; frontend belum membaca content dari Supabase.
+- Public website membaca approved published case studies dan relations, featured work, solutions/capabilities, leadership, pages metadata, dan essential shared/page copy dari Supabase melalui typed read-only content layer.
+- Supabase adalah canonical runtime content source; existing bundled media tetap digunakan melalui presentation mapping untuk Phase 1.
 
 ## C6P2 — Active Work
 
@@ -622,7 +623,6 @@ None.
 - Authentication and write-access foundation.
 - Media and storage implementation.
 - CMS Admin UI.
-- Frontend integration and migration to CMS-backed content.
 
 ---
 
@@ -1144,6 +1144,24 @@ Added C2P5 — Write Access Security Architecture to require minimum roles, perm
 
 **Previous Version:** v1.1.3
 **Current Version:** v1.1.4
+
+### v1.1.5 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized the branch-local high-level project state after the public website moved to the existing Supabase CMS foundation as its canonical read-only runtime content source. Updated the Web Version to v1.2.0, recorded the typed integration and Phase 1 bundled-media boundary in Existing State, and removed the completed frontend CMS integration milestone from Next / Pending.
+
+**Previous Version:** v1.1.4
+**Current Version:** v1.1.5
 
 ---
 

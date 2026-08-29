@@ -1,17 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { caseStudies } from '../data/caseStudies';
-
-const filters = [
-  { key: 'all', label: 'All Work' },
-  { key: 'mining', label: 'Mining' },
-  { key: 'banking', label: 'Banking' },
-  { key: 'telecommunications', label: 'Telecommunications' },
-  { key: 'property', label: 'Property' },
-  { key: 'automotive', label: 'Automotive' },
-  { key: 'law-enforcement', label: 'Law Enforcement' },
-  { key: 'construction', label: 'Construction' },
-];
+import { ContentState } from '../components/ContentState';
+import { useContent, useSiteCopy } from '../content/useContent';
 
 const trustedBy = [
   'Sampoerna',
@@ -24,12 +14,19 @@ const trustedBy = [
 ];
 
 export function WorkPage() {
+  const { caseStudies, status, error } = useContent();
   const [activeFilter, setActiveFilter] = useState('all');
+  const intro = useSiteCopy('work.intro', 'A record of platforms, command centers, and infrastructure delivered for government, banking, and enterprise clients across Indonesia.');
+  const filters = useMemo(() => [{ key: 'all', label: 'All Work' }, ...Array.from(new Set(caseStudies.flatMap((item) => item.filterTags))).sort().map((key) => ({ key, label: key.split('-').map((word) => word[0].toUpperCase() + word.slice(1)).join(' ') }))], [caseStudies]);
 
   const visibleCaseStudies = useMemo(() => {
     if (activeFilter === 'all') return caseStudies;
     return caseStudies.filter((c) => c.filterTags.includes(activeFilter));
-  }, [activeFilter]);
+  }, [activeFilter, caseStudies]);
+
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!caseStudies.length) return <ContentState kind="empty" />;
 
   return (
     <section className="relative overflow-hidden bg-[#0a0a0a] py-20 md:py-28" aria-labelledby="work-title">
@@ -56,7 +53,7 @@ export function WorkPage() {
             Systems Built.<br />Problems Solved.
           </h1>
           <p className="mt-6 max-w-2xl font-sans text-base leading-7 text-gray-400 md:text-lg">
-            A record of platforms, command centers, and infrastructure delivered for government, banking, and enterprise clients across Indonesia.
+            {intro}
           </p>
         </div>
 

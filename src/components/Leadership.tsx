@@ -1,31 +1,19 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import tomyImg from '../assets/tomy.png';
-import rayhanImg from '../assets/ray.png';
 import { useScrollProgress } from '../hooks/useScrollProgress';
-
-const founders = [
-  {
-    number: '01',
-    name: 'Rayhan',
-    role: 'Founder — Product & Technology',
-    description: 'Focused on digital products, system architecture, and turning complex business needs into scalable technology.',
-    image: rayhanImg,
-    position: 'object-center lg:object-[center_12%]',
-  },
-  {
-    number: '02',
-    name: 'Tomy Galih Prasetyo',
-    role: 'Founder — Business & Marketing',
-    description: 'Focused on business execution, marketing strategy, and building systems that support real-world growth.',
-    image: tomyImg,
-    position: 'object-center lg:object-[center_12%]',
-  },
-];
+import { useContent, useSiteCopy } from '../content/useContent';
+import { ContentState } from './ContentState';
 
 export function Leadership() {
   const sectionRef = useScrollProgress<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { leadership: founders, status, error } = useContent();
+  const eyebrow = useSiteCopy('home.leadership.eyebrow', 'Founders');
+  const title = useSiteCopy('home.leadership.title', 'Built by Operators,\nProduct Thinkers,\nand Technologists.');
+  const description = useSiteCopy('home.leadership.description', 'Soul Media Global is led by founders with hands-on experience across business operations, digital products, and technology execution.');
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!founders.length) return <ContentState kind="empty" />;
 
   return (
     <section ref={sectionRef} id="founders" className="parallax-section founders-parallax relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="founders-title">
@@ -36,14 +24,14 @@ export function Leadership() {
           <div className="lg:col-span-8">
             <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-[#ffb4a8]">
               <span className="mr-3 inline-block h-px w-8 bg-[#D0190F] align-middle" />
-              Founders
+              {eyebrow}
             </p>
             <h2 id="founders-title" className="max-w-5xl font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] tracking-wide text-white md:text-7xl">
-              Built by Operators,<br />Product Thinkers,<br />and Technologists.
+              {title.split('\n').map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}
             </h2>
           </div>
           <p className="max-w-xl font-sans text-base leading-7 text-gray-400 md:text-lg lg:col-span-4">
-            Soul Media Global is led by founders with hands-on experience across business operations, digital products, and technology execution.
+            {description}
           </p>
         </div>
 
@@ -81,7 +69,7 @@ export function Leadership() {
                     alt={founder.name}
                     loading="lazy"
                     decoding="async"
-                    className={`founder-image h-full w-full ${founder.position} object-cover grayscale transition-[filter,opacity] duration-700 opacity-75 group-hover:opacity-90 group-hover:grayscale-0`}
+                    className="founder-image h-full w-full object-center lg:object-[center_12%] object-cover grayscale transition-[filter,opacity] duration-700 opacity-75 group-hover:opacity-90 group-hover:grayscale-0"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/5" />
                   <span className="absolute left-6 top-6 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8] md:left-8 md:top-8">Founder {founder.number}</span>

@@ -1,42 +1,18 @@
 import { Link } from 'react-router-dom';
-import minerbaOneVisual from '../assets/projects/minerba-one.png';
-import briCommandCenterVisual from '../assets/projects/bri-command-center.png';
-import networkMonitoringVisual from '../assets/projects/network-monitoring.png';
 import { useScrollProgress } from '../hooks/useScrollProgress';
-
-const projects = [
-  {
-    number: '01',
-    category: 'Mining / Government',
-    client: 'Kementerian ESDM',
-    name: 'MinerbaOne',
-    summary: 'An integrated digital platform unifying governance, licensing workflows, monitoring, and sector data for mineral and coal mining.',
-    image: minerbaOneVisual,
-    imageAlt: 'Abstract visualization of an integrated digital mining governance platform',
-    featured: true,
-  },
-  {
-    number: '02',
-    category: 'Banking / State-owned Company',
-    client: 'Bank Rakyat Indonesia',
-    name: 'BRI Digital Command Center',
-    summary: 'A centralized command center connecting real-time sentiment and audience insights with business performance indicators.',
-    image: briCommandCenterVisual,
-    imageAlt: 'Abstract visualization of a banking intelligence and digital monitoring command center',
-  },
-  {
-    number: '03',
-    category: 'Communication / Government',
-    client: 'Kementerian Komunikasi dan Informasi',
-    name: 'Internet Connection Network Monitoring',
-    summary: 'A nationwide digital map visualizing 2G and 3G coverage, performance, and network quality across regions.',
-    image: networkMonitoringVisual,
-    imageAlt: 'Abstract visualization of nationwide telecommunications network monitoring across Indonesia',
-  },
-];
+import { useContent, useSiteCopy } from '../content/useContent';
+import { ContentState } from './ContentState';
 
 export function SelectedWork() {
   const sectionRef = useScrollProgress<HTMLElement>();
+  const { caseStudies, status, error } = useContent();
+  const projects = caseStudies.filter((project) => project.featured);
+  const eyebrow = useSiteCopy('home.work.eyebrow', 'Selected Work');
+  const title = useSiteCopy('home.work.title', 'Built for Real\nBusiness Problems.');
+  const description = useSiteCopy('home.work.description', 'A selection of digital products, platforms, and systems designed to solve real operational and business challenges.');
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!projects.length) return <ContentState kind="empty" />;
   return (
     <section ref={sectionRef} className="parallax-section work-parallax relative overflow-hidden bg-[#0a0a0a] py-24 md:py-36" aria-labelledby="selected-work-title">
       <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:64px_64px]" />
@@ -47,14 +23,14 @@ export function SelectedWork() {
           <div>
             <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-[#ffb4a8]">
               <span className="mr-3 inline-block h-px w-8 bg-[#D0190F] align-middle" />
-              Selected Work
+              {eyebrow}
             </p>
             <h2 id="selected-work-title" className="max-w-4xl font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] tracking-wide text-white md:text-7xl">
-              Built for Real<br />Business Problems.
+              {title.split('\n').map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}
             </h2>
           </div>
           <p className="max-w-lg font-sans text-base leading-7 text-gray-400 md:text-lg">
-            A selection of digital products, platforms, and systems designed to solve real operational and business challenges.
+            {description}
           </p>
         </div>
 
@@ -81,7 +57,7 @@ export function SelectedWork() {
                   <p className="mt-6 max-w-xl border-l border-[#D0190F]/60 pl-5 font-sans text-sm leading-6 text-gray-400 md:text-base">
                     {project.summary}
                   </p>
-                  <Link to="/work" className="mt-9 inline-flex w-max items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors hover:text-[#ffb4a8]">
+                  <Link to={`/work/${project.slug}`} className="mt-9 inline-flex w-max items-center gap-4 border-b border-[#D0190F] pb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-colors hover:text-[#ffb4a8]">
                     View Case Study
                     <span className="text-[#D0190F] transition-transform duration-300 group-hover:translate-x-1">↗</span>
                   </Link>

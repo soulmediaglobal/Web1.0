@@ -96,3 +96,61 @@ Provide a secure, structured data foundation before authentication, write access
 ### Next Action
 
 Close the CMS Database Foundation task in Chapter 6, then create separate tasks for the remaining CMS and frontend integration work.
+
+---
+
+## [1.2.0] — 2026-08-29
+
+### Status
+
+Merge Ready
+
+### Category
+
+Added / Changed / Content / Infrastructure
+
+### Summary
+
+Connected the public website to the existing Supabase CMS foundation as its canonical runtime content source while preserving the approved public experience.
+
+### Changes
+
+- Added a typed, read-only content layer and one shared runtime snapshot for published case studies and relations, solutions and capabilities, leadership, pages metadata, and namespaced site copy.
+- Seeded the approved published website baseline into Supabase with deterministic ordering and existing Phase 1 media references.
+- Reused canonical case-study data for Home Selected Work and Work routes, canonical solutions for Home and Solutions, and canonical leadership for Home and About.
+- Added controlled loading, empty, configuration-error, query-error, and explicit unpublished/invalid work not-found states.
+- Removed the duplicate static case-study dataset and retained only presentation/media mappings in code.
+- Added environment documentation, runtime architecture/key registry documentation, and branch CI checks.
+
+### Files / Areas Affected
+
+- `src/content/`
+- `src/lib/supabase.ts`
+- `src/components/ContentState.tsx`
+- Home, Solutions, Work, Work Detail, About, and shared footer consumers
+- `supabase/migrations/20260829160000_seed_published_website_content.sql`
+- `.env.example`
+- `.github/workflows/ci.yml`
+- `docs/architecture/supabase-content-runtime.md`
+- Removed `src/data/caseStudies.ts`
+
+### Reason
+
+Make Supabase the single public runtime content source so approved editorial changes appear on reload without a frontend rebuild or duplicated datasets.
+
+### Testing / Verification
+
+- Verified the intended remote project, nine-table schema foundation, anonymous RLS reads, published content parity, relations, featured flags, and deterministic ordering.
+- Verified all six public routes, invalid work slug handling, tag filtering, desktop/tablet/mobile layout widths, and a clean browser console.
+- Passed `npm ci`, `npm run lint`, and `npm run build` locally.
+- GitHub Actions CI result is recorded on the task branch after push.
+
+### Known Issues
+
+- Existing bundled media remains mapped in frontend code for Phase 1; Supabase Storage is intentionally out of scope.
+- Production and preview hosts must provide the two public Vite environment values documented in `.env.example`.
+- No attributable testimonial is currently published, so Client Feedback remains hidden as designed.
+
+### Next Action
+
+Ray performs the final manual merge after branch CI passes and environment configuration is confirmed on the deployment host.

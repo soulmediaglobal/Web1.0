@@ -1,68 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useContent, useSiteCopy } from '../content/useContent';
+import { ContentState } from '../components/ContentState';
 
-type Pillar = {
-  key: string;
-  num: string;
-  numLabel: string;
-  shortTitle: string;
-  title: string;
-  desc: string;
-  chips: string[];
-  pos: { left: string; top: string };
-  line: { x2: number; y2: number };
-};
-
-const pillars: Pillar[] = [
-  {
-    key: 'strategy',
-    num: '01',
-    numLabel: '01 / 04',
-    shortTitle: 'Strategy',
-    title: 'Digital Strategy & Product Architecture',
-    desc: 'Define the right product direction, system structure, and roadmap before development begins.',
-    chips: ['Product Roadmapping', 'System Architecture', 'Technical Discovery'],
-    pos: { left: '50%', top: '9%' },
-    line: { x2: 160, y2: 30 },
-  },
-  {
-    key: 'product',
-    num: '02',
-    numLabel: '02 / 04',
-    shortTitle: 'Product',
-    title: 'Custom Software & Enterprise Applications',
-    desc: 'Build web applications, internal systems, platforms, dashboards, and business-critical tools.',
-    chips: ['Web Platforms', 'Internal Tools', 'Dashboards'],
-    pos: { left: '90.5%', top: '50%' },
-    line: { x2: 290, y2: 160 },
-  },
-  {
-    key: 'intelligence',
-    num: '03',
-    numLabel: '03 / 04',
-    shortTitle: 'Intelligence',
-    title: 'AI, Automation & System Integration',
-    desc: 'Connect systems, automate workflows, and apply AI where it creates real operational value.',
-    chips: ['Workflow Automation', 'API Integration', 'Applied AI'],
-    pos: { left: '50%', top: '91%' },
-    line: { x2: 160, y2: 290 },
-  },
-  {
-    key: 'infrastructure',
-    num: '04',
-    numLabel: '04 / 04',
-    shortTitle: 'Infrastructure',
-    title: 'Cloud & Platform Engineering',
-    desc: 'Design reliable infrastructure, deployment environments, and scalable technical foundations.',
-    chips: ['Cloud Architecture', 'Deployment', 'Scalability'],
-    pos: { left: '9.5%', top: '50%' },
-    line: { x2: 30, y2: 160 },
-  },
+const nodePresentation = [
+  { pos: { left: '50%', top: '9%' }, line: { x2: 160, y2: 30 } },
+  { pos: { left: '90.5%', top: '50%' }, line: { x2: 290, y2: 160 } },
+  { pos: { left: '50%', top: '91%' }, line: { x2: 160, y2: 290 } },
+  { pos: { left: '9.5%', top: '50%' }, line: { x2: 30, y2: 160 } },
 ];
 
 export const SolutionsPage: React.FC = () => {
-  const [activeKey, setActiveKey] = useState(pillars[0].key);
+  const { solutions, status, error } = useContent();
+  const pillars = solutions.map((solution, index) => ({ ...solution, ...nodePresentation[index] }));
+  const [activeKey, setActiveKey] = useState('strategy');
   const active = pillars.find((p) => p.key === activeKey) ?? pillars[0];
+  const intro = useSiteCopy('solutions.intro', 'Select a node to see how each capability connects to your business system — the same core capabilities behind every system we build.');
+  if (status === 'loading') return <ContentState kind="loading" />;
+  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
+  if (!active || pillars.length !== nodePresentation.length) return <ContentState kind="empty" />;
 
   return (
     <div className="relative w-full overflow-hidden bg-[#0a0a0a] pt-20 pb-24 text-[#e5e2e1] md:pb-36">
@@ -79,7 +35,7 @@ export const SolutionsPage: React.FC = () => {
             One System.<br />Four Connected Capabilities.
           </h1>
           <p className="mt-6 max-w-2xl font-sans text-base leading-7 text-gray-400 md:text-lg">
-            Select a node to see how each capability connects to your business system — the same core capabilities behind every system we build.
+            {intro}
           </p>
         </div>
 
