@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ContentState } from '../components/ContentState';
-import { useContent, useSiteCopy } from '../content/ContentProvider';
+import { useContent, useSiteCopy } from '../content/useContent';
 
 const trustedBy = [
   'Sampoerna',

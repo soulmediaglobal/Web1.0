@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useContent } from '../content/ContentProvider';
+import { useContent } from '../content/useContent';
 import { ContentState } from '../components/ContentState';
 
 const principles = [

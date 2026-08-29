@@ -1,10 +1,6 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { fetchPublishedContent } from './api'
-import type { ContentSnapshot, ContentStatus, SiteContentKey } from './types'
-type ContentContextValue = ContentSnapshot & { status: ContentStatus; error: string | null }
-const emptySnapshot: ContentSnapshot = { caseStudies: [], solutions: [], leadership: [], pages: [], siteContent: {} }
-const ContentContext = createContext<ContentContextValue>({ ...emptySnapshot, status: 'loading', error: null })
+import { ContentContext, emptySnapshot, type ContentContextValue } from './useContent'
 export function ContentProvider({ children }: { children: ReactNode }) {
   const [value, setValue] = useState<ContentContextValue>({ ...emptySnapshot, status: 'loading', error: null })
   useEffect(() => {
@@ -18,5 +14,3 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, [])
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 }
-export function useContent() { return useContext(ContentContext) }
-export function useSiteCopy(key: SiteContentKey, structuralFallback: string) { return useContent().siteContent[key] ?? structuralFallback }

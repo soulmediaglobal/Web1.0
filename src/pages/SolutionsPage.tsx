@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useContent, useSiteCopy } from '../content/ContentProvider';
+import { useContent, useSiteCopy } from '../content/useContent';
 import { ContentState } from '../components/ContentState';
 
 const nodePresentation = [

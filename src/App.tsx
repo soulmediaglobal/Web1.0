@@ -12,7 +12,7 @@ import { ContactPage } from './pages/ContactPage';
 import { WorkPage } from './pages/WorkPage';
 import { WorkDetailPage } from './pages/WorkDetailPage';
 import logo from './assets/Logo.png';
-import { useContent, useSiteCopy } from './content/ContentProvider';
+import { useContent, useSiteCopy } from './content/useContent';
 
 function HomePage() {
   return (

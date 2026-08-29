@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollProgress } from '../hooks/useScrollProgress';
-import { useContent, useSiteCopy } from '../content/ContentProvider';
+import { useContent, useSiteCopy } from '../content/useContent';
 import { ContentState } from './ContentState';
 
 export function Leadership() {

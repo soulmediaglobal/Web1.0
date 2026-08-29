@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { ContentState } from '../components/ContentState';
-import { useContent } from '../content/ContentProvider';
+import { useContent } from '../content/useContent';
 
 export function WorkDetailPage() {
   const { slug } = useParams<{ slug: string }>();
