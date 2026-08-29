@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.2
+**Document Version:** v1.1.3
 **Web Version:** v1.1.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -99,7 +99,7 @@ CMS belum dibangun. Keberadaan dependency Supabase tidak boleh dianggap sebagai 
 
 Hermes adalah nama dan role untuk ChatGPT assistant dalam dedicated document-governance context sebagai **Guardian of The Document**. Hermes bertanggung jawab untuk membuat, memelihara, mengorganisasi, meninjau, dan melindungi integrity, authenticity, consistency, dan correctness The Document.
 
-AI lain dan developer dapat mengeskalasikan collaboration mechanism baru, rule changes, atau document updates kepada Hermes untuk ditinjau sebelum menjadi bagian dari The Document.
+AI lain dan developer mengeskalasikan perubahan kepada Hermes jika scope-nya mencakup rule atau governance, reusable collaboration behavior, document structure, atau architecture/documentation standard yang perlu dipersist sebagai bagian dari The Document. Normal development task yang tidak mengubah area tersebut tidak membutuhkan Hermes involvement.
 
 Hermes bukan nama generik untuk setiap AI. Hermes secara khusus merujuk kepada Guardian of The Document.
 
@@ -109,24 +109,36 @@ Hermes bukan nama generik untuk setiap AI. Hermes secara khusus merujuk kepada G
 
 ## C3P1 — Changelog Rules
 
-Changelog adalah catatan resmi seluruh perubahan Soul Media Global Website. Setiap perubahan yang masuk repository harus dicatat di Chapter ini sebelum commit atau push.
+`/CHANGELOG.md` adalah single source of truth untuk actual website dan development change history. Chapter 3 hanya mengatur changelog governance dan tidak menyimpan duplicate development entries.
 
 > No undocumented change should be pushed to the repository.
 
-Catat apa dan kenapa berubah, area/file terdampak, hasil, testing, known issue, dan follow-up. Git history tidak menggantikan Changelog.
+Setiap notable development change yang masuk repository harus dicatat di `/CHANGELOG.md` sebelum commit dan push. Catat apa dan kenapa berubah, area/file terdampak, hasil, testing, known issue, dan follow-up. Git history tidak menggantikan `/CHANGELOG.md`.
 
-Mandatory workflow:
+Mandatory development workflow:
 
 ```text
-Development
+PRD
+↓
+GitHub Issue
+↓
+Branch
+↓
+Pre-Work Verification
+↓
+Implementation
 ↓
 Testing
 ↓
-Update Changelog
+Ray Approval
 ↓
-Commit
+Update /CHANGELOG.md
 ↓
-Push
+Commit + Push
+↓
+Merge-Ready Verification
+↓
+Ray Merge
 ```
 
 Yang wajib dicatat mencakup feature/page/component/interaction baru; UI/UX, layout, responsive, typography, navigation, animation, content structure, route, data, backend, database, dependency, dan infrastructure changes; bug, performance, accessibility, dan security fixes; significant refactor; serta removal. Internal comment atau typo tanpa dampak production tidak wajib.
@@ -135,7 +147,7 @@ Kategori: `Added`, `Changed`, `Fixed`, `Removed`, `Refactored`, `Security`, `Per
 
 Version menggunakan `MAJOR.MINOR.PATCH`: MAJOR untuk perubahan architecture/product/experience besar; MINOR untuk capability baru tanpa breaking change besar; PATCH untuk bug fix, visual refinement, atau perubahan kecil.
 
-Format entry mulai Point 2:
+Format entry di `/CHANGELOG.md`:
 
 ```text
 Date:
@@ -162,71 +174,9 @@ Next Action:
 
 Bagian yang tidak relevan dapat diisi `None`.
 
-Repository `soulmediaglobal/Web1.0` sudah memiliki history sebelum Changelog formal. Seluruh implementation sebelumnya dianggap **INITIAL BASELINE** dan tidak perlu direkonstruksi. Changelog bersifat append-only; revisi terhadap perubahan lama dibuat sebagai entry baru.
+Repository `soulmediaglobal/Web1.0` sudah memiliki history sebelum changelog formal. Seluruh implementation sebelumnya dianggap **INITIAL BASELINE** dan tidak perlu direkonstruksi. `/CHANGELOG.md` bersifat append-only; revisi terhadap perubahan lama dibuat sebagai entry baru.
 
-AI wajib mengikuti: **Implement → Verify → Update Chapter 3 → Commit → Push**.
-
-## C3P2 — v1.0.0 — Initial Production Baseline
-
-**Date:** 28 August 2026  
-**Version:** v1.0.0  
-**Status:** Active  
-**Category:** Infrastructure / Documentation
-
-### Summary
-
-Current production state Soul Media Global Website ditetapkan sebagai official baseline untuk seluruh development tracking berikutnya. Formal Changelog dimulai dari versi ini; historical changes sebelum baseline tidak direkonstruksi secara individual.
-
-### Changes
-
-- Current production website ditetapkan sebagai baseline resmi v1.0.0.
-- Development-Rules digunakan sebagai source of truth dan Chapter 3 menjadi official development history.
-- Seluruh notable changes setelah baseline wajib didokumentasikan di Changelog sebelum di-push ke GitHub.
-
-### Repository
-
-`soulmediaglobal/Web1.0`
-
-### Production Domain
-
-`soulmedia.id`
-
-### Existing Public Structure at Baseline
-
-- Home
-- Solutions
-- Work
-- Work Detail / Case Study
-- About
-- Contact
-
-### Existing Core Stack at Baseline
-
-- React
-- TypeScript
-- Vite
-- React Router
-- Tailwind CSS
-- Supabase client dependency
-- Three.js
-- Lucide React
-
-### Existing CMS Status
-
-- CMS belum dibangun.
-- Belum ada official CMS architecture pada baseline ini.
-
-### Testing / Verification
-
-Current production structure, routes, dependencies, and CMS status reviewed against the repository and established as the baseline.
-
-### Known Issues
-
-Historical changes sebelum v1.0.0 tidak direkonstruksi menjadi individual Changelog entries. Riwayat sebelumnya tetap tersedia melalui Git commit history.
-
-### Next Action
-
-All future notable changes must be documented in Chapter 3 and the repository `CHANGELOG.md` before being pushed to GitHub. New entries start from Point 3.
+Actual baseline dan seluruh development history tersedia hanya di `/CHANGELOG.md`. C3P2 Development Baseline telah di-retire untuk menghilangkan duplikasi.
 
 ---
 
@@ -367,23 +317,21 @@ Harus jelas:
 
 Tujuannya adalah mengurangi cognitive load dan mencegah instruction yang bercampur antara inspection dan execution.
 
-## C4P3 — Mandatory Chapter 6 Update
+## C4P3 — Conditional Chapter 6 Update
 
-Setelah menyelesaikan setiap task, Kamu sebagai AI wajib memperbarui Chapter 6 agar selalu sesuai dengan kondisi project aktual.
+Chapter 6 diperbarui hanya ketika milestone atau high-level project state berubah secara material, atau ketika Ray memintanya secara eksplisit. Normal task yang tidak mengubah state tersebut tidak membutuhkan Chapter 6 update.
 
-Chapter 6 juga wajib diperbarui ketika Ray memintanya secara eksplisit.
+Hasil dan status yang material harus ditempatkan pada bagian yang tepat:
 
-Hasil dan status task harus ditempatkan pada bagian yang tepat:
+- **C6P1 — Existing State** untuk capability, system, atau module yang sudah tersedia dan aktif.
+- **C6P2 — Active Work** untuk workstream yang benar-benar sedang berjalan.
+- **C6P3 — Next / Pending** untuk milestone atau capability berikutnya yang belum dikerjakan atau belum selesai.
 
-- **C6P1 — Existing State** untuk kondisi yang sudah ada, sudah selesai, atau aktif.
-- **C6P2 — Pending Tasks** untuk pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum masuk development.
-- **C6P3 — Active Work** untuk pekerjaan yang sudah berjalan tetapi belum selesai.
-
-Chapter 6 tidak boleh tertinggal dari kondisi project aktual.
+Chapter 6 harus tetap ringkas dan tidak boleh mirror branch, commit hash, working-tree status, ahead/behind, merge status, atau local/remote sync. Git dan GitHub adalah source of truth untuk operational repository state.
 
 ## C4P4 — New Collaboration Mechanism Confirmation
 
-Jika Kamu sebagai AI menemukan mekanisme kolaborasi baru yang belum ada di dokumen ini, mekanisme tersebut tidak boleh langsung diadopsi sebagai kebiasaan baru.
+Jika Kamu sebagai AI menemukan reusable collaboration mechanism baru yang belum ada di dokumen ini dan layak dijadikan standard permanen, mekanisme tersebut tidak boleh langsung diadopsi sebagai kebiasaan baru.
 
 Kamu sebagai AI wajib mengonfirmasi terlebih dahulu kepada Ray dengan wording:
 
@@ -403,56 +351,34 @@ Update melalui Hermes jika disetujui
 Adopsi mekanisme dan lanjutkan
 ```
 
-## C4P5 — Status Verification Before Starting a Task
+## C4P5 — Repository Verification Checkpoints
 
-Setelah menerima initial prompt dan membaca `Development-Rules.md`, **Kamu sebagai AI wajib memverifikasi status project aktual sebelum memulai task apa pun**.
+Git verification dilakukan pada dua checkpoint utama. Pengecekan tambahan hanya dilakukan jika ada error, mismatch, atau alasan teknis yang jelas.
 
-Status yang tertulis di The Document tidak boleh langsung dianggap pasti benar tanpa pengecekan.
+### Pre-Work Checkpoint
 
-Verifikasi dilakukan terhadap dua sumber:
-
-1. **GitHub Repository**
-2. **Local Repository**
-
-Tujuannya untuk memastikan:
-
-- Branch aktif
-- Working tree status
-- Commit terbaru
-- Local dan remote sinkron atau tidak
-- Ada atau tidak perubahan lokal yang belum di-commit
-- Ada atau tidak perubahan remote yang belum masuk local
-- Kondisi repository sesuai dengan Existing State / Active Work di Chapter 6
-
-### Command untuk Cek Local Repository
-
-```bash
-git status
-git branch --show-current
-git log -1 --oneline
-```
-
-### Command untuk Cek Local vs GitHub
+Sebelum implementation, jalankan:
 
 ```bash
 git fetch origin
 git status -sb
-git log --oneline --decorate --graph --all -10
+git branch --show-current
+git log -1 --oneline
 ```
 
-Setelah output terminal diberikan, **Kamu sebagai AI wajib membandingkan hasil aktual dengan status yang tertulis di The Document**.
+Tujuannya adalah memverifikasi branch, working tree, local/remote state, dan starting point yang benar. Existing work wajib dipertahankan dan mismatch harus diselesaikan sebelum implementation.
 
-Jika sesuai:
+### Merge-Ready Checkpoint
 
-- Konfirmasi bahwa project state sudah sinkron.
-- Lanjut ke proses task sesuai C4P1.
+Setelah implementation, testing, Ray approval, `/CHANGELOG.md` update, commit, dan push selesai, jalankan:
 
-Jika tidak sesuai:
+```bash
+git fetch origin
+git status -sb
+git log -1 --oneline
+```
 
-- Jangan langsung mulai development.
-- Jelaskan secara singkat perbedaannya.
-- Tentukan dulu mana yang menjadi current source of truth.
-- Update Chapter 6 jika diperlukan sebelum task dilanjutkan.
+Tujuannya adalah memverifikasi working tree bersih, remote sync, final commit, dan tidak adanya conflict atau blocker yang diketahui sebelum Ray melakukan merge.
 
 ## C4P6 — Approval Gate Before Commit and Push
 
@@ -465,9 +391,11 @@ Setelah approval diberikan, urutan yang wajib diikuti adalah:
 ```text
 Update Changelog
 ↓
-Commit
+Commit + Push
 ↓
-Push
+Merge-Ready Verification
+↓
+Ray Merge
 ```
 
 ## C4P7 — Branch Creation After GitHub Issue
@@ -513,15 +441,15 @@ Kamu sebagai AI kemudian wajib memverifikasi:
 
 Implementation tidak boleh dimulai sebelum branch diverifikasi.
 
-## C4P8 — Capture New Collaboration Behavior Before Push
+## C4P8 — Conditional New-Behavior Detection
 
-Setelah feature atau bug fix selesai di local dan sudah melalui testing atau verification, tetapi **belum di-commit atau di-push ke GitHub**, Kamu sebagai AI wajib mengevaluasi apakah selama task tersebut muncul mekanisme kolaborasi atau working behavior baru.
+Kamu sebagai AI tidak perlu melakukan behavior audit penuh setelah setiap task. Detection hanya diperlukan jika selama task ditemukan reusable collaboration behavior baru yang belum tercatat dan memiliki nilai jangka panjang.
 
-Kamu sebagai AI harus merangkum behavior tersebut secara singkat dan membaginya menjadi:
+Jika behavior tersebut ditemukan:
 
-- **Already Documented** — behavior yang sudah tercakup di The Document.
-- **New Behavior Detected** — behavior baru yang belum ada di The Document.
-- **Suggested Rule Update** — behavior baru yang layak dijadikan rule permanen.
+- Identify behavior baru tersebut.
+- Jelaskan kenapa behavior itu reusable dan layak dipersist.
+- Konfirmasi kepada Ray apakah perlu dieskalasikan ke Hermes.
 
 Jika ada behavior baru yang layak disimpan, Kamu sebagai AI wajib mengonfirmasi kepada Ray:
 
@@ -530,10 +458,10 @@ Jika ada behavior baru yang layak disimpan, Kamu sebagai AI wajib mengonfirmasi 
 Jika Ray setuju:
 
 1. Behavior dirumuskan.
-2. Dikirim ke Hermes untuk memperbarui The Document.
+2. Dikirim ke Hermes untuk review dan pembaruan The Document.
 3. Flow development dilanjutkan ke approval, changelog, commit, dan push.
 
-Tujuannya adalah supaya working behavior yang efektif tidak hilang setelah task selesai dan dapat menjadi institutional memory untuk AI berikutnya.
+Jika tidak ada behavior baru, tidak ada behavior update atau Hermes handoff yang diperlukan.
 
 ## C4P9 — Synchronize The Document to GitHub
 
@@ -584,7 +512,7 @@ Sebelum melaporkan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
 - Working tree bersih.
 - Local branch dan remote branch sinkron.
 - Testing dan verification yang relevan sudah lolos.
-- Documentation dan changelog yang diwajibkan sudah selesai.
+- Documentation yang conditional dan `/CHANGELOG.md` yang diwajibkan sudah selesai.
 - Tidak ada known conflict atau blocker terhadap merge.
 
 Setelah seluruh kondisi tersebut terpenuhi, Kamu sebagai AI wajib berhenti pada task branch atau pull request, melaporkan status **merge-ready**, dan menyerahkan merge final kepada Ray.
@@ -601,9 +529,9 @@ Kamu sebagai AI yang menerima handover wajib membaca dokumen ini dengan urutan b
 2. **Chapter 4 — Collaboration Behavior** — untuk memahami cara kerja Ray serta standar komunikasi dan execution.
 3. **Chapter 5 — Hand Over Rule** — untuk memahami cara menerima dan melanjutkan handover.
 4. **Chapter 2 — Hierarchy** — terutama Current Technology Stack dan Existing Structure.
-5. **Chapter 3 — Changelog** — terutama entry terbaru untuk mengetahui perubahan terakhir.
+5. **`/CHANGELOG.md`** — terutama entry terbaru untuk mengetahui actual development change terakhir; Chapter 3 hanya mengatur changelog governance.
 6. **Chapter 1 — Core Principle** — sebagai rulebook brand dan experience selama development.
-7. **Chapter 6 — Project State** — untuk mengetahui kondisi project saat ini, pekerjaan yang masih pending, dan pekerjaan yang sedang aktif.
+7. **Chapter 6 — Project State** — untuk mengetahui high-level existing state, active work, dan next/pending capability.
 
 Setelah selesai membaca, Kamu sebagai AI wajib membalas dengan TL;DR yang minimal menjelaskan:
 
@@ -632,32 +560,20 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 ## C6P1 — Existing State
 
 - Current Web Version adalah **v1.1.0**.
-- CMS Database Foundation sudah merged ke `main` melalui PR #4.
-- Merge commit: `5b64c76ee52d156b79243f23fab08a687524118d`.
-- Implementation commit `dba54ae` sudah menjadi bagian dari `main`.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
-- Supabase project sudah dibuat dan repository sudah linked ke project tersebut.
-- CMS database foundation sudah diimplementasikan pada remote database dan diverifikasi.
-- Sembilan CMS tables sudah diverifikasi.
-- Row Level Security (RLS) aktif.
-- Public read policies aktif pada table yang sesuai.
-- Required indexes aktif.
-- `updated_at` triggers aktif.
-- `.env` dan `.env.*` di-ignore, sementara `.env.example` tetap dapat dilacak.
-- `Web1.0/Development-Rules.md` sekarang menjadi canonical technical source of truth project-wide karena sudah tersedia di `main`.
-- Chapter 3 menjadi official development history setelah baseline.
+- Supabase CMS Database Foundation tersedia dan sudah diverifikasi, termasuk sembilan CMS tables, Row Level Security, public read policies, required indexes, dan `updated_at` triggers.
+- Public website masih menggunakan static dan hardcoded content sources; frontend belum membaca content dari Supabase.
 
-## C6P2 — Pending Tasks
+## C6P2 — Active Work
 
-- Authentication implementation.
-- Write policies.
+None.
+
+## C6P3 — Next / Pending
+
+- Authentication and write-access foundation.
 - Media and storage implementation.
 - CMS Admin UI.
 - Frontend integration and migration to CMS-backed content.
-
-## C6P3 — Active Work
-
-None.
 
 ---
 
@@ -1130,6 +1046,36 @@ Synchronized the document with the post-merge project state after CMS Database F
 
 **Previous Version:** v1.1.1
 **Current Version:** v1.1.2
+
+### v1.1.3 — 29 August 2026
+
+**Type:** Changed / Removed / Reorganized
+
+**Affected:**
+
+- Document Header
+- C2P4
+- Chapter 3
+- C3P1
+- C3P2
+- C4P3
+- C4P4
+- C4P5
+- C4P6
+- C4P8
+- C4P11
+- C5P1
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Applied efficiency-focused revisions approved from the Argus audit. Made `/CHANGELOG.md` the single source of truth for actual development history and retired C3P2 Development Baseline; reduced Chapter 6 to high-level Existing State, Active Work, and Next / Pending without mirroring Git operational state; made Hermes involvement and new-behavior detection conditional; consolidated repository checks into Pre-Work and Merge-Ready checkpoints; and standardized the mandatory workflow as PRD → GitHub Issue → Branch → Pre-Work Verification → Implementation → Testing → Ray Approval → CHANGELOG.md → Commit + Push → Merge-Ready Verification → Ray Merge.
+
+**Previous Version:** v1.1.2
+**Current Version:** v1.1.3
 
 ---
 
