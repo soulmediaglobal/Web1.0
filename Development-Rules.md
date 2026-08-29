@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.3
+**Document Version:** v1.1.4
 **Web Version:** v1.1.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -102,6 +102,48 @@ Hermes adalah nama dan role untuk ChatGPT assistant dalam dedicated document-gov
 AI lain dan developer mengeskalasikan perubahan kepada Hermes jika scope-nya mencakup rule atau governance, reusable collaboration behavior, document structure, atau architecture/documentation standard yang perlu dipersist sebagai bagian dari The Document. Normal development task yang tidak mengubah area tersebut tidak membutuhkan Hermes involvement.
 
 Hermes bukan nama generik untuk setiap AI. Hermes secara khusus merujuk kepada Guardian of The Document.
+
+## C2P5 — Write Access Security Architecture
+
+Sebelum implementation capability yang dapat mengubah CMS data dimulai, minimum security architecture harus didefinisikan terlebih dahulu.
+
+Ini berlaku untuk capability seperti:
+
+- authentication
+- create / update / delete content
+- publish / unpublish
+- media upload / replace / delete
+- privileged CMS operations
+
+Minimum decisions yang harus tersedia:
+
+### Roles
+
+Siapa saja persona / role yang dapat mengakses CMS.
+
+### Permissions
+
+Untuk setiap role, tentukan authority terhadap:
+
+- read
+- create
+- update
+- delete
+- publish
+
+### Security Boundary
+
+Tentukan operasi mana yang boleh menggunakan:
+
+- browser Supabase client
+- Supabase RLS
+- privileged backend / service environment
+
+### Storage Access
+
+Tentukan siapa yang boleh upload, replace, dan delete media atau file.
+
+Architecture harus cukup untuk mencegah broad write access atau insecure authenticated policies. Jangan membuat enterprise IAM architecture jika kebutuhan product belum memerlukannya.
 
 ---
 
@@ -329,31 +371,32 @@ Hasil dan status yang material harus ditempatkan pada bagian yang tepat:
 
 Chapter 6 harus tetap ringkas dan tidak boleh mirror branch, commit hash, working-tree status, ahead/behind, merge status, atau local/remote sync. Git dan GitHub adalah source of truth untuk operational repository state.
 
-## C4P4 — New Collaboration Mechanism Confirmation
+## C4P4 — Governance Change Threshold and Hermes Escalation
 
-Jika Kamu sebagai AI menemukan reusable collaboration mechanism baru yang belum ada di dokumen ini dan layak dijadikan standard permanen, mekanisme tersebut tidak boleh langsung diadopsi sebagai kebiasaan baru.
+The Document tidak boleh diubah hanya karena muncul satu suggestion, preference, atau situational optimization selama development. Perubahan rule hanya perlu dievaluasi jika terdapat:
 
-Kamu sebagai AI wajib mengonfirmasi terlebih dahulu kepada Ray dengan wording:
+- rule baru atau revisi rule existing
+- perubahan governance atau development workflow
+- reusable collaboration behavior atau mechanism baru
+- perubahan structure, ownership, atau source of truth dokumentasi
+- architecture atau documentation standard jangka panjang
+- repeated friction yang layak dijadikan permanent rule
+- security atau reliability gap
+- automation yang dapat menggantikan manual process dengan safety yang sama atau lebih baik
 
-> “Ini bukan mekanisme yang ada dalam rule. Mau update ke Hermes dulu sebelum kita lanjut?”
+**Decision rule:** sebelum mengubah governance, collaboration rules, documentation structure, atau long-lived operating standard, Kamu sebagai AI wajib berhenti dan bertanya kepada Ray apakah perubahan tersebut perlu direview oleh Hermes terlebih dahulu. Jika perubahan mengubah cara project bekerja ke depannya, wajib stop → konfirmasi Ray → Hermes review jika disetujui. Jika tidak, lanjutkan menggunakan rule existing.
 
-Hermes pada poin ini secara eksplisit merujuk kepada **Guardian of The Document**.
+Konfirmasi ke Hermes tidak diperlukan untuk coding biasa, bug fix biasa, implementation sesuai PRD dan rule existing, test/build, update `/CHANGELOG.md`, normal Git verification, atau task-specific technical decision yang tidak mengubah operating standard.
 
-Urutan yang wajib diikuti:
+Gunakan wording:
 
-```text
-Mekanisme baru terdeteksi
-↓
-Konfirmasi kepada Ray
-↓
-Update melalui Hermes jika disetujui
-↓
-Adopsi mekanisme dan lanjutkan
-```
+> “Ini terlihat seperti perubahan yang layak menjadi rule permanen. Mau update ke Hermes dulu?”
 
-## C4P5 — Repository Verification Checkpoints
+Hermes pada poin ini secara eksplisit merujuk kepada **Guardian of The Document**. Tujuannya adalah menjaga The Document tetap stabil, lean, dan tidak berubah karena setiap situational improvement.
 
-Git verification dilakukan pada dua checkpoint utama. Pengecekan tambahan hanya dilakukan jika ada error, mismatch, atau alasan teknis yang jelas.
+## C4P5 — Repository Verification & Automated Quality Gate
+
+Repository verification dilakukan pada dua checkpoint utama.
 
 ### Pre-Work Checkpoint
 
@@ -366,19 +409,21 @@ git branch --show-current
 git log -1 --oneline
 ```
 
-Tujuannya adalah memverifikasi branch, working tree, local/remote state, dan starting point yang benar. Existing work wajib dipertahankan dan mismatch harus diselesaikan sebelum implementation.
+Tujuannya adalah memverifikasi branch yang benar sedang aktif, working tree dalam kondisi aman, local dan remote berada pada starting state yang benar, serta existing work tetap dipertahankan. Mismatch harus diselesaikan sebelum implementation.
 
-### Merge-Ready Checkpoint
+### Automated Quality Gate
 
-Setelah implementation, testing, Ray approval, `/CHANGELOG.md` update, commit, dan push selesai, jalankan:
+Setelah perubahan di-push, technical quality harus diverifikasi melalui CI.
 
 ```bash
-git fetch origin
-git status -sb
-git log -1 --oneline
+npm ci
+npm run lint
+npm run build
 ```
 
-Tujuannya adalah memverifikasi working tree bersih, remote sync, final commit, dan tidak adanya conflict atau blocker yang diketahui sebelum Ray melakukan merge.
+CI menjadi objective technical gate untuk memastikan branch tidak memiliki dependency, lint, atau build failure.
+
+Manual verification tambahan hanya dilakukan jika CI gagal, terdapat mismatch atau error yang membutuhkan investigation, atau task memiliki verification khusus yang tidak tercakup CI. Tujuannya adalah mengganti repeated manual verification dengan automated enforcement tanpa mengurangi development safety.
 
 ## C4P6 — Approval Gate Before Commit and Push
 
@@ -503,19 +548,23 @@ Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling be
 
 Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
 
-## C4P11 — Merge Approval & Ownership
+## C4P11 — Merge-Ready & Merge Ownership
 
-Kamu sebagai AI boleh menyiapkan pull request atau merge-ready state, tetapi tidak boleh merge task branch ke `main`. Merge final ke `main` dilakukan manual oleh Ray.
+Kamu sebagai AI tidak boleh melakukan merge task branch ke `main`. Final merge ke `main` dilakukan manual oleh Ray.
 
-Sebelum melaporkan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
+Sebelum menyatakan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
 
-- Working tree bersih.
-- Local branch dan remote branch sinkron.
-- Testing dan verification yang relevan sudah lolos.
-- Documentation yang conditional dan `/CHANGELOG.md` yang diwajibkan sudah selesai.
-- Tidak ada known conflict atau blocker terhadap merge.
+- implementation selesai
+- testing / task-specific verification selesai
+- Ray sudah memberikan approval
+- `/CHANGELOG.md` sudah diperbarui
+- perubahan sudah committed dan pushed
+- CI telah PASS
+- working tree clean
+- local dan remote synchronized
+- tidak ada known conflict atau blocker
 
-Setelah seluruh kondisi tersebut terpenuhi, Kamu sebagai AI wajib berhenti pada task branch atau pull request, melaporkan status **merge-ready**, dan menyerahkan merge final kepada Ray.
+Jika semua kondisi terpenuhi, Kamu sebagai AI harus menyatakan branch **Merge Ready** dan menyerahkan final merge kepada Ray.
 
 ---
 
@@ -1076,6 +1125,25 @@ Applied efficiency-focused revisions approved from the Argus audit. Made `/CHANG
 
 **Previous Version:** v1.1.2
 **Current Version:** v1.1.3
+
+### v1.1.4 — 29 August 2026
+
+**Type:** Added / Changed
+
+**Affected:**
+
+- Document Header
+- C2P5
+- C4P4
+- C4P5
+- C4P11
+- C7P1
+
+**Summary:**
+Added C2P5 — Write Access Security Architecture to require minimum roles, permissions, security-boundary, and storage-access decisions before CMS write capability implementation. Revised C4P4 with an explicit governance change threshold and decision rule requiring AI to stop and ask Ray about Hermes review before changing governance, collaboration rules, documentation structure, or long-lived operating standards. Revised C4P5 to retain the Pre-Work Checkpoint and establish CI with `npm ci`, `npm run lint`, and `npm run build` as the automated quality gate. Revised C4P11 so merge-ready requires CI to pass and the final merge remains manual and exclusively owned by Ray.
+
+**Previous Version:** v1.1.3
+**Current Version:** v1.1.4
 
 ---
 
