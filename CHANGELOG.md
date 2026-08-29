@@ -154,3 +154,31 @@ Make Supabase the single public runtime content source so approved editorial cha
 ### Next Action
 
 Ray performs the final manual merge after branch CI passes and environment configuration is confirmed on the deployment host.
+
+---
+
+## [1.2.0] — 2026-08-30
+
+### Status
+
+Post-Merge Completion / Synchronization
+
+### Category
+
+Documentation / Release Synchronization
+
+### Summary
+
+Completed the post-merge documentation sync for Web v1.2.0 after the public website Supabase content integration task was completed and merged.
+
+### Completion Record
+
+- PR #6 was merged into `main`.
+- Issue #5 was closed and completed.
+- CI passed on the task branch before merge.
+- The public website Supabase content integration is now part of canonical `main`.
+- No Web Version bump is required because this entry records post-merge completion rather than new implementation work.
+
+### Next Action
+
+This task is complete. Continue with the authentication/write-access foundation or the next pending milestone according to the current project state.
