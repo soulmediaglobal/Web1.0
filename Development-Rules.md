@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.7
+**Document Version:** v1.1.8
 **Web Version:** v1.2.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -180,7 +180,9 @@ Ray Approval
 ↓
 Update /CHANGELOG.md
 ↓
-Commit + Push
+AI prepares Add / Commit / Push commands
+↓
+Ray commits + pushes via terminal
 ↓
 CI PASS
 ↓
@@ -317,7 +319,7 @@ Setelah GitHub Issue dibuat dan diverifikasi, Kamu sebagai AI menyiapkan exact g
 
 Branch creation dan Pre-Work Verification adalah satu **continuous gate**, bukan dua ceremony terpisah. Sebelum implementation dimulai, Kamu sebagai AI wajib memastikan branch berhasil dibuat, branch aktif adalah branch yang benar dan sesuai task, base branch benar, working tree aman, serta tidak ada mismatch atau error yang menghalangi implementation.
 
-## C4P2 — Concise Communication & Check/Execution Separation
+## C4P2 — Concise Communication, Check/Execution Separation & Terminal-First Operations
 
 Ray mudah terdistraksi jika menerima penjelasan yang terlalu panjang.
 
@@ -334,28 +336,9 @@ Setiap response development harus membedakan dengan jelas antara:
 
 Apa yang perlu diperiksa terlebih dahulu sebelum tindakan dilakukan.
 
-Contoh:
-
-- Repository state
-- Current branch
-- Existing implementation
-- Error
-- Relevant file
-- Production behavior
-
 ### Yang Akan Dieksekusi
 
 Apa yang benar-benar akan dilakukan setelah pengecekan selesai.
-
-Contoh:
-
-- Edit file
-- Fix bug
-- Add feature
-- Run build
-- Update changelog
-- Commit
-- Push
 
 Pemisahan ini harus jelas untuk kedua sisi:
 
@@ -363,30 +346,44 @@ Pemisahan ini harus jelas untuk kedua sisi:
 
 Harus jelas:
 
-- Apa yang akan Kamu sebagai AI cek sendiri
-- Apa yang akan Kamu sebagai AI eksekusi sendiri
+- apa yang akan Kamu sebagai AI cek
+- command apa yang akan Kamu sebagai AI siapkan
+- verification apa yang memang diperlukan
 
 ### Sisi Ray
 
 Harus jelas:
 
-- Apa yang perlu Ray cek
-- Apa yang perlu Ray jalankan
-- Apa yang perlu Ray kirim balik
+- apa yang perlu Ray jalankan
+- apa yang perlu Ray kirim kembali
+- kapan output perlu diverifikasi sebelum dependent step berikutnya
 
-Tujuannya adalah mengurangi cognitive load dan mencegah instruction yang bercampur antara inspection dan execution.
+### Terminal-First Git/GitHub Operations
 
-### Terminal-First GitHub Operations
+Semua Git dan GitHub write operations adalah **Ray-owned terminal actions** secara default.
 
-GitHub Issue creation, branch creation, Pull Request creation, dan final merge menggunakan terminal-first ownership model:
+Ini mencakup:
 
-- Kamu sebagai AI menyiapkan exact content dan command yang sesuai dengan actual task dan repository state.
-- Ray menjalankan command melalui terminal.
-- Kamu sebagai AI memverifikasi output hanya ketika diperlukan untuk gate berikutnya.
-- Kamu sebagai AI tidak menjalankan GitHub operational action tersebut secara default, kecuali Ray secara eksplisit meminta.
+- `git add`
+- `git commit`
+- `git push`
+- GitHub Issue creation
+- branch creation
+- Pull Request creation
+- final merge
+- documentation synchronization ke repository
 
-Model ini bertujuan mengurangi tool overhead, context switching, latency, dan token usage tanpa mengurangi traceability, CI, approval gate, atau final merge ownership.
+Kamu sebagai AI bertanggung jawab untuk:
 
+- menyiapkan exact command yang siap di-copy-paste
+- memastikan command sesuai actual repository state
+- memisahkan CHECK dan EXECUTION dengan jelas
+- meminta Ray mengirim output hanya ketika verification memang diperlukan
+- memverifikasi hasil sebelum dependent step berikutnya jika dibutuhkan
+
+Kamu sebagai AI tidak melakukan Git/GitHub write operation secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
+
+Tujuannya adalah mengurangi tool overhead, context switching, latency, dan token usage tanpa mengurangi repository safety, traceability, atau ownership.
 ## C4P3 — Conditional Chapter 6 Update
 
 Chapter 6 diperbarui hanya ketika milestone atau high-level project state berubah secara material, atau ketika Ray memintanya secara eksplisit. Normal task yang tidak mengubah state tersebut tidak membutuhkan Chapter 6 update.
@@ -455,21 +452,22 @@ Manual verification tambahan hanya dilakukan jika CI gagal, terdapat mismatch at
 
 ## C4P6 — Approval Gate Before Commit and Push
 
-Setelah implementation dan testing selesai, **Kamu sebagai AI wajib berhenti dan meminta approval Ray sebelum melakukan commit atau push ke GitHub**.
+Setelah implementation dan testing selesai, **Kamu sebagai AI wajib berhenti dan meminta approval Ray sebelum perubahan dipersiapkan untuk commit dan push**.
 
-Commit dan push tidak boleh dilakukan sebelum Ray memberikan approval.
+Commit dan push adalah **Ray-owned terminal actions**.
 
-Setelah approval diberikan, urutan yang wajib diikuti adalah:
+Setelah Ray memberikan approval, Kamu sebagai AI wajib:
 
-```text
-Update Changelog
-↓
-Commit + Push
-↓
-Merge-Ready Verification
-↓
-Ray Merge
-```
+1. memastikan `/CHANGELOG.md` sudah diperbarui jika diwajibkan
+2. menentukan intended files yang termasuk scope
+3. menyiapkan exact terminal command untuk staging, commit, dan push
+4. memberikan command tersebut kepada Ray untuk dijalankan melalui terminal
+
+Command harus disesuaikan dengan actual repository state dan tidak boleh memasukkan unrelated changes.
+
+Setelah Ray menjalankan command, Kamu sebagai AI memverifikasi output hanya jika diperlukan sebelum melanjutkan ke CI, Pull Request, atau merge-ready verification.
+
+Kamu sebagai AI tidak melakukan commit atau push secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
 
 ## C4P7 — Ray-Owned Branch Creation
 
@@ -538,30 +536,35 @@ Jika tidak ada behavior baru, tidak ada behavior update atau Hermes handoff yang
 
 ## C4P9 — Synchronize The Document to GitHub
 
-Setiap perubahan The Document yang sudah disetujui wajib disinkronkan ke file tracked:
+Setelah perubahan The Document disetujui oleh Ray dan Hermes, isi canonical document harus disinkronkan ke repository.
 
-`Web1.0/Development-Rules.md`
+Hermes / Kamu sebagai AI bertanggung jawab untuk:
 
-Perubahan dilakukan melalui Git dan mengikuti branch serta workflow aktif.
+- menyiapkan content final The Document
+- memastikan Document Version benar
+- memastikan Web Version tidak berubah tanpa alasan development yang valid
+- mengidentifikasi intended file yang harus berubah
+- menyiapkan exact Git terminal commands
+- menggunakan documentation-only deploy-skip mechanism jika sesuai
 
-Jika update dilakukan pada task branch, versi tersebut dianggap sebagai **branch-local newer version** sampai merged ke `main`. Project-wide canonical version hanya berlaku setelah perubahan masuk ke `main`.
+Repository synchronization adalah **Ray-owned terminal action**.
 
-Sebelum melakukan synchronization, Kamu sebagai AI wajib:
+Ray menjalankan staging, commit, dan push melalui terminal.
 
-- Memeriksa current branch.
-- Memeriksa working tree.
-- Memastikan tidak menimpa existing work atau perubahan yang belum di-commit.
-- Memastikan Document Version sesuai dengan perubahan terbaru.
+Kamu sebagai AI tidak melakukan Git/GitHub write operation untuk document synchronization secara default.
 
-Untuk documentation-only update yang tidak membutuhkan website deployment, gunakan approved deploy-skip mechanism pada commit message, seperti `[skip netlify]` atau `[skip ci]`, sesuai konfigurasi repository.
+Sebelum memberikan command, verifikasi:
 
-Setelah push, Kamu sebagai AI wajib melaporkan:
+- branch yang benar sedang aktif
+- working tree tidak memiliki unrelated change yang akan ikut terbawa
+- current document version sesuai
+- intended files sudah jelas
 
-- Branch.
-- Commit hash.
-- Commit message.
-- File yang berubah.
-- Push status.
+Untuk documentation-only synchronization, gunakan commit message dengan deploy-skip marker jika sesuai, misalnya:
+
+`docs: sync Development-Rules vX.Y.Z [skip netlify]`
+
+Status synchronization baru boleh dinyatakan berhasil setelah output menunjukkan push sukses dan repository state terverifikasi.
 
 ## C4P10 — Sequential Execution / One-Step-at-a-Time Mode
 
@@ -576,26 +579,34 @@ Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling be
 
 Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
 
-## C4P11 — Pull Request, Merge-Ready & Merge Ownership
+## C4P11 — Git/GitHub Write Ownership, Pull Request & Merge-Ready
 
-Pull Request creation dan final merge adalah **Ray-owned terminal actions**. Kamu sebagai AI wajib menyiapkan exact `gh pr create` command dan exact merge command yang sesuai dengan actual repository dan Pull Request state. Kamu sebagai AI tidak membuat Pull Request atau melakukan merge secara default, kecuali Ray secara eksplisit meminta AI melakukan GitHub operation tersebut.
+GitHub Issue creation, branch creation, staging, commit, push, Pull Request creation, dan final merge adalah **Ray-owned terminal actions** secara default.
 
-Setelah Ray menjalankan command pembuatan Pull Request, Ray mengirimkan output atau PR URL/number kepada Kamu sebagai AI untuk verifikasi bila diperlukan. Final merge ke `main` tetap dilakukan oleh Ray melalui terminal setelah Merge-Ready Verification selesai.
+Kamu sebagai AI berperan sebagai command preparer dan verifier, bukan executor untuk Git/GitHub write operations, kecuali Ray secara eksplisit meminta execution.
 
-Sebelum menyatakan branch sebagai merge-ready, Kamu sebagai AI wajib memastikan:
+Setelah implementation selesai, testing / task-specific verification selesai, Ray sudah memberikan approval, `/CHANGELOG.md` sudah diperbarui jika diwajibkan, perubahan sudah committed dan pushed, serta CI telah PASS, Kamu sebagai AI wajib menyiapkan exact `gh pr create` command sesuai actual repository state.
+
+Setelah Ray menjalankan command pembuatan Pull Request, Ray mengirimkan output atau PR URL/number kepada Kamu sebagai AI untuk verification bila diperlukan.
+
+Sebelum menyatakan branch sebagai **Merge Ready**, Kamu sebagai AI wajib memastikan:
 
 - implementation selesai
 - testing / task-specific verification selesai
 - Ray sudah memberikan approval
-- `/CHANGELOG.md` sudah diperbarui
-- perubahan sudah committed dan pushed
+- `/CHANGELOG.md` sudah diperbarui jika diwajibkan
+- intended changes sudah committed dan pushed
 - CI telah PASS
 - Pull Request tersedia
 - working tree clean
-- local dan remote synced
+- local dan remote synchronized
 - tidak ada known conflict atau blocker
 
-Jika semua kondisi terpenuhi, Kamu sebagai AI harus menyatakan branch **Merge Ready**, menyiapkan exact merge command, dan menyerahkan execution final merge kepada Ray.
+Jika semua kondisi terpenuhi, Kamu sebagai AI menyatakan branch **Merge Ready** dan menyiapkan exact merge command.
+
+Final merge dilakukan oleh Ray melalui terminal.
+
+Kamu sebagai AI tidak melakukan final merge atau Git/GitHub write operation lain secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
 
 ---
 
@@ -1229,6 +1240,27 @@ Changed GitHub operational ownership to a terminal-first model to reduce tool ov
 
 **Previous Version:** v1.1.6
 **Current Version:** v1.1.7
+
+### v1.1.8 — 30 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- C3P1
+- C4P2
+- C4P6
+- C4P9
+- C4P11
+- Mandatory Development Workflow
+- C7P1
+
+**Summary:**
+Extended the terminal-first operating model so all Git and GitHub write operations are Ray-owned terminal actions by default, including staging, commit, push, Issue creation, branch creation, Pull Request creation, final merge, and documentation synchronization. Clarified the AI role as exact command preparer and verifier unless Ray explicitly requests direct execution, and aligned the mandatory workflow accordingly while preserving approval gates, CI, traceability, and repository safety.
+
+**Previous Version:** v1.1.7
+**Current Version:** v1.1.8
 
 ---
 
