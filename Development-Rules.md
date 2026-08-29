@@ -1,7 +1,7 @@
 # Development-Rules
 
-**Document Version:** v1.1.1
-**Web Version:** v1.0.0  
+**Document Version:** v1.1.2
+**Web Version:** v1.1.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
 **Description:** Soul Media Global Website adalah official company website sekaligus portfolio platform untuk menampilkan identitas, capability, selected works, case studies, dan positioning Soul Media Global sebagai IT consulting, digital transformation, creative, digital product, and technology company. Website ini dirancang sebagai pengalaman editorial yang premium, modern, art-directed, dan portfolio-led — bukan sekadar company profile atau agency template generik.
@@ -631,8 +631,10 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 
 ## C6P1 — Existing State
 
-- Current Web Version adalah **v1.0.0**.
-- Current production website ditetapkan sebagai official development baseline.
+- Current Web Version adalah **v1.1.0**.
+- CMS Database Foundation sudah merged ke `main` melalui PR #4.
+- Merge commit: `5b64c76ee52d156b79243f23fab08a687524118d`.
+- Implementation commit `dba54ae` sudah menjadi bagian dari `main`.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
 - Supabase project sudah dibuat dan repository sudah linked ke project tersebut.
 - CMS database foundation sudah diimplementasikan pada remote database dan diverifikasi.
@@ -642,9 +644,7 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Required indexes aktif.
 - `updated_at` triggers aktif.
 - `.env` dan `.env.*` di-ignore, sementara `.env.example` tetap dapat dilacak.
-- Implementation commit `dba54ae` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
-- Working tree bersih dan local branch sudah sinkron dengan remote branch.
-- `Web1.0/Development-Rules.md` menjadi canonical technical source of truth project-wide setelah merged ke `main`; versi pada task branch berstatus branch-local newer version.
+- `Web1.0/Development-Rules.md` sekarang menjadi canonical technical source of truth project-wide karena sudah tersedia di `main`.
 - Chapter 3 menjadi official development history setelah baseline.
 
 ## C6P2 — Pending Tasks
@@ -654,11 +654,10 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Media and storage implementation.
 - CMS Admin UI.
 - Frontend integration and migration to CMS-backed content.
-- Merge current task branch ke `main`, dilakukan manual oleh Ray setelah branch dinyatakan merge-ready.
 
 ## C6P3 — Active Work
 
-- None.
+None.
 
 ---
 
@@ -1112,6 +1111,25 @@ Synchronized Chapter 6 with the completed CMS Database Foundation implementation
 
 **Previous Version:** v1.1.0
 **Current Version:** v1.1.1
+
+### v1.1.2 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized the document with the post-merge project state after CMS Database Foundation was merged to `main` through PR #4 at merge commit `5b64c76ee52d156b79243f23fab08a687524118d`. Recorded implementation commit `dba54ae` as part of `main`, removed the completed merge task from Pending Tasks, confirmed Active Work as `None`, and synchronized the Web Version from v1.0.0 to v1.1.0.
+
+**Previous Version:** v1.1.1
+**Current Version:** v1.1.2
 
 ---
 
