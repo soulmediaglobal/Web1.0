@@ -99,6 +99,67 @@ Close the CMS Database Foundation task in Chapter 6, then create separate tasks 
 
 ---
 
+## [1.3.0] — 2026-08-30
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Established the authenticated CMS foundation with explicit Supabase authorization and a TailAdmin-based administrative UI shell while keeping the public website isolated and unchanged.
+
+### Changes
+
+- Added CMS email/password authentication using Supabase Auth.
+- Added explicit CMS authorization through the `public.cms_users` allowlist, separate from authentication.
+- Added active-admin membership verification for protected CMS access.
+- Added protected `/cms` and `/cms/login` routes.
+- Added persistent CMS sessions with isolated Supabase auth storage.
+- Added logout handling and authenticated unauthorized-user handling.
+- Added an Access Denied state for authenticated users without active CMS access.
+- Integrated TailAdmin React form primitives into the CMS login experience.
+- Added a responsive TailAdmin-style authenticated CMS shell with header and sidebar foundation.
+- Scoped TailAdmin styling to the CMS so public website styles and routes remain unaffected.
+- Kept dashboard widgets, CMS content CRUD, public signup, OAuth, password-reset UI, notifications, charts, calendars, maps, and other CMS features outside this release scope.
+
+### Files / Areas Affected
+
+- `src/auth/`
+- `src/cms/`
+- `src/pages/cms/`
+- `src/lib/supabaseCms.ts`
+- CMS routing in `src/App.tsx`
+- `supabase/migrations/`
+- `CHANGELOG.md`
+
+### Reason
+
+Provide the minimum secure authentication, authorization, and administrative interface foundation required before future CMS write-access and content-management capabilities are introduced.
+
+### Testing / Verification
+
+- Authorized CMS login and protected-route access passed.
+- Active-admin allowlist authorization passed.
+- Authenticated unauthorized-user access boundary passed.
+- Logout and session persistence passed.
+- CMS login smoke check passed without console errors or warnings.
+- Public homepage smoke check passed without console errors or warnings.
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed.
+- Build reports only a non-blocking bundle-size warning.
+
+### Next Action
+
+Synchronize project-state documentation, then proceed with Ray-owned commit and push followed by the GitHub CI quality gate.
+
+---
+
 ## [1.2.0] — 2026-08-29
 
 ### Status
