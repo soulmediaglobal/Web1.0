@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.22
+**Document Version:** v1.0.24
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -575,6 +575,12 @@ Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling be
 
 Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
 
+## C4P11 — Merge Approval & Ownership
+
+Kamu sebagai AI boleh menyiapkan merge, pull request, atau merge-ready state, tetapi tidak boleh merge task branch ke `main` tanpa approval eksplisit dari Ray.
+
+Tanpa approval tersebut, Kamu sebagai AI wajib berhenti pada branch atau pull request dan melaporkan statusnya. Setelah Ray memberikan approval eksplisit, Kamu sebagai AI boleh melakukan merge dan wajib melaporkan hasil merge.
+
 ---
 
 # Chapter 5 — Hand Over Rule
@@ -627,6 +633,9 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Public read policies aktif pada table yang sesuai.
 - Required indexes aktif.
 - `updated_at` triggers aktif.
+- `.env` dan `.env.*` di-ignore, sementara `.env.example` tetap dapat dilacak.
+- Commit `7091cc807de57037353ebf815fb70b1e7367785c` sudah di-push pada branch `2-cms-database-foundation-supabase-content-schema`.
+- Working tree bersih dan local branch sudah sinkron dengan remote branch.
 - `Web1.0/Development-Rules.md` menjadi canonical technical source of truth project-wide setelah merged ke `main`; versi pada task branch berstatus branch-local newer version.
 - Chapter 3 menjadi official development history setelah baseline.
 
@@ -636,11 +645,12 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - Write policies.
 - Media and storage implementation.
 - CMS Admin UI.
-- Frontend migration to CMS-backed content.
+- Frontend integration and migration to CMS-backed content.
+- Merge current task branch ke `main`, menunggu approval eksplisit dari Ray.
 
 ## C6P3 — Active Work
 
-- **CMS Database Foundation** — database foundation sudah diimplementasikan dan remote database sudah diverifikasi. Pada current repository state, tidak ada uncommitted database implementation file; task belum memiliki repository commit selain documentation branch setup dan masih memerlukan penyelesaian Git flow atau task closure sesuai approval gate.
+- **CMS Database Foundation** — implementation sudah selesai pada task branch. Hanya task closure dan merge governance yang masih tersisa; merge ke `main` tetap menunggu approval eksplisit dari Ray.
 
 ---
 
@@ -1003,3 +1013,38 @@ Added C2P4 — Hermes, Guardian of The Document, defining Hermes as the ChatGPT 
 
 **Previous Version:** v1.0.21
 **Current Version:** v1.0.22
+
+### v1.0.23 — 29 August 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Chapter 4
+- C4P11
+- C7P1
+
+**Summary:**
+Added C4P11 — Merge Approval & Ownership, allowing AI to prepare a merge, pull request, or merge-ready state while prohibiting merge to `main` without Ray's explicit approval. Required the AI to stop at the branch or pull request before approval and report the merge result after approval.
+
+**Previous Version:** v1.0.22
+**Current Version:** v1.0.23
+
+### v1.0.24 — 29 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- Chapter 6
+- C6P1
+- C6P2
+- C6P3
+- C7P1
+
+**Summary:**
+Synchronized Chapter 6 with the completed CMS Database Foundation state on the current task branch, including the verified remote schema and controls, environment-file protection, pushed commit, clean synchronized working tree, remaining CMS tasks, and merge governance. Clarified that the project-wide Web Version remains v1.0.0 until the task branch is merged to `main`.
+
+**Previous Version:** v1.0.23
+**Current Version:** v1.0.24
