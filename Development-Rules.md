@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.0.25
+**Document Version:** v1.1.0
 **Web Version:** v1.0.0  
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -1076,3 +1076,124 @@ Revised C4P11 so AI may prepare a pull request or merge-ready state but must nev
 
 **Previous Version:** v1.0.24
 **Current Version:** v1.0.25
+
+### v1.1.0 — 29 August 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Document Header
+- Chapter 8
+- C8P1–C8P10
+- C7P1
+
+**Summary:**
+Added Chapter 8 — Documentation Structure to define documentation purpose, canonical repository locations, PRD storage and its relationship to GitHub Issues, changelog and Development-Rules storage, handover and architecture documentation, file naming conventions, and documentation synchronization. Increased the Document Version from v1.0.25 to v1.1.0 because adding a new Chapter requires a MINOR version bump.
+
+**Previous Version:** v1.0.25
+**Current Version:** v1.1.0
+
+---
+
+# Chapter 8 — Documentation Structure
+
+## C8P1 — Documentation Purpose
+
+Setiap artefak development penting harus memiliki lokasi dokumentasi yang jelas di repository dan tidak boleh bergantung pada chat history sebagai satu-satunya sumber informasi.
+
+## C8P2 — Canonical Documentation Locations
+
+Lokasi canonical untuk dokumentasi utama di repository adalah:
+
+```text
+/Development-Rules.md
+/CHANGELOG.md
+/docs/prd/
+/docs/handover/
+/docs/architecture/
+```
+
+## C8P3 — PRD Storage
+
+Semua PRD lengkap disimpan di:
+
+```text
+/docs/prd/
+```
+
+Format nama file:
+
+```text
+<issue-number>-<short-feature-name>.md
+```
+
+Contoh:
+
+```text
+2-cms-database-foundation.md
+3-cms-authentication.md
+4-media-library.md
+```
+
+## C8P4 — PRD Relationship to GitHub Issue
+
+PRD adalah source lengkap untuk kebutuhan feature atau task. GitHub Issue hanya berisi versi ringkas dan actionable dari PRD.
+
+Issue Description boleh mencantumkan path PRD:
+
+```text
+PRD: docs/prd/2-cms-database-foundation.md
+```
+
+## C8P5 — Changelog Storage
+
+Website/development changelog disimpan di:
+
+```text
+/CHANGELOG.md
+```
+
+Isinya hanya perubahan yang sudah benar-benar terjadi pada website atau development.
+
+## C8P6 — Development-Rules Storage
+
+The Document disimpan sebagai:
+
+```text
+/Development-Rules.md
+```
+
+The Document mengikuti governance yang sudah diatur di Chapter 2.
+
+## C8P7 — Handover Documentation
+
+Handover antar-AI atau developer yang cukup besar dapat disimpan di:
+
+```text
+/docs/handover/
+```
+
+Handover penting tidak boleh hanya hidup di chat.
+
+## C8P8 — Architecture Documentation
+
+Dokumen teknis yang menjelaskan architecture, schema, flow, atau system design dapat disimpan di:
+
+```text
+/docs/architecture/
+```
+
+## C8P9 — File Naming Convention
+
+Nama file dokumentasi harus:
+
+- Singkat.
+- Deskriptif.
+- Lowercase.
+- Menggunakan kebab-case.
+- Tidak menggunakan penanda seperti `final`, `latest`, `new`, atau `fix`.
+
+## C8P10 — Documentation Sync Rule
+
+Dokumentasi harus ikut diperbarui ketika task selesai atau state project berubah signifikan. Dokumen yang stale harus diperbaiki sebelum task dinyatakan selesai.
