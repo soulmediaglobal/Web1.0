@@ -28,6 +28,8 @@ Added protected Team-only CMS management on the existing leadership content mode
 - Added active-admin RLS policies for selecting, inserting, and updating Team rows only; no Team delete policy or Founder write policy was introduced.
 - Used archived status as the non-destructive deactivation path and synchronized `published_at` when content enters or leaves published state.
 - Kept media entry URL/path-based because no Supabase Storage upload pipeline exists in the current repository.
+- Seeded the four existing sample Team profiles into `leadership` as published Team records so they are immediately editable through CMS.
+- Removed the hardcoded public Team fallback and registered the bundled sample portraits in the existing presentation media map, ensuring archive/unpublish actions are respected publicly.
 
 ### Files / Areas Affected
 
@@ -35,8 +37,11 @@ Added protected Team-only CMS management on the existing leadership content mode
 - `src/pages/cms/TeamPage.tsx`
 - `src/team/api.ts`
 - `src/team/types.ts`
+- `src/content/media.ts`
+- `src/pages/AboutPage.tsx`
 - `src/cms/tailadmin.css`
 - `supabase/migrations/20260831180000_add_team_cms_policies.sql`
+- `supabase/migrations/20260831190000_seed_sample_team_members.sql`
 - `CHANGELOG.md`
 
 ### Reason
@@ -55,7 +60,7 @@ Allow Ray and authorized CMS administrators to manage real Team content feeding 
 - The RLS migration must be applied to the intended Supabase project before Team CMS reads or writes will succeed.
 - Supabase Storage and media upload/replace/delete are not implemented; the form accepts an approved HTTP(S) URL or existing presentation media path.
 - End-to-end authenticated CMS and live public visibility checks require the migration and configured Supabase environment.
-- The four fictional public Team samples remain the empty-state fallback until at least one real Team profile is published.
+- The four seeded Team profiles remain fictional sample content and must eventually be replaced or archived through CMS when approved real Team data is ready.
 
 ### Next Action
 
