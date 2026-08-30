@@ -7,7 +7,8 @@ import { ContentState } from './ContentState';
 export function Leadership() {
   const sectionRef = useScrollProgress<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const { leadership: founders, status, error } = useContent();
+  const { leadership, status, error } = useContent();
+  const founders = leadership.filter(({ group }) => group === 'founder');
   const eyebrow = useSiteCopy('home.leadership.eyebrow', 'Founders');
   const title = useSiteCopy('home.leadership.title', 'Built by Operators,\nProduct Thinkers,\nand Technologists.');
   const description = useSiteCopy('home.leadership.description', 'Soul Media Global is led by founders with hands-on experience across business operations, digital products, and technology execution.');

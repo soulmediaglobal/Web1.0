@@ -7,7 +7,8 @@ export type CaseStudy = {
   systemPoints: SystemPoint[]; testimonial?: Testimonial
 }
 export type Solution = { id: string; key: string; num: string; numLabel: string; shortTitle: string; title: string; desc: string; chips: string[] }
-export type Leader = { id: string; number: string; name: string; role: string; description: string; image: string; imageAlt: string }
+export type PeopleGroup = 'founder' | 'team'
+export type Leader = { id: string; number: string; name: string; role: string; description: string; image: string; imageAlt: string; group: PeopleGroup; email?: string; linkedinUrl?: string }
 export type PageMetadata = { slug: string; title: string }
 export const siteContentKeys = [
   'shared.footer.tagline', 'shared.footer.practice', 'shared.footer.location',
