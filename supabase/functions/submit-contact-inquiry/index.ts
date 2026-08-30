@@ -7,8 +7,8 @@ const allowedServices = new Set([
   'cloud-platform',
   'challenging-project',
 ])
-const allowedBudgets = new Set(['tier1', 'tier2', 'tier3'])
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const phonePattern = /^[0-9+().\-\s]+$/
 
 const headers = {
   'Access-Control-Allow-Origin': Deno.env.get('PUBLIC_SITE_ORIGIN') ?? '*',
@@ -32,20 +32,23 @@ Deno.serve(async (request) => {
     return response({ error: 'Invalid request body.' }, 400)
   }
 
-  const identityTitle = typeof input.identityTitle === 'string' ? input.identityTitle.trim() : ''
+  const name = typeof input.name === 'string' ? input.name.trim() : ''
+  const phoneNumber = typeof input.phoneNumber === 'string' ? input.phoneNumber.trim() : ''
   const email = typeof input.email === 'string' ? input.email.trim().toLowerCase() : ''
   const organization = typeof input.organization === 'string' ? input.organization.trim() : ''
-  const budget = typeof input.budget === 'string' ? input.budget : ''
   const services = Array.isArray(input.services) ? input.services : []
+  const challengingProject = typeof input.challengingProject === 'string' ? input.challengingProject.trim() : ''
   const message = typeof input.message === 'string' ? input.message.trim() : ''
   const website = typeof input.website === 'string' ? input.website.trim() : ''
 
   if (website) return response({ accepted: true }, 202)
-  if (identityTitle.length < 2 || identityTitle.length > 120) return response({ error: 'Identity/title must be 2–120 characters.' }, 422)
+  if (name.length < 2 || name.length > 120) return response({ error: 'Name must be 2–120 characters.' }, 422)
+  if (phoneNumber.length < 5 || phoneNumber.length > 30 || !phonePattern.test(phoneNumber)) return response({ error: 'Enter a valid phone number.' }, 422)
   if (!emailPattern.test(email) || email.length > 254) return response({ error: 'Enter a valid email address.' }, 422)
   if (organization.length < 2 || organization.length > 160) return response({ error: 'Organization must be 2–160 characters.' }, 422)
-  if (budget && !allowedBudgets.has(budget)) return response({ error: 'Invalid budget selection.' }, 422)
   if (services.length > 5 || services.some((value) => typeof value !== 'string' || !allowedServices.has(value))) return response({ error: 'Invalid service selection.' }, 422)
+  if (services.includes('challenging-project') && (challengingProject.length < 5 || challengingProject.length > 1000)) return response({ error: 'Describe your challenging project in 5–1,000 characters.' }, 422)
+  if (!services.includes('challenging-project') && challengingProject) return response({ error: 'Challenging project details require the matching service selection.' }, 422)
   if (message.length < 20 || message.length > 5000) return response({ error: 'Briefing must be 20–5,000 characters.' }, 422)
 
   const url = Deno.env.get('SUPABASE_URL')
@@ -54,11 +57,12 @@ Deno.serve(async (request) => {
 
   const admin = createClient(url, serviceKey, { auth: { persistSession: false } })
   const { error } = await admin.from('contact_inquiries').insert({
-    identity_title: identityTitle,
+    name,
+    phone_number: phoneNumber,
     email,
     organization,
-    budget: budget || null,
     services,
+    challenging_project: challengingProject || null,
     message,
   })
 

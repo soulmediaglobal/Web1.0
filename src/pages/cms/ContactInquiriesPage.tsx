@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, Inbox } from 'lucide-react'
-import { budgetLabels, serviceLabels, type ContactInquiry, type InquiryStatus } from '../../contact/types'
+import { serviceLabels, type ContactInquiry, type InquiryStatus } from '../../contact/types'
 import { supabaseCms } from '../../lib/supabaseCms'
 import { Button } from '../../cms/components/Button'
 
@@ -45,15 +45,16 @@ export function ContactInquiriesPage() {
       <Button variant="outline" onClick={() => { setSelected(null); setError(null) }} startIcon={<ArrowLeft size={17} />}>Back to inquiries</Button>
       <div className="cms-detail-card">
         <div className="cms-detail-card__heading">
-          <div><p className="cms-eyebrow">Inquiry detail</p><h1>{selected.identity_title}</h1><p>{selected.organization}</p></div>
+          <div><p className="cms-eyebrow">Inquiry detail</p><h1>{selected.name ?? selected.identity_title ?? 'Unnamed inquiry'}</h1><p>{selected.organization}</p></div>
           <span className={`cms-status cms-status--${selected.status}`}>{selected.status}</span>
         </div>
         <dl className="cms-detail-grid">
           <div><dt>Email</dt><dd><a href={`mailto:${selected.email}`}>{selected.email}</a></dd></div>
+          <div><dt>Phone</dt><dd>{selected.phone_number ? <a href={`tel:${selected.phone_number}`}>{selected.phone_number}</a> : 'Not provided (legacy inquiry)'}</dd></div>
           <div><dt>Submitted</dt><dd>{formatDate(selected.created_at)}</dd></div>
-          <div><dt>Budget</dt><dd>{selected.budget ? budgetLabels[selected.budget] : 'Not specified'}</dd></div>
           <div><dt>Services</dt><dd>{selected.services.length ? selected.services.map((service) => serviceLabels[service] ?? service).join(', ') : 'Not specified'}</dd></div>
         </dl>
+        {selected.challenging_project ? <div className="cms-message"><h2>Challenging project</h2><p>{selected.challenging_project}</p></div> : null}
         <div className="cms-message"><h2>Briefing</h2><p>{selected.message}</p></div>
         <div className="cms-status-control">
           <label htmlFor="inquiry-status">Status</label>
@@ -76,7 +77,7 @@ export function ContactInquiriesPage() {
       {!loading && inquiries.length > 0 ? (
         <div className="cms-table-wrap"><table className="cms-table">
           <thead><tr><th>Sender / organization</th><th>Service / project type</th><th>Submitted</th><th>Status</th></tr></thead>
-          <tbody>{inquiries.map((inquiry) => <tr key={inquiry.id} onClick={() => setSelected(inquiry)} tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter') setSelected(inquiry) }}><td><strong>{inquiry.identity_title}</strong><span>{inquiry.organization}</span></td><td>{inquiry.services.length ? inquiry.services.map((service) => serviceLabels[service] ?? service).join(', ') : 'Not specified'}</td><td>{formatDate(inquiry.created_at)}</td><td><span className={`cms-status cms-status--${inquiry.status}`}>{inquiry.status}</span></td></tr>)}</tbody>
+          <tbody>{inquiries.map((inquiry) => <tr key={inquiry.id} onClick={() => setSelected(inquiry)} tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter') setSelected(inquiry) }}><td><strong>{inquiry.name ?? inquiry.identity_title ?? 'Unnamed inquiry'}</strong><span>{inquiry.organization}</span></td><td>{inquiry.services.length ? inquiry.services.map((service) => serviceLabels[service] ?? service).join(', ') : 'Not specified'}</td><td>{formatDate(inquiry.created_at)}</td><td><span className={`cms-status cms-status--${inquiry.status}`}>{inquiry.status}</span></td></tr>)}</tbody>
         </table></div>
       ) : null}
     </section>

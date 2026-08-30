@@ -6,7 +6,9 @@ Turn the existing public Contact Us form into a real inquiry flow where submitte
 
 ## Approved scope
 
-- Preserve identity/title, corporate email, organization, budget, service/project type, and briefing/message.
+- Structure the public form into User Data (name, phone number, email, and organization/company), Service, and Briefing Summary sections.
+- Preserve the existing five service choices. Require a project definition only when `Another Challenging Project` is selected, and omit it otherwise.
+- Retain legacy identity/title and budget values in storage for existing-record readability, but do not collect them in new public submissions.
 - Add client and server validation plus loading, success, and error states.
 - Store inquiries in `contact_inquiries`, defaulting to `new` and allowing only `new`, `contacted`, or `closed`.
 - Prevent public read/update access and use a secure public write boundary without browser-exposed privileged credentials.

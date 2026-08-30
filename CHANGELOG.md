@@ -6,6 +6,61 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.4.1] — 2026-08-30
+
+### Status
+
+Implementation Complete / Merge-Ready Candidate
+
+### Category
+
+Changed / Content
+
+### Summary
+
+Simplified the public Contact Us form into clearer user-data, service, and briefing sections while preserving the Issue #10 security and CMS workflow.
+
+### Changes
+
+- Replaced identity/title and budget inputs with dedicated name and phone-number fields.
+- Kept the five existing service choices unchanged and added a conditional required project-definition field for `Another Challenging Project`.
+- Added matching server validation and safe data mapping for all new submission fields.
+- Added backward-compatible database columns while retaining legacy identity/title and budget values for existing inquiries.
+- Updated CMS inquiry display to show the new contact details and project definition with legacy-name fallback.
+
+### Files / Areas Affected
+
+- `src/pages/ContactPage.tsx`
+- `src/contact/`
+- `src/pages/cms/ContactInquiriesPage.tsx`
+- `supabase/functions/submit-contact-inquiry/`
+- `supabase/migrations/`
+- Contact inquiry PRD and architecture documentation
+
+### Reason
+
+Make the inquiry form easier to understand and complete, particularly for Indonesian users, without expanding the approved Phase 1 workflow.
+
+### Testing / Verification
+
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- `git diff --check` passed.
+- Responsive Contact checks passed at 390px and 1440px without horizontal overflow or browser console warnings/errors.
+- Verified all five unchanged service choices, conditional required behavior, and clearing the challenging-project value when deselected.
+- Deployed the compatible migration and updated Edge Function to the linked Supabase project.
+- Deployed server validation returned HTTP 422 for missing name, invalid phone, missing required challenging-project detail, and orphaned detail without its matching service.
+
+### Known Issues
+
+The final production submission and authorized CMS smoke checks still require live access and approved test data.
+
+### Next Action
+
+Confirm task-branch CI, then complete one successful production submission and the authorized CMS list/detail/status smoke test before merge approval.
+
+---
+
 ## [1.4.0] — 2026-08-30
 
 ### Status

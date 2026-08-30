@@ -1,11 +1,12 @@
 import { supabase, supabaseConfigurationError } from '../lib/supabase'
 
 export type ContactSubmission = {
-  identityTitle: string
+  name: string
+  phoneNumber: string
   email: string
   organization: string
-  budget: string
   services: string[]
+  challengingProject: string
   message: string
   website: string
 }
