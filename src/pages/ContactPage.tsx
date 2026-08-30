@@ -1,26 +1,48 @@
 import React, { useState } from 'react';
+import { submitContactInquiry } from '../contact/api';
 
 export const ContactPage: React.FC = () => {
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
+  const [challengingProject, setChallengingProject] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const toggleDomain = (domain: string) => {
-    setSelectedDomains(prev =>
-      prev.includes(domain)
-        ? prev.filter(item => item !== domain)
-        : [...prev, domain]
-    );
+    setSelectedDomains(prev => {
+      const isRemoving = prev.includes(domain);
+      if (domain === 'challenging-project' && isRemoving) setChallengingProject('');
+      return isRemoving ? prev.filter(item => item !== domain) : [...prev, domain];
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(null);
     setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    try {
+      await submitContactInquiry({
+        name: String(data.get('name') ?? ''),
+        phoneNumber: String(data.get('phoneNumber') ?? ''),
+        email: String(data.get('email') ?? ''),
+        organization: String(data.get('organization') ?? ''),
+        services: selectedDomains,
+        challengingProject: selectedDomains.includes('challenging-project') ? challengingProject : '',
+        message: String(data.get('message') ?? ''),
+        website: String(data.get('website') ?? ''),
+      });
+      form.reset();
+      setSelectedDomains([]);
+      setChallengingProject('');
       setSubmitSuccess(true);
-    }, 2000);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to submit your inquiry right now.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -59,7 +81,7 @@ export const ContactPage: React.FC = () => {
                   <span className="font-mono text-xs text-[#D0190F] uppercase tracking-widest">[ TRANSMISSION COMPLETE ]</span>
                   <h3 className="font-['Bebas_Neue'] text-4xl text-white uppercase">Inquiry Received</h3>
                   <p className="font-sans text-sm text-gray-300 max-w-md">
-                    Our Security Operations & Enterprise Engagement team will review your briefing. An SLA initial response will be transmitted within 24 hours.
+                    Thank you. Our team will review your briefing and respond through the contact details provided.
                   </p>
                   <button 
                     onClick={() => setSubmitSuccess(false)}
@@ -70,62 +92,86 @@ export const ContactPage: React.FC = () => {
                 </div>
               ) : (
                 <form className="flex flex-col gap-8 w-full" onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+                    <label htmlFor="website">Website</label>
+                    <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  </div>
+                  <fieldset className="flex flex-col gap-6">
+                    <legend className="mb-1 font-['Bebas_Neue'] text-2xl text-white uppercase tracking-wide">User Data</legend>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
-                      <label className="font-mono text-xs text-gray-400 uppercase">
-                        Executive Identity / Title *
+                      <label htmlFor="name" className="font-mono text-xs text-gray-400 uppercase">
+                        Name *
                       </label>
                       <input 
+                        id="name"
+                        name="name"
                         className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600" 
-                        placeholder="J. Doe, VP Engineering" 
+                        placeholder="Your full name"
                         required 
+                        minLength={2}
+                        maxLength={120}
+                        autoComplete="name"
                         type="text"
                       />
                     </div>
-                    
+
                     <div className="flex flex-col gap-2">
-                      <label className="font-mono text-xs text-gray-400 uppercase">
-                        Corporate E-Mail *
+                      <label htmlFor="phoneNumber" className="font-mono text-xs text-gray-400 uppercase">
+                        Phone Number *
+                      </label>
+                      <input
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600"
+                        placeholder="+62 812 3456 7890"
+                        required
+                        minLength={5}
+                        maxLength={30}
+                        autoComplete="tel"
+                        type="tel"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="email" className="font-mono text-xs text-gray-400 uppercase">
+                        Email *
                       </label>
                       <input 
+                        id="email"
+                        name="email"
                         className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600" 
-                        placeholder="j.doe@enterprise.com" 
+                        placeholder="name@company.com"
                         required 
+                        maxLength={254}
+                        autoComplete="email"
                         type="email"
                       />
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
-                      <label className="font-mono text-xs text-gray-400 uppercase">
-                        Organization Name *
+                      <label htmlFor="organization" className="font-mono text-xs text-gray-400 uppercase">
+                        Organization / Company *
                       </label>
                       <input 
+                        id="organization"
+                        name="organization"
                         className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600" 
                         placeholder="Global Corp Ltd." 
                         required 
+                        minLength={2}
+                        maxLength={160}
+                        autoComplete="organization"
                         type="text"
                       />
                     </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <label className="font-mono text-xs text-gray-400 uppercase">
-                        Capital Allocation Range
-                      </label>
-                      <select className="w-full bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all cursor-pointer">
-                        <option className="bg-[#131313] text-gray-400" value="">Select Range</option>
-                        <option className="bg-[#131313]" value="tier1">&lt; $10,000 USD</option>
-                        <option className="bg-[#131313]" value="tier2">$10,000 - $50,000 USD</option>
-                        <option className="bg-[#131313]" value="tier3">$50,000+ USD (Enterprise)</option>
-                      </select>
-                    </div>
                   </div>
+                  </fieldset>
 
-                  <div className="flex flex-col gap-3">
-                    <label className="font-mono text-xs text-gray-400 uppercase">
+                  <fieldset className="flex flex-col gap-3">
+                    <legend className="mb-1 font-['Bebas_Neue'] text-2xl text-white uppercase tracking-wide">Service</legend>
+                    <span className="font-mono text-xs text-gray-400 uppercase">
                       Service (Select Multiple)
-                    </label>
+                    </span>
                     <div className="flex flex-wrap gap-3">
                       {[
                         { id: 'strategy-product', label: 'Digital Strategy & Product Architecture' },
@@ -140,6 +186,7 @@ export const ContactPage: React.FC = () => {
                             type="button"
                             key={domain.id}
                             onClick={() => toggleDomain(domain.id)}
+                            aria-pressed={isSelected}
                             className={`px-5 py-3 border font-mono text-xs uppercase transition-all cursor-pointer ${
                               isSelected
                                 ? 'bg-[#D0190F]/20 border-[#D0190F] text-[#D0190F]'
@@ -151,25 +198,55 @@ export const ContactPage: React.FC = () => {
                         );
                       })}
                     </div>
-                  </div>
+                    {selectedDomains.includes('challenging-project') ? (
+                      <div className="flex flex-col gap-2 pt-2">
+                        <label htmlFor="challengingProject" className="font-mono text-xs text-gray-400 uppercase">
+                          Define Your Challenging Project *
+                        </label>
+                        <textarea
+                          id="challengingProject"
+                          name="challengingProject"
+                          value={challengingProject}
+                          onChange={(event) => setChallengingProject(event.target.value)}
+                          className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all min-h-[120px] resize-y placeholder-gray-600"
+                          placeholder="Tell us what you would like to build or solve..."
+                          required
+                          minLength={5}
+                          maxLength={1000}
+                        />
+                      </div>
+                    ) : null}
+                  </fieldset>
 
-                  <div className="flex flex-col gap-2">
+                  <fieldset className="flex flex-col gap-2">
+                    <legend className="mb-1 font-['Bebas_Neue'] text-2xl text-white uppercase tracking-wide">Briefing Summary</legend>
                     <label className="font-mono text-xs text-gray-400 uppercase">
-                      Briefing Summary *
+                      Project Briefing / Message *
                     </label>
                     <textarea 
+                      id="message"
+                      name="message"
                       className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all min-h-[160px] resize-y placeholder-gray-600" 
-                      placeholder="Detail the core objectives, existing tech stack, and primary constraints..." 
+                      placeholder="Tell us about your goals, current situation, and what support you need..."
                       required
+                      minLength={20}
+                      maxLength={5000}
                     ></textarea>
-                  </div>
+                  </fieldset>
+
+                  {submitError ? (
+                    <p className="border border-red-500/60 bg-red-500/10 p-4 font-sans text-sm text-red-200" role="alert">
+                      {submitError}
+                    </p>
+                  ) : null}
 
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-white/10">
                     <p className="font-mono text-[10px] text-gray-400 uppercase max-w-xs leading-relaxed">
-                      🔒 All inquiries are bound by standard NDA and enterprise confidentiality protocols.
+                      Your information is used only to review and respond to this inquiry.
                     </p>
                     <button 
                       disabled={isSubmitting}
+                      aria-busy={isSubmitting}
                       className="w-full sm:w-auto px-10 py-4 bg-[#D0190F] text-white font-mono text-xs uppercase tracking-widest hover:bg-[#a0130b] transition-all shadow-xl flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50" 
                       type="submit"
                     >
@@ -186,10 +263,10 @@ export const ContactPage: React.FC = () => {
               <div className="bg-[#1c1b1b] p-8 flex flex-col gap-4 border-t-2 border-[#D0190F] shadow-xl border-x border-b border-white/10">
                 <span className="font-mono text-xs text-[#D0190F] uppercase tracking-widest">// SECURITY ASSURANCE</span>
                 <h3 className="font-['Bebas_Neue'] text-3xl text-white uppercase leading-none">
-                  Zero-Trust Data Protocol
+                  Confidential Inquiry Channel
                 </h3>
                 <p className="font-sans text-sm text-gray-400 leading-relaxed">
-                  All submitted documentation is encrypted at rest. Guaranteed SLA initial response within <strong className="text-white">24 Hours</strong> for enterprise tier requests.
+                  Your inquiry is stored in our secured operations system and is available only to authorized CMS administrators.
                 </p>
               </div>
 
