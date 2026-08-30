@@ -6,6 +6,52 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.4.3] — 2026-08-30
+
+### Status
+
+Implementation Complete
+
+### Category
+
+Changed
+
+### Summary
+
+Refined the Contact Us country calling-code control to keep the selected state compact and clarify local-number entry.
+
+### Changes
+
+- Displayed only the selected country flag and calling code beside the phone field while retaining country names in the option list.
+- Added concise helper text telling users not to enter the selected country code again.
+- Preserved the existing digits-only behavior, validation, submission payload, and responsive form structure.
+
+### Files / Areas Affected
+
+- `src/pages/ContactPage.tsx`
+- `src/contact/countryCallingCodes.ts`
+
+### Reason
+
+Prevent long country names from truncating the phone input layout and reduce duplicate country-code entry.
+
+### Testing / Verification
+
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- `git diff --check` passed.
+- Responsive Contact checks passed at 390px and 1440px with no horizontal overflow; the selector remained compact and the adjacent phone input retained usable width.
+
+### Known Issues
+
+None.
+
+### Next Action
+
+Complete verification, commit, push, and confirm CI on the Issue #12 branch. Do not merge to `main`.
+
+---
+
 ## [1.4.2] — 2026-08-30
 
 ### Status

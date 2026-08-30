@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { submitContactInquiry } from '../contact/api';
-import { countryCallingCodes, sanitizePhoneDigits } from '../contact/countryCallingCodes';
+import { countryCallingCodes, regionToFlag, sanitizePhoneDigits } from '../contact/countryCallingCodes';
 
 export const ContactPage: React.FC = () => {
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
   const [challengingProject, setChallengingProject] = useState('');
+  const [phoneCountry, setPhoneCountry] = useState({ option: 'ID-62', region: 'ID', code: '62' });
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -28,7 +29,7 @@ export const ContactPage: React.FC = () => {
     try {
       await submitContactInquiry({
         name: String(data.get('name') ?? ''),
-        phoneCountryCode: String(data.get('phoneCountryCode') ?? ''),
+        phoneCountryCode: phoneCountry.code,
         phoneNumber: String(data.get('phoneNumber') ?? ''),
         email: String(data.get('email') ?? ''),
         organization: String(data.get('organization') ?? ''),
@@ -40,6 +41,7 @@ export const ContactPage: React.FC = () => {
       form.reset();
       setSelectedDomains([]);
       setChallengingProject('');
+      setPhoneCountry({ option: 'ID-62', region: 'ID', code: '62' });
       setPhoneNumber('');
       setSubmitSuccess(true);
     } catch (error) {
@@ -124,24 +126,44 @@ export const ContactPage: React.FC = () => {
                       <label htmlFor="phoneNumber" className="font-mono text-xs text-gray-400 uppercase">
                         Phone Number *
                       </label>
-                      <div className="grid min-w-0 grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-2">
-                        <select
-                          id="phoneCountryCode"
-                          name="phoneCountryCode"
-                          aria-label="Country calling code"
-                          className="min-w-0 bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all"
-                          required
-                          defaultValue="62"
-                          autoComplete="tel-country-code"
-                        >
-                          {countryCallingCodes.map(({ region, name, code }, index) => (
-                            <option key={`${region}-${code}-${index}`} value={code}>{name} (+{code})</option>
-                          ))}
-                        </select>
+                      <div className="flex min-w-0 gap-2">
+                        <div className="relative w-[8.25rem] shrink-0 bg-[#131313] border border-white/10 focus-within:border-[#D0190F] transition-all">
+                          <span aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center gap-2 px-4 pr-9 text-sm text-white font-sans">
+                            <span>{regionToFlag(phoneCountry.region)}</span>
+                            <span>+{phoneCountry.code}</span>
+                          </span>
+                          <select
+                            id="phoneCountryCode"
+                            name="phoneCountryOption"
+                            aria-label="Country calling code"
+                            className="relative z-10 h-full w-full cursor-pointer appearance-none bg-transparent p-4 pr-9 text-sm text-transparent font-sans focus:outline-none"
+                            required
+                            value={phoneCountry.option}
+                            autoComplete="tel-country-code"
+                            onChange={(event) => {
+                              const option = event.target.selectedOptions[0];
+                              setPhoneCountry({
+                                option: option.value,
+                                region: option.dataset.region ?? 'ID',
+                                code: option.dataset.code ?? '62',
+                              });
+                            }}
+                          >
+                            {countryCallingCodes.map(({ region, name, code }, index) => (
+                              <option className="bg-white text-black" data-code={code} data-region={region} key={`${region}-${code}-${index}`} value={`${region}-${code}`}>
+                                {regionToFlag(region)} +{code} — {name}
+                              </option>
+                            ))}
+                          </select>
+                          <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="pointer-events-none absolute right-3 top-1/2 z-20 h-4 w-4 -translate-y-1/2 text-gray-500">
+                            <path fillRule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                         <input
                           id="phoneNumber"
                           name="phoneNumber"
-                          className="min-w-0 bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600"
+                          aria-describedby="phoneNumberHelp"
+                          className="min-w-0 flex-1 bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600"
                           placeholder="81234567890"
                           required
                           minLength={4}
@@ -154,6 +176,9 @@ export const ContactPage: React.FC = () => {
                           onChange={(event) => setPhoneNumber(sanitizePhoneDigits(event.target.value))}
                         />
                       </div>
+                      <p id="phoneNumberHelp" className="font-sans text-xs leading-relaxed text-gray-500">
+                        Country code is already selected. Enter the rest of your phone number only.
+                      </p>
                     </div>
 
                     <div className="flex flex-col gap-2">

@@ -73,4 +73,7 @@ export const countryCallingCodes: CountryCallingCode[] = [
 
 export const allowedCountryCallingCodes = new Set(countryCallingCodes.map(({ code }) => code))
 
+export const regionToFlag = (region: string) =>
+  String.fromCodePoint(...region.toUpperCase().split('').map(character => 127397 + character.charCodeAt(0)))
+
 export const sanitizePhoneDigits = (value: string) => value.replace(/[^0-9]/g, '')
