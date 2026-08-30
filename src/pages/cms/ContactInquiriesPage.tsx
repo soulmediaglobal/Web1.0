@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, Inbox } from 'lucide-react'
-import { serviceLabels, type ContactInquiry, type InquiryStatus } from '../../contact/types'
+import { formatInquiryPhone, serviceLabels, type ContactInquiry, type InquiryStatus } from '../../contact/types'
 import { supabaseCms } from '../../lib/supabaseCms'
 import { Button } from '../../cms/components/Button'
 
@@ -50,7 +50,7 @@ export function ContactInquiriesPage() {
         </div>
         <dl className="cms-detail-grid">
           <div><dt>Email</dt><dd><a href={`mailto:${selected.email}`}>{selected.email}</a></dd></div>
-          <div><dt>Phone</dt><dd>{selected.phone_number ? <a href={`tel:${selected.phone_number}`}>{selected.phone_number}</a> : 'Not provided (legacy inquiry)'}</dd></div>
+          <div><dt>Phone</dt><dd>{formatInquiryPhone(selected) ? <a href={`tel:${formatInquiryPhone(selected)}`}>{formatInquiryPhone(selected)}</a> : 'Not provided (legacy inquiry)'}</dd></div>
           <div><dt>Submitted</dt><dd>{formatDate(selected.created_at)}</dd></div>
           <div><dt>Services</dt><dd>{selected.services.length ? selected.services.map((service) => serviceLabels[service] ?? service).join(', ') : 'Not specified'}</dd></div>
         </dl>
