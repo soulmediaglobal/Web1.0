@@ -6,6 +6,63 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.4.2] — 2026-08-30
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Changed / Security / Infrastructure
+
+### Summary
+
+Improved Contact Us phone and email validation with a separate country calling-code field, normalized CMS dialing values, and backward-compatible inquiry storage.
+
+### Changes
+
+- Added a dependency-free comprehensive country and territory calling-code selector before the local phone field.
+- Restricted the local phone field to digits and aligned browser/server phone length constraints.
+- Added matching client/server domain-bearing email validation.
+- Persisted `phone_country_code` separately from `phone_number` through an additive nullable column.
+- Extended the immutable-inquiry trigger to protect the new country-code field.
+- Rendered new CMS inquiry phones as `+<country-code><digits>` while retaining stored legacy phone rendering.
+- Preserved the existing CORS, RLS, service-role write boundary, Contact layout, and CMS status workflow.
+
+### Files / Areas Affected
+
+- `src/pages/ContactPage.tsx`
+- `src/contact/`
+- `src/pages/cms/ContactInquiriesPage.tsx`
+- `supabase/functions/submit-contact-inquiry/`
+- `supabase/migrations/20260830190000_add_contact_inquiry_country_code.sql`
+- `docs/architecture/contact-inquiry-flow.md`
+
+### Reason
+
+Capture an explicit international calling code and a clean local phone value without rewriting legacy inquiry data or weakening the existing inquiry security boundary.
+
+### Testing / Verification
+
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- `git diff --check` passed.
+- Client sanitization removed letters and formatting characters from phone input; malformed domain-less email input failed browser validation.
+- Deployed Edge Function returned HTTP 422 for non-digit phone input, an invalid country calling code, and malformed email, and HTTP 201 for a valid payload.
+- Responsive Contact checks passed at 390px and 1440px with no horizontal overflow or browser console warnings/errors.
+- Applied the additive migration and deployed the updated Edge Function to the linked Supabase project.
+
+### Known Issues
+
+- The successful deployment validation created one inquiry labeled `Issue 12 Validation Test` for authorized CMS review.
+
+### Next Action
+
+Commit and push the approved task branch, then confirm GitHub CI status. Do not merge to `main`.
+
+---
+
 ## [1.4.1] — 2026-08-30
 
 ### Status

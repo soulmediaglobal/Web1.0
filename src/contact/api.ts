@@ -2,6 +2,7 @@ import { supabase, supabaseConfigurationError } from '../lib/supabase'
 
 export type ContactSubmission = {
   name: string
+  phoneCountryCode: string
   phoneNumber: string
   email: string
   organization: string

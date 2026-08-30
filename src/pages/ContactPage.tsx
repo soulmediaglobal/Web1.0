@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { submitContactInquiry } from '../contact/api';
+import { countryCallingCodes, sanitizePhoneDigits } from '../contact/countryCallingCodes';
 
 export const ContactPage: React.FC = () => {
   const [selectedDomains, setSelectedDomains] = useState<string[]>([]);
   const [challengingProject, setChallengingProject] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -26,6 +28,7 @@ export const ContactPage: React.FC = () => {
     try {
       await submitContactInquiry({
         name: String(data.get('name') ?? ''),
+        phoneCountryCode: String(data.get('phoneCountryCode') ?? ''),
         phoneNumber: String(data.get('phoneNumber') ?? ''),
         email: String(data.get('email') ?? ''),
         organization: String(data.get('organization') ?? ''),
@@ -37,6 +40,7 @@ export const ContactPage: React.FC = () => {
       form.reset();
       setSelectedDomains([]);
       setChallengingProject('');
+      setPhoneNumber('');
       setSubmitSuccess(true);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Unable to submit your inquiry right now.');
@@ -116,21 +120,40 @@ export const ContactPage: React.FC = () => {
                       />
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex min-w-0 flex-col gap-2">
                       <label htmlFor="phoneNumber" className="font-mono text-xs text-gray-400 uppercase">
                         Phone Number *
                       </label>
-                      <input
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        className="bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600"
-                        placeholder="+62 812 3456 7890"
-                        required
-                        minLength={5}
-                        maxLength={30}
-                        autoComplete="tel"
-                        type="tel"
-                      />
+                      <div className="grid min-w-0 grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-2">
+                        <select
+                          id="phoneCountryCode"
+                          name="phoneCountryCode"
+                          aria-label="Country calling code"
+                          className="min-w-0 bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all"
+                          required
+                          defaultValue="62"
+                          autoComplete="tel-country-code"
+                        >
+                          {countryCallingCodes.map(({ region, name, code }, index) => (
+                            <option key={`${region}-${code}-${index}`} value={code}>{name} (+{code})</option>
+                          ))}
+                        </select>
+                        <input
+                          id="phoneNumber"
+                          name="phoneNumber"
+                          className="min-w-0 bg-[#131313] p-4 text-sm text-white font-sans focus:outline-none focus:border-[#D0190F] border border-white/10 transition-all placeholder-gray-600"
+                          placeholder="81234567890"
+                          required
+                          minLength={4}
+                          maxLength={14}
+                          inputMode="numeric"
+                          pattern="[0-9]+"
+                          autoComplete="tel-national"
+                          type="text"
+                          value={phoneNumber}
+                          onChange={(event) => setPhoneNumber(sanitizePhoneDigits(event.target.value))}
+                        />
+                      </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -144,6 +167,7 @@ export const ContactPage: React.FC = () => {
                         placeholder="name@company.com"
                         required 
                         maxLength={254}
+                        pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                         autoComplete="email"
                         type="email"
                       />

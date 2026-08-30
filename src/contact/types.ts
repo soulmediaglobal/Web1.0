@@ -4,6 +4,7 @@ export type ContactInquiry = {
   id: string
   identity_title: string | null
   name: string | null
+  phone_country_code: string | null
   phone_number: string | null
   email: string
   organization: string
@@ -14,6 +15,11 @@ export type ContactInquiry = {
   status: InquiryStatus
   created_at: string
   updated_at: string
+}
+
+export function formatInquiryPhone(inquiry: Pick<ContactInquiry, 'phone_country_code' | 'phone_number'>) {
+  if (!inquiry.phone_number) return null
+  return inquiry.phone_country_code ? `+${inquiry.phone_country_code}${inquiry.phone_number}` : inquiry.phone_number
 }
 
 export const serviceLabels: Record<string, string> = {
