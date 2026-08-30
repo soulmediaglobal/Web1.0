@@ -6,6 +6,56 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.4.4] — 2026-08-31
+
+### Status
+
+Implementation Complete
+
+### Category
+
+Fixed / Infrastructure
+
+### Summary
+
+Added Netlify SPA fallback routing so direct navigation and refresh requests resolve through the React application instead of returning Netlify's static 404 page.
+
+### Changes
+
+- Added the Netlify rewrite `/*  /index.html  200` as a Vite public asset so it is included in every production build.
+- Preserved the original browser URL and delegated route handling to the existing React Router configuration.
+- Left public routes, CMS authentication and authorization, Supabase integrations, Contact Inquiries, and Contact Us behavior unchanged.
+
+### Files / Areas Affected
+
+- `public/_redirects`
+
+### Reason
+
+Netlify previously treated direct `/cms` and nested CMS requests as static file paths, causing its Page Not Found response before React Router could load.
+
+### Testing / Verification
+
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning, and the generated `dist/_redirects` contains the intended rewrite.
+- `git diff --check` passed.
+- Production-like local preview returned the React CMS login route on direct `/cms/login` navigation and refresh; direct `/cms` navigation reached the existing protected-route redirect to `/cms/login`.
+- Public homepage navigation and initially loaded assets rendered successfully; browser checks reported no routing errors, warnings, or console errors.
+- Live production inspection confirmed that `/cms` and `/cms/login` currently return Netlify `404` responses until this branch is deployed.
+- TLS inspection confirmed that `soulmedia.id` currently serves Netlify's `*.netlify.app` certificate, which does not cover the custom domain.
+- DNS inspection found no blocking `AAAA` or `CAA` records, but the apex and `www` resolve to `52.74.6.109` and `13.215.239.219` instead of Netlify's current standard load-balancer target.
+
+### Known Issues
+
+- Netlify certificate provisioning could not be triggered safely because the available Netlify browser session is not authenticated.
+- The authoritative NS1/Netlify-managed DNS and custom-domain assignment must be reviewed in the owning Netlify account before replacing records or provisioning the certificate.
+
+### Next Action
+
+Push the Issue #14 branch, verify CI and its deploy preview, then have the Netlify account owner correct the production-domain DNS target and provision the managed certificate before merge approval.
+
+---
+
 ## [1.4.3] — 2026-08-30
 
 ### Status
