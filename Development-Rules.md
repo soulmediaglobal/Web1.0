@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.9
+**Document Version:** v1.1.10
 **Web Version:** v1.3.0
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -155,7 +155,9 @@ Architecture harus cukup untuk mencegah broad write access atau insecure authent
 
 > No undocumented change should be pushed to the repository.
 
-Setiap notable development change yang masuk repository harus dicatat di `/CHANGELOG.md` sebelum commit dan push. Catat apa dan kenapa berubah, area/file terdampak, hasil, testing, known issue, dan follow-up. Git history tidak menggantikan `/CHANGELOG.md`.
+Setiap notable development change yang masuk repository harus dicatat di `/CHANGELOG.md` sebelum commit dan push. Setiap entry harus outcome-focused dan cukup mencatat apa yang berubah, kenapa berubah, area/file utama yang terdampak, security atau compatibility implication yang penting, hasil verification utama, serta known issue atau next action jika ada. Git history tidak menggantikan `/CHANGELOG.md`.
+
+`/CHANGELOG.md` bukan complete QA transcript, full debugging history, terminal execution log, atau exhaustive test permutation list. Detail implementation tetap berada di GitHub Issue, Pull Request, commit, PRD, atau architecture documentation yang relevan. Dengan pembagian ini, setiap actual change tetap traceable tanpa menduplikasi seluruh execution history.
 
 Mandatory development workflow:
 
@@ -273,6 +275,15 @@ Untuk feature baru, PRD wajib menyebutkan **Target Persona** secara eksplisit.
 
 PRD tidak boleh terlalu panjang atau dipenuhi diskusi yang belum final.
 
+Untuk perubahan kecil dan low-risk, PRD boleh menggunakan **Micro-PRD** yang hanya memuat:
+
+- Objective
+- Scope
+- Acceptance Criteria
+- Out of Scope, hanya jika diperlukan
+
+Full PRD tetap digunakan untuk feature baru, schema/database change, authentication/security, infrastructure, multi-area change, significant UX behavior, atau perubahan lain dengan risk atau affected surface yang material. Target Persona tetap wajib untuk feature baru.
+
 ### GitHub Issue
 
 Setelah PRD disepakati, bagian PRD yang relevan untuk execution dipadatkan menjadi GitHub Issue.
@@ -383,7 +394,12 @@ Kamu sebagai AI bertanggung jawab untuk:
 
 Kamu sebagai AI tidak melakukan Git/GitHub write operation secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
 
+Setelah Ray memberikan approval, beberapa Git/GitHub write command boleh disiapkan dalam satu **safe execution batch** jika seluruh command low-risk, tidak destructive, tidak membutuhkan intermediate judgment, dan failure tidak membuat repository state ambigu. Ray tidak perlu mengirim output setiap sub-step jika batch selesai tanpa error.
+
+Verification tambahan hanya diminta ketika command gagal, repository state mismatch, unrelated files terdeteksi, conflict muncul, atau hasil satu step memengaruhi dependent decision berikutnya.
+
 Tujuannya adalah mengurangi tool overhead, context switching, latency, dan token usage tanpa mengurangi repository safety, traceability, atau ownership.
+
 ## C4P3 — Conditional Chapter 6 Update
 
 Chapter 6 diperbarui hanya ketika milestone atau high-level project state berubah secara material, atau ketika Ray memintanya secara eksplisit. Normal task yang tidak mengubah state tersebut tidak membutuhkan Chapter 6 update.
@@ -421,7 +437,7 @@ Hermes pada poin ini secara eksplisit merujuk kepada **Guardian of The Document*
 
 ## C4P5 — Repository Verification & Automated Quality Gate
 
-Repository verification dilakukan pada dua checkpoint utama.
+Repository verification dilakukan secara proportional terhadap risk dan affected surface pada dua checkpoint utama. Verification harus mencakup area yang benar-benar terdampak tanpa menjalankan ritual atau test permutation yang tidak relevan.
 
 ### Pre-Work Checkpoint
 
@@ -446,9 +462,9 @@ npm run lint
 npm run build
 ```
 
-CI menjadi objective technical gate untuk memastikan branch tidak memiliki dependency, lint, atau build failure.
+CI menjadi objective technical gate untuk memastikan branch tidak memiliki dependency, lint, atau build failure. Task-specific checks ditambahkan hanya jika risk atau affected surface tidak cukup tercakup oleh CI standar.
 
-Manual verification tambahan hanya dilakukan jika CI gagal, terdapat mismatch atau error yang membutuhkan investigation, atau task memiliki verification khusus yang tidak tercakup CI. Tujuannya adalah mengganti repeated manual verification dengan automated enforcement tanpa mengurangi development safety.
+Manual verification tambahan hanya dilakukan jika CI gagal, terdapat mismatch atau error yang membutuhkan investigation, atau task memiliki risk dan verification khusus yang tidak tercakup CI. Hasil CI dilaporkan secara concise sebagai status pass/fail, checks yang dijalankan, dan failure atau follow-up yang material; full log hanya diberikan jika diperlukan untuk diagnosis. Tujuannya adalah mengganti repeated manual verification dengan automated enforcement tanpa mengurangi development safety.
 
 ## C4P6 — Approval Gate Before Commit and Push
 
@@ -460,10 +476,12 @@ Setelah Ray memberikan approval, Kamu sebagai AI wajib:
 
 1. memastikan `/CHANGELOG.md` sudah diperbarui jika diwajibkan
 2. menentukan intended files yang termasuk scope
-3. menyiapkan exact terminal command untuk staging, commit, dan push
+3. menyiapkan exact terminal command untuk staging, commit, dan push, yang boleh digabung sebagai satu safe Stage → Commit → Push batch
 4. memberikan command tersebut kepada Ray untuk dijalankan melalui terminal
 
 Command harus disesuaikan dengan actual repository state dan tidak boleh memasukkan unrelated changes.
+
+Safe Stage → Commit → Push batch hanya boleh diberikan setelah approval Ray jika intended files sudah exact, working tree tidak memiliki unrelated change yang akan ikut terbawa, command tidak destructive, dan tidak diperlukan intermediate judgment. Jika salah satu command gagal atau state menjadi tidak sesuai, batch harus berhenti dan hasilnya diverifikasi sebelum melanjutkan.
 
 Setelah Ray menjalankan command, Kamu sebagai AI memverifikasi output hanya jika diperlukan sebelum melanjutkan ke CI, Pull Request, atau merge-ready verification.
 
@@ -566,18 +584,18 @@ Untuk documentation-only synchronization, gunakan commit message dengan deploy-s
 
 Status synchronization baru boleh dinyatakan berhasil setelah output menunjukkan push sukses dan repository state terverifikasi.
 
-## C4P10 — Sequential Execution / One-Step-at-a-Time Mode
+## C4P10 — Risk-Based Sequential Execution
 
-Untuk task yang bersifat procedural dan setiap langkah berikutnya bergantung pada hasil langkah sebelumnya, seperti Git setup, Supabase setup, migration, deployment, authentication, atau environment configuration, Kamu sebagai AI wajib:
+Untuk task procedural dengan risk material atau langkah berikutnya bergantung pada hasil sebelumnya, seperti Git setup, Supabase setup, migration, deployment, authentication, atau environment configuration, Kamu sebagai AI wajib:
 
 1. Memberikan satu langkah execution pada satu waktu.
 2. Menunggu output atau result yang dikembalikan Ray.
 3. Memverifikasi output atau result tersebut.
 4. Baru memberikan langkah berikutnya setelah hasil langkah sebelumnya terverifikasi.
 
-Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling bergantung sekaligus.
+Kamu sebagai AI tidak boleh memberikan beberapa langkah execution yang saling bergantung sekaligus. Execution juga wajib berhenti ketika external blocker, permission requirement, service failure, missing credential, atau state di luar scope membuat hasil berikutnya tidak aman atau tidak dapat diverifikasi. Blocker harus dilaporkan secara concise sebelum meminta action atau authority yang diperlukan.
 
-Pengecualian: beberapa command boleh digabungkan dalam satu bash block hanya jika seluruh command tersebut membentuk satu operasi atomic yang aman dan tidak membutuhkan intermediate verification.
+Pengecualian: beberapa command boleh digabungkan dalam satu safe batch jika seluruh command low-risk, tidak destructive, failure tidak membuat state ambigu, dan tidak membutuhkan intermediate verification atau judgment.
 
 ## C4P11 — Git/GitHub Write Ownership, Pull Request & Merge-Ready
 
@@ -608,6 +626,8 @@ Final merge dilakukan oleh Ray melalui terminal.
 
 Kamu sebagai AI tidak melakukan final merge atau Git/GitHub write operation lain secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
 
+Branch hanya boleh dihapus setelah merge terverifikasi, tidak ada unmerged work yang masih diperlukan, dan target branch sudah dipastikan exact. Kamu sebagai AI menyiapkan command deletion yang explicit; branch deletion tetap Ray-owned dan tidak boleh dimasukkan ke merge batch jika hasil merge belum terverifikasi.
+
 ---
 
 # Chapter 5 — Hand Over Rule
@@ -623,6 +643,19 @@ Kamu sebagai AI yang menerima handover wajib membaca dokumen ini dengan urutan b
 5. **`/CHANGELOG.md`** — terutama entry terbaru untuk mengetahui actual development change terakhir; Chapter 3 hanya mengatur changelog governance.
 6. **Chapter 1 — Core Principle** — sebagai rulebook brand dan experience selama development.
 7. **Chapter 6 — Project State** — untuk mengetahui high-level existing state, active work, dan next/pending capability.
+8. **Latest Milestone Checkpoint** — jika tersedia di `/docs/handover/`, untuk memahami milestone terakhir tanpa membaca full chat history.
+
+Canonical repository docs dan latest milestone checkpoint harus cukup agar AI/thread baru memahami current context tanpa full conversation history. Chat boleh menjadi supporting context, tetapi bukan source of truth.
+
+Pada milestone context boundary—seperti feature merge, deployment selesai, production hardening selesai, atau handover material—buat atau perbarui satu compact latest milestone checkpoint di `/docs/handover/`. Checkpoint harus ringkas dan memuat minimum:
+
+- Current Document Version dan Web Version
+- Completed milestone, Issue/PR, dan final merged commit jika sudah tersedia
+- Delivered capability
+- Material architecture, schema, atau security-boundary change
+- Known issues
+- Current state
+- Next work
 
 Setelah selesai membaca, Kamu sebagai AI wajib membalas dengan TL;DR yang minimal menjelaskan:
 
@@ -1284,6 +1317,30 @@ Synchronized the branch-local project state after completion and Ray approval of
 **Previous Version:** v1.1.8
 **Current Version:** v1.1.9
 
+### v1.1.10 — 31 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- C3P1
+- C4P1
+- C4P2
+- C4P5
+- C4P6
+- C4P10
+- C4P11
+- C5P1
+- C8P10
+- C7P1
+
+**Summary:**
+Applied the approved minimal efficiency revisions from the Argus review and Hermes discussion without adding a Chapter. Made CHANGELOG reporting outcome-focused while preserving traceability; added Micro-PRD, safe Ray-approved command batching, risk- and affected-surface-based verification, concise CI reporting, external-blocker stopping, and lightweight branch-deletion safety; and established a compact milestone context boundary plus high-level documentation synchronization so a new AI or thread can continue from canonical repository documents and the latest milestone checkpoint without full chat history. Kept the Web Version at v1.3.0 because no website capability or production state changed.
+
+**Previous Version:** v1.1.9
+**Current Version:** v1.1.10
+
 ---
 
 # Chapter 8 — Documentation Structure
@@ -1386,4 +1443,4 @@ Nama file dokumentasi harus:
 
 ## C8P10 — Documentation Sync Rule
 
-Dokumentasi harus ikut diperbarui ketika task selesai atau state project berubah signifikan. Dokumen yang stale harus diperbaiki sebelum task dinyatakan selesai.
+Dokumentasi harus ikut diperbarui ketika task selesai atau state project berubah signifikan. High-level state yang sama harus konsisten di canonical documentation yang relevan dan latest milestone checkpoint tanpa menduplikasi implementation detail. Dokumen yang stale harus diperbaiki sebelum task dinyatakan selesai.
