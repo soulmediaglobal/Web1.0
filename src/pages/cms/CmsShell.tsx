@@ -1,16 +1,21 @@
 import { useState } from 'react'
-import { Inbox, LogOut, Menu, PanelLeftClose, X } from 'lucide-react'
+import { Inbox, LogOut, Menu, PanelLeftClose, Users, X } from 'lucide-react'
 import { supabaseCms } from '../../lib/supabaseCms'
 import { useAuth } from '../../auth/authContext'
 import { Button } from '../../cms/components/Button'
 import '../../cms/tailadmin.css'
 import { ContactInquiriesPage } from './ContactInquiriesPage'
+import { TeamPage } from './TeamPage'
+
+type CmsView = 'inquiries' | 'team'
 
 export function CmsShell() {
   const { user, role } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [view, setView] = useState<CmsView>('inquiries')
+  const selectView = (nextView: CmsView) => { setView(nextView); setSidebarOpen(false) }
 
   async function handleSignOut() {
     if (!supabaseCms) return
@@ -34,7 +39,9 @@ export function CmsShell() {
         </div>
         <nav className="cms-sidebar__nav" aria-label="CMS navigation">
           <p className="cms-sidebar__label">Operations</p>
-          <button type="button" className="cms-sidebar__item is-active" aria-current="page" onClick={() => setSidebarOpen(false)}><Inbox size={20} /><span>Contact Inquiries</span></button>
+          <button type="button" className={`cms-sidebar__item${view === 'inquiries' ? ' is-active' : ''}`} aria-current={view === 'inquiries' ? 'page' : undefined} onClick={() => selectView('inquiries')}><Inbox size={20} /><span>Contact Inquiries</span></button>
+          <p className="cms-sidebar__label cms-sidebar__label--section">Content</p>
+          <button type="button" className={`cms-sidebar__item${view === 'team' ? ' is-active' : ''}`} aria-current={view === 'team' ? 'page' : undefined} onClick={() => selectView('team')}><Users size={20} /><span>Team</span></button>
         </nav>
         <div className="cms-sidebar__footer">
           <p>Authenticated as</p><strong>{user?.email ?? 'CMS user'}</strong><span>{role ?? 'unknown'} role</span>
@@ -44,13 +51,13 @@ export function CmsShell() {
       <div className="cms-shell__body">
         <header className="cms-header">
           <button type="button" className="cms-icon-button cms-header__menu" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu size={22} /></button>
-          <div className="cms-header__context"><PanelLeftClose size={18} /><span>Contact Inquiries</span></div>
+          <div className="cms-header__context"><PanelLeftClose size={18} /><span>{view === 'team' ? 'Team' : 'Contact Inquiries'}</span></div>
           <Button variant="outline" onClick={handleSignOut} disabled={signingOut} startIcon={<LogOut size={17} />}>
             {signingOut ? 'Signing out...' : 'Sign Out'}
           </Button>
         </header>
         <main className="cms-main">
-          <ContactInquiriesPage />
+          {view === 'team' ? <TeamPage /> : <ContactInquiriesPage />}
           {error ? <p className="cms-alert cms-alert--error" role="alert">{error}</p> : null}
         </main>
       </div>
