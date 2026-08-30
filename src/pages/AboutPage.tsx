@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { ArrowUpRight, Mail } from 'lucide-react';
 import { useContent } from '../content/useContent';
 import { ContentState } from '../components/ContentState';
+import nadiaSample from '../assets/team-samples/nadia-aulia.png';
+import dimasSample from '../assets/team-samples/dimas-prakoso.png';
+import keishaSample from '../assets/team-samples/keisha-mahendra.png';
+import rakaSample from '../assets/team-samples/raka-adinata.png';
 
 const principles = [
   { number: '01', title: 'Clarity Over Complexity', description: 'We turn complicated requirements, workflows, and constraints into a system people can understand and operate.' },
@@ -24,11 +29,19 @@ const facts = [
   { label: 'Experience Across', value: 'Government · Banking · Property · Automotive · Construction · Telecommunications' },
 ];
 
+const sampleTeam = [
+  { id: 'sample-01', name: 'Nadia Aulia', role: 'Product Designer', linkedinUrl: 'https://www.linkedin.com/', image: nadiaSample, imageAlt: 'Sample portrait for Nadia Aulia' },
+  { id: 'sample-02', name: 'Dimas Prakoso', role: 'Software Engineer', linkedinUrl: 'https://www.linkedin.com/', image: dimasSample, imageAlt: 'Sample portrait for Dimas Prakoso' },
+  { id: 'sample-03', name: 'Keisha Mahendra', role: 'Project Manager', linkedinUrl: 'https://www.linkedin.com/', image: keishaSample, imageAlt: 'Sample portrait for Keisha Mahendra' },
+  { id: 'sample-04', name: 'Raka Adinata', role: 'Business Analyst', linkedinUrl: 'https://www.linkedin.com/', image: rakaSample, imageAlt: 'Sample portrait for Raka Adinata' },
+];
+
 export function AboutPage() {
-  const { leadership: founders, status, error } = useContent();
-  if (status === 'loading') return <ContentState kind="loading" />;
-  if (status === 'error') return <ContentState kind="error" message={error ?? undefined} />;
-  if (!founders.length) return <ContentState kind="empty" />;
+  const { leadership, status, error } = useContent();
+  const founders = leadership.filter(({ group }) => group === 'founder');
+  const team = leadership.filter(({ group }) => group === 'team');
+  const teamRoster = team.length ? team : sampleTeam;
+  const isSampleRoster = team.length === 0;
   return (
     <div className="overflow-hidden bg-[#0a0a0a] text-white">
       <section className="relative isolate overflow-hidden border-b border-white/10 px-6 py-20 md:px-16 md:py-28">
@@ -136,14 +149,68 @@ export function AboutPage() {
             <div className="lg:col-span-8"><p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-[#ffb4a8]">04 · The People</p><h2 id="people-title" className="font-['Bebas_Neue'] text-5xl uppercase leading-[0.92] tracking-wide md:text-7xl">The People Behind<br />The Systems.</h2></div>
             <p className="max-w-lg font-sans text-base leading-7 text-gray-500 lg:col-span-4">Different disciplines, one shared responsibility: keeping business intent connected to execution.</p>
           </div>
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {founders.map((founder) => (
-              <article key={founder.name} className="group grid grid-cols-1 overflow-hidden border border-white/10 bg-[#111] md:grid-cols-[0.8fr_1.2fr] lg:grid-cols-1 xl:grid-cols-[0.8fr_1.2fr]">
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#0b0b0b]"><img src={founder.image} alt={founder.imageAlt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain grayscale opacity-75 transition-[filter,opacity] duration-700 group-hover:grayscale-0 group-hover:opacity-90" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" /><span className="absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[#ffb4a8]">Founder {founder.number}</span></div>
-                <div className="flex min-h-[300px] flex-col justify-end border-t border-white/10 p-7 md:min-h-0 md:border-l md:border-t-0 md:p-8 lg:min-h-[280px] lg:border-l-0 lg:border-t xl:min-h-0 xl:border-l xl:border-t-0"><p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#ffb4a8]">{founder.role}</p><h3 className="mt-4 font-['Bebas_Neue'] text-5xl uppercase leading-[0.9] tracking-wide">{founder.name}</h3><p className="mt-6 border-l border-[#D0190F] pl-5 font-sans text-sm leading-6 text-gray-500 md:text-base md:leading-7">{founder.description}</p></div>
-              </article>
-            ))}
-          </div>
+          {status === 'loading' && <ContentState kind="loading" />}
+          {status === 'error' && <ContentState kind="error" message={error ?? undefined} />}
+          {(status === 'empty' || (status === 'ready' && !leadership.length)) && <ContentState kind="empty" />}
+          {status === 'ready' && leadership.length > 0 && (
+            <div>
+              {founders.length > 0 && (
+                <div aria-labelledby="founders-heading">
+                  <div className="mb-8 flex items-end justify-between gap-6 border-b border-white/10 pb-5 md:mb-10">
+                    <div>
+                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#ffb4a8]">Leadership Layer</p>
+                      <h3 id="founders-heading" className="mt-3 font-['Bebas_Neue'] text-4xl uppercase leading-none tracking-wide md:text-5xl">Founders</h3>
+                    </div>
+                    <p className="hidden max-w-sm text-right font-sans text-sm leading-6 text-gray-600 md:block">The people shaping where Soul Media Global is going.</p>
+                  </div>
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    {founders.map((founder) => (
+                      <article key={founder.id} className="group relative min-h-[620px] overflow-hidden border border-white/10 bg-[#0b0b0b] md:min-h-[720px]">
+                        <img src={founder.image} alt={founder.imageAlt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain object-top grayscale opacity-80 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.015] group-hover:grayscale-0 group-hover:opacity-95" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/5" />
+                        <p className="absolute left-6 top-6 z-10 max-w-[70%] font-mono text-[9px] uppercase tracking-[0.16em] text-[#ffb4a8] md:left-8 md:top-8">{founder.role.replace('Founder —', 'Founder -')}</p>
+                        <div className="absolute bottom-0 left-0 right-0 z-10 w-full border-t border-white/10 bg-black/80 p-5 backdrop-blur-md md:p-6">
+                          <h4 className="font-['Montserrat'] text-xl font-semibold uppercase leading-[1.05] tracking-[-0.02em] text-white md:text-2xl">{founder.name}</h4>
+                          <p className="mt-3 max-w-2xl border-l border-[#D0190F] pl-4 font-sans text-xs leading-5 text-gray-400">{founder.description}</p>
+                          <div className="mt-4 flex flex-wrap gap-3">
+                            <a href={`mailto:${founder.email ?? 'info@soulmedia.id'}`} className="inline-flex items-center gap-2 border border-white/15 px-4 py-2.5 font-mono text-[8px] uppercase tracking-[0.14em] text-gray-300 transition-colors hover:border-[#D0190F] hover:text-white"><Mail size={13} />Email</a>
+                            <a href={founder.linkedinUrl ?? 'https://www.linkedin.com/'} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 border border-white/15 px-4 py-2.5 font-mono text-[8px] uppercase tracking-[0.14em] text-gray-300 transition-colors hover:border-[#D0190F] hover:text-white">LinkedIn<ArrowUpRight size={13} /></a>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {teamRoster.length > 0 && (
+                <div className={founders.length ? 'mt-20 border-t border-white/10 pt-14 md:mt-28 md:pt-16' : ''} aria-labelledby="team-heading">
+                  <div className="mb-8 grid grid-cols-1 gap-5 md:mb-10 md:grid-cols-2 md:items-end">
+                    <div>
+                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-600">Execution Layer{isSampleRoster ? ' · Sample Roster' : ''}</p>
+                      <h3 id="team-heading" className="mt-3 font-['Bebas_Neue'] text-4xl uppercase leading-none tracking-wide md:text-5xl">Our Team</h3>
+                    </div>
+                    <p className="max-w-md font-sans text-sm leading-6 text-gray-600 md:justify-self-end md:text-right">The people building the work with care, clarity, and shared ownership.</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
+                    {teamRoster.map((member, index) => (
+                      <article key={member.id} className="group relative">
+                        <div className="relative aspect-[4/5] overflow-hidden border border-white/10 bg-[#0b0b0b] transition-colors duration-500 group-hover:border-white/20">
+                          <img src={member.image} alt={member.imageAlt} loading="lazy" decoding="async" className="h-full w-full object-cover grayscale opacity-75 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.02] group-hover:grayscale-0 group-hover:opacity-95" />
+                          <span className="absolute left-4 top-4 font-mono text-[8px] tracking-[0.16em] text-[#ffb4a8]">{String(index + 1).padStart(2, '0')}</span>
+                        </div>
+                        <div className="pt-5">
+                          <h4 className="font-['Bebas_Neue'] text-3xl uppercase leading-none tracking-wide md:text-4xl">{member.name}</h4>
+                          <p className="mt-2 font-mono text-[8px] uppercase leading-5 tracking-[0.14em] text-gray-600 md:text-[9px]">{member.role}</p>
+                          <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.14em] text-gray-500 transition-colors hover:text-[#ffb4a8]">LinkedIn<ArrowUpRight size={14} /></a>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

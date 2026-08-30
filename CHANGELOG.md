@@ -6,6 +6,62 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.5.0] — 2026-08-31
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Added / Changed / Content
+
+### Summary
+
+Introduced a scalable Founder and Team hierarchy within the About page People section while preserving the existing Soul Media Global editorial identity.
+
+### Changes
+
+- Extended the existing leadership content model with additive `founder` and `team` classification plus optional email and LinkedIn fields.
+- Preserved Rayhan and Tomy as the editorial Founder layer and limited the Home leadership section to Founder records.
+- Redesigned Founder profiles around dominant photography, a full-width compact information panel, Montserrat names, descriptions, and explicit Email and LinkedIn actions.
+- Added a compact responsive Team roster with photo, name, functional role, and explicit LinkedIn link.
+- Added four clearly labeled fictional sample portraits and roster entries to demonstrate the populated Team state until approved team data is available.
+- Scoped People loading, empty, and error handling to the About section so unavailable leadership content no longer replaces the entire page.
+
+### Files / Areas Affected
+
+- `src/pages/AboutPage.tsx`
+- `src/components/Leadership.tsx`
+- `src/content/api.ts`
+- `src/content/types.ts`
+- `src/index.css`
+- `src/assets/team-samples/`
+- `supabase/migrations/20260831090000_add_people_group_to_leadership.sql`
+
+### Reason
+
+Differentiate the people shaping Soul Media Global from the broader team building the work, without introducing an org chart or equal-weight generic cards, while keeping the structure ready for future published team members.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Desktop and mobile About checks confirmed two Founder profiles, four populated sample Team profiles, explicit LinkedIn labels, no horizontal overflow, and no browser console errors or warnings.
+
+### Known Issues
+
+- The four Team names, roles, portraits, and LinkedIn root URLs are fictional preview content and must be replaced with approved team data before they are treated as official company profiles.
+- Founder actions currently fall back to the company email and LinkedIn root until approved individual contact URLs are stored.
+- The additive Supabase migration must be applied before published Team records can use the new classification and contact fields.
+
+### Next Action
+
+Apply and verify the additive Supabase migration, then commit and push the approved Issue #16 branch and confirm CI. Replace fictional preview roster data when official team content is approved.
+
+---
+
 ## [1.4.4] — 2026-08-31
 
 ### Status
