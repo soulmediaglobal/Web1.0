@@ -15,7 +15,7 @@ The database has Row Level Security enabled and grants no table privileges to `a
 
 ## Deployment
 
-Apply `supabase/migrations/20260830090000_create_contact_inquiries.sql` followed by `supabase/migrations/20260830140000_update_contact_inquiry_form_fields.sql`, then deploy `submit-contact-inquiry`. The additive migration keeps legacy identity/title and budget data readable while new rows use dedicated name, phone-number, and challenging-project columns. Supabase supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to hosted Edge Functions. Set `PUBLIC_SITE_ORIGIN` to the production website origin so the function returns a restricted CORS origin; preview environments may set their corresponding origin during verification.
+Apply `supabase/migrations/20260830090000_create_contact_inquiries.sql` followed by `supabase/migrations/20260830140000_update_contact_inquiry_form_fields.sql`, then deploy `submit-contact-inquiry`. The additive migration keeps legacy identity/title and budget data readable while new rows use dedicated name, phone-number, and challenging-project columns. Supabase supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to hosted Edge Functions. The function allows `https://soulmedia.id`, `http://127.0.0.1:3000`, and `http://localhost:3000`; set `PUBLIC_SITE_ORIGIN` only when an additional trusted preview or production origin is required.
 
 ## Controlled states and validation
 
