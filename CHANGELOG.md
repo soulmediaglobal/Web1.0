@@ -6,6 +6,67 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.4.0] — 2026-08-30
+
+### Status
+
+Merge Ready
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Connected the existing public Contact Us form to a secured Supabase inquiry workflow and added the first operational CMS area for reviewing inquiries and updating their status.
+
+### Changes
+
+- Added the `contact_inquiries` schema with constrained preserved form fields, timestamps, and `new` / `contacted` / `closed` statuses.
+- Added RLS policies that deny anonymous table access and reuse the active-admin `cms_users` allowlist for CMS reads and updates.
+- Restricted CMS database updates to the status field with a database trigger.
+- Added a Supabase Edge Function as the public write boundary with independent normalization, validation, allowlists, and a honeypot check; no privileged secret is exposed to browser code.
+- Replaced simulated Contact Us submission with real loading, success, and error behavior while preserving the existing fields and responsive composition.
+- Added responsive CMS inquiry list, full detail, empty/error/loading states, and status updates.
+- Revised unverified NDA, encryption, and 24-hour SLA claims into accurate operational copy.
+- Documented the inquiry data flow, security boundary, and deployment requirements.
+
+### Files / Areas Affected
+
+- `src/pages/ContactPage.tsx`
+- `src/contact/`
+- `src/pages/cms/`
+- `src/cms/tailadmin.css`
+- `supabase/migrations/`
+- `supabase/functions/submit-contact-inquiry/`
+- `docs/architecture/contact-inquiry-flow.md`
+
+### Reason
+
+Deliver the approved Issue #10 Phase 1 flow from public inquiry submission through authorized CMS follow-up without introducing email, assignment, integrations, analytics, automation, or other deferred workflow features.
+
+### Testing / Verification
+
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- `git diff --check` passed.
+- Schema constraints, grants, RLS policies, immutable inquiry fields, and Edge Function validation were reviewed against the approved public/CMS security boundary.
+- Applied the migration to the linked Supabase project and deployed the Edge Function with production-origin CORS configuration.
+- Confirmed the deployed function returns HTTP 422 for invalid input and anonymous table reads return HTTP 401 permission denied.
+- Verified Contact at 390px and 1440px without horizontal overflow, confirmed responsive navigation/form behavior and required fields, and observed no browser console errors or warnings.
+- Verified unauthenticated `/cms` access still redirects to the responsive CMS login route without console errors or warnings.
+
+### Known Issues
+
+- An authorized CMS session and a real approved inquiry are still required for final manual list/detail/status and successful-submission production smoke checks.
+- Rate limiting and CAPTCHA are not included in the approved Phase 1 scope.
+
+### Next Action
+
+Complete the authorized-CMS and successful-submission smoke checks, then obtain Ray's merge approval after branch CI passes.
+
+---
+
 ## [1.0.0] — 2026-08-28
 
 ### Status

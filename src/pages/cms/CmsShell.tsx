@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { LogOut, Menu, PanelLeftClose, ShieldCheck, X } from 'lucide-react'
+import { Inbox, LogOut, Menu, PanelLeftClose, X } from 'lucide-react'
 import { supabaseCms } from '../../lib/supabaseCms'
 import { useAuth } from '../../auth/authContext'
 import { Button } from '../../cms/components/Button'
 import '../../cms/tailadmin.css'
+import { ContactInquiriesPage } from './ContactInquiriesPage'
 
 export function CmsShell() {
   const { user, role } = useAuth()
@@ -32,8 +33,8 @@ export function CmsShell() {
           <button type="button" className="cms-icon-button cms-sidebar__close" onClick={() => setSidebarOpen(false)} aria-label="Close navigation"><X size={20} /></button>
         </div>
         <nav className="cms-sidebar__nav" aria-label="CMS navigation">
-          <p className="cms-sidebar__label">Foundation</p>
-          <div className="cms-sidebar__item is-active" aria-current="page"><ShieldCheck size={20} /><span>CMS Access</span></div>
+          <p className="cms-sidebar__label">Operations</p>
+          <button type="button" className="cms-sidebar__item is-active" aria-current="page" onClick={() => setSidebarOpen(false)}><Inbox size={20} /><span>Contact Inquiries</span></button>
         </nav>
         <div className="cms-sidebar__footer">
           <p>Authenticated as</p><strong>{user?.email ?? 'CMS user'}</strong><span>{role ?? 'unknown'} role</span>
@@ -43,21 +44,13 @@ export function CmsShell() {
       <div className="cms-shell__body">
         <header className="cms-header">
           <button type="button" className="cms-icon-button cms-header__menu" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu size={22} /></button>
-          <div className="cms-header__context"><PanelLeftClose size={18} /><span>CMS Foundation</span></div>
+          <div className="cms-header__context"><PanelLeftClose size={18} /><span>Contact Inquiries</span></div>
           <Button variant="outline" onClick={handleSignOut} disabled={signingOut} startIcon={<LogOut size={17} />}>
             {signingOut ? 'Signing out...' : 'Sign Out'}
           </Button>
         </header>
         <main className="cms-main">
-          <div className="cms-page-heading">
-            <p className="cms-eyebrow">Authenticated</p>
-            <h1>CMS Foundation</h1>
-            <p>Authentication is active. CMS functionality will be added in a future development task.</p>
-          </div>
-          <section className="cms-empty-card" aria-label="CMS authentication status">
-            <div className="cms-empty-card__icon"><ShieldCheck size={28} /></div>
-            <div><h2>Secure access is ready</h2><p>This empty TailAdmin-based shell is intentionally limited to authentication and authorization.</p></div>
-          </section>
+          <ContactInquiriesPage />
           {error ? <p className="cms-alert cms-alert--error" role="alert">{error}</p> : null}
         </main>
       </div>
