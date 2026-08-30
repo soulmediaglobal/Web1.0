@@ -6,6 +6,68 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.6.0] — 2026-08-31
+
+### Status
+
+Implementation Complete / Awaiting Ray Supabase Application
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Added protected Team-only CMS management on the existing leadership content model so authorized administrators can replace the public About sample roster with controlled Team records.
+
+### Changes
+
+- Added a responsive Team CMS list with loading, empty, error, retry, and save-success states.
+- Added create and edit forms for name, role, photo URL/media path, image alt text, optional LinkedIn URL, numeric sort order, and canonical draft/published/archived status.
+- Fixed `member_type` to `team` in the write layer and excluded Founder rows from Team queries and UI.
+- Added active-admin RLS policies for selecting, inserting, and updating Team rows only; no Team delete policy or Founder write policy was introduced.
+- Used archived status as the non-destructive deactivation path and synchronized `published_at` when content enters or leaves published state.
+- Kept media entry URL/path-based because no Supabase Storage upload pipeline exists in the current repository.
+- Seeded the four existing sample Team profiles into `leadership` as published Team records so they are immediately editable through CMS.
+- Removed the hardcoded public Team fallback and registered the bundled sample portraits in the existing presentation media map, ensuring archive/unpublish actions are respected publicly.
+
+### Files / Areas Affected
+
+- `src/pages/cms/CmsShell.tsx`
+- `src/pages/cms/TeamPage.tsx`
+- `src/team/api.ts`
+- `src/team/types.ts`
+- `src/content/media.ts`
+- `src/pages/AboutPage.tsx`
+- `src/cms/tailadmin.css`
+- `supabase/migrations/20260831180000_add_team_cms_policies.sql`
+- `supabase/migrations/20260831190000_seed_sample_team_members.sql`
+- `CHANGELOG.md`
+
+### Reason
+
+Allow Ray and authorized CMS administrators to manage real Team content feeding the existing public About People hierarchy without expanding Founder CMS scope or introducing an unapproved media subsystem.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Static security review confirmed Team-only filters in list/update queries, fixed Team inserts, Team-only RLS `using`/`with check` predicates, and no delete policy.
+
+### Known Issues
+
+- The RLS migration must be applied to the intended Supabase project before Team CMS reads or writes will succeed.
+- Supabase Storage and media upload/replace/delete are not implemented; the form accepts an approved HTTP(S) URL or existing presentation media path.
+- End-to-end authenticated CMS and live public visibility checks require the migration and configured Supabase environment.
+- The four seeded Team profiles remain fictional sample content and must eventually be replaced or archived through CMS when approved real Team data is ready.
+
+### Next Action
+
+Ray reviews and applies the local migration to the intended Supabase project, verifies Team create/edit/archive/publish with an authorized admin, and then performs the repository commit/push workflow.
+
+---
+
 ## [1.5.0] — 2026-08-31
 
 ### Status

@@ -2,10 +2,6 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, Mail } from 'lucide-react';
 import { useContent } from '../content/useContent';
 import { ContentState } from '../components/ContentState';
-import nadiaSample from '../assets/team-samples/nadia-aulia.png';
-import dimasSample from '../assets/team-samples/dimas-prakoso.png';
-import keishaSample from '../assets/team-samples/keisha-mahendra.png';
-import rakaSample from '../assets/team-samples/raka-adinata.png';
 
 const principles = [
   { number: '01', title: 'Clarity Over Complexity', description: 'We turn complicated requirements, workflows, and constraints into a system people can understand and operate.' },
@@ -29,19 +25,11 @@ const facts = [
   { label: 'Experience Across', value: 'Government · Banking · Property · Automotive · Construction · Telecommunications' },
 ];
 
-const sampleTeam = [
-  { id: 'sample-01', name: 'Nadia Aulia', role: 'Product Designer', linkedinUrl: 'https://www.linkedin.com/', image: nadiaSample, imageAlt: 'Sample portrait for Nadia Aulia' },
-  { id: 'sample-02', name: 'Dimas Prakoso', role: 'Software Engineer', linkedinUrl: 'https://www.linkedin.com/', image: dimasSample, imageAlt: 'Sample portrait for Dimas Prakoso' },
-  { id: 'sample-03', name: 'Keisha Mahendra', role: 'Project Manager', linkedinUrl: 'https://www.linkedin.com/', image: keishaSample, imageAlt: 'Sample portrait for Keisha Mahendra' },
-  { id: 'sample-04', name: 'Raka Adinata', role: 'Business Analyst', linkedinUrl: 'https://www.linkedin.com/', image: rakaSample, imageAlt: 'Sample portrait for Raka Adinata' },
-];
-
 export function AboutPage() {
   const { leadership, status, error } = useContent();
   const founders = leadership.filter(({ group }) => group === 'founder');
   const team = leadership.filter(({ group }) => group === 'team');
-  const teamRoster = team.length ? team : sampleTeam;
-  const isSampleRoster = team.length === 0;
+  const teamRoster = team;
   return (
     <div className="overflow-hidden bg-[#0a0a0a] text-white">
       <section className="relative isolate overflow-hidden border-b border-white/10 px-6 py-20 md:px-16 md:py-28">
@@ -187,7 +175,7 @@ export function AboutPage() {
                 <div className={founders.length ? 'mt-20 border-t border-white/10 pt-14 md:mt-28 md:pt-16' : ''} aria-labelledby="team-heading">
                   <div className="mb-8 grid grid-cols-1 gap-5 md:mb-10 md:grid-cols-2 md:items-end">
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-600">Execution Layer{isSampleRoster ? ' · Sample Roster' : ''}</p>
+                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-gray-600">Execution Layer</p>
                       <h3 id="team-heading" className="mt-3 font-['Bebas_Neue'] text-4xl uppercase leading-none tracking-wide md:text-5xl">Our Team</h3>
                     </div>
                     <p className="max-w-md font-sans text-sm leading-6 text-gray-600 md:justify-self-end md:text-right">The people building the work with care, clarity, and shared ownership.</p>

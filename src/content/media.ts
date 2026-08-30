@@ -11,6 +11,10 @@ import aiIntegrationVisual from '../assets/services/ai-integration.png'
 import cloudPlatformVisual from '../assets/services/cloud-platform.png'
 import rayhanImg from '../assets/ray.png'
 import tomyImg from '../assets/tomy.png'
+import nadiaSample from '../assets/team-samples/nadia-aulia.png'
+import dimasSample from '../assets/team-samples/dimas-prakoso.png'
+import keishaSample from '../assets/team-samples/keisha-mahendra.png'
+import rakaSample from '../assets/team-samples/raka-adinata.png'
 
 const existingMedia: Record<string, string> = {
   'projects/minerba-one.png': minerbaOneVisual, 'projects/bri-command-center.png': briCommandCenterVisual,
@@ -19,5 +23,7 @@ const existingMedia: Record<string, string> = {
   'projects/precious-contractor-profile.png': preciousContractorVisual, 'services/strategy.png': strategyVisual,
   'services/product.png': productVisual, 'services/ai-integration.png': aiIntegrationVisual,
   'services/cloud-platform.png': cloudPlatformVisual, 'leadership/ray.png': rayhanImg, 'leadership/tomy.png': tomyImg,
+  'team-samples/nadia-aulia.png': nadiaSample, 'team-samples/dimas-prakoso.png': dimasSample,
+  'team-samples/keisha-mahendra.png': keishaSample, 'team-samples/raka-adinata.png': rakaSample,
 }
 export function resolveMedia(path: string | null): string { return path ? existingMedia[path] ?? path : '' }
