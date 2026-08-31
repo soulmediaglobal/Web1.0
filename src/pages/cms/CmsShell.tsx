@@ -5,9 +5,9 @@ import { useAuth } from '../../auth/authContext'
 import { Button } from '../../cms/components/Button'
 import '../../cms/tailadmin.css'
 import { ContactInquiriesPage } from './ContactInquiriesPage'
-import { TeamPage } from './TeamPage'
+import { PeoplePage } from './PeoplePage'
 
-type CmsView = 'inquiries' | 'team'
+type CmsView = 'inquiries' | 'people'
 
 export function CmsShell() {
   const { user, role } = useAuth()
@@ -41,7 +41,7 @@ export function CmsShell() {
           <p className="cms-sidebar__label">Operations</p>
           <button type="button" className={`cms-sidebar__item${view === 'inquiries' ? ' is-active' : ''}`} aria-current={view === 'inquiries' ? 'page' : undefined} onClick={() => selectView('inquiries')}><Inbox size={20} /><span>Contact Inquiries</span></button>
           <p className="cms-sidebar__label cms-sidebar__label--section">Content</p>
-          <button type="button" className={`cms-sidebar__item${view === 'team' ? ' is-active' : ''}`} aria-current={view === 'team' ? 'page' : undefined} onClick={() => selectView('team')}><Users size={20} /><span>Team</span></button>
+          <button type="button" className={`cms-sidebar__item${view === 'people' ? ' is-active' : ''}`} aria-current={view === 'people' ? 'page' : undefined} onClick={() => selectView('people')}><Users size={20} /><span>People</span></button>
         </nav>
         <div className="cms-sidebar__footer">
           <p>Authenticated as</p><strong>{user?.email ?? 'CMS user'}</strong><span>{role ?? 'unknown'} role</span>
@@ -51,13 +51,13 @@ export function CmsShell() {
       <div className="cms-shell__body">
         <header className="cms-header">
           <button type="button" className="cms-icon-button cms-header__menu" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu size={22} /></button>
-          <div className="cms-header__context"><PanelLeftClose size={18} /><span>{view === 'team' ? 'Team' : 'Contact Inquiries'}</span></div>
+          <div className="cms-header__context"><PanelLeftClose size={18} /><span>{view === 'people' ? 'People' : 'Contact Inquiries'}</span></div>
           <Button variant="outline" onClick={handleSignOut} disabled={signingOut} startIcon={<LogOut size={17} />}>
             {signingOut ? 'Signing out...' : 'Sign Out'}
           </Button>
         </header>
         <main className="cms-main">
-          {view === 'team' ? <TeamPage /> : <ContactInquiriesPage />}
+          {view === 'people' ? <PeoplePage /> : <ContactInquiriesPage />}
           {error ? <p className="cms-alert cms-alert--error" role="alert">{error}</p> : null}
         </main>
       </div>

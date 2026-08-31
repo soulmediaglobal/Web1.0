@@ -154,7 +154,7 @@ export function AboutPage() {
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                     {founders.map((founder) => (
                       <article key={founder.id} className="group relative min-h-[620px] overflow-hidden border border-white/10 bg-[#0b0b0b] md:min-h-[720px]">
-                        <img src={founder.image} alt={founder.imageAlt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain object-top grayscale opacity-80 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.015] group-hover:grayscale-0 group-hover:opacity-95" />
+                        {founder.image ? <img src={founder.image} alt={founder.imageAlt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-contain object-top grayscale opacity-80 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.015] group-hover:grayscale-0 group-hover:opacity-95" /> : <div className="absolute inset-0 grid place-items-center font-mono text-[9px] uppercase tracking-[0.16em] text-gray-700">Photo unavailable</div>}
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/5" />
                         <p className="absolute left-6 top-6 z-10 max-w-[70%] font-mono text-[9px] uppercase tracking-[0.16em] text-[#ffb4a8] md:left-8 md:top-8">{founder.role.replace('Founder —', 'Founder -')}</p>
                         <div className="absolute bottom-0 left-0 right-0 z-10 w-full border-t border-white/10 bg-black/80 p-5 backdrop-blur-md md:p-6">
@@ -184,7 +184,7 @@ export function AboutPage() {
                     {teamRoster.map((member, index) => (
                       <article key={member.id} className="group relative">
                         <div className="relative aspect-[4/5] overflow-hidden border border-white/10 bg-[#0b0b0b] transition-colors duration-500 group-hover:border-white/20">
-                          <img src={member.image} alt={member.imageAlt} loading="lazy" decoding="async" className="h-full w-full object-cover grayscale opacity-75 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.02] group-hover:grayscale-0 group-hover:opacity-95" />
+                          {member.image ? <img src={member.image} alt={member.imageAlt} loading="lazy" decoding="async" className="h-full w-full object-cover grayscale opacity-75 transition-[filter,opacity,transform] duration-700 group-hover:scale-[1.02] group-hover:grayscale-0 group-hover:opacity-95" /> : <div className="grid h-full place-items-center font-mono text-[8px] uppercase tracking-[0.14em] text-gray-700">Photo unavailable</div>}
                           <span className="absolute left-4 top-4 font-mono text-[8px] tracking-[0.16em] text-[#ffb4a8]">{String(index + 1).padStart(2, '0')}</span>
                         </div>
                         <div className="pt-5">

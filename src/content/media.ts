@@ -15,6 +15,9 @@ import nadiaSample from '../assets/team-samples/nadia-aulia.png'
 import dimasSample from '../assets/team-samples/dimas-prakoso.png'
 import keishaSample from '../assets/team-samples/keisha-mahendra.png'
 import rakaSample from '../assets/team-samples/raka-adinata.png'
+import { supabase } from '../lib/supabase'
+
+const peoplePhotoPrefix = 'storage://people/'
 
 const existingMedia: Record<string, string> = {
   'projects/minerba-one.png': minerbaOneVisual, 'projects/bri-command-center.png': briCommandCenterVisual,
@@ -26,4 +29,10 @@ const existingMedia: Record<string, string> = {
   'team-samples/nadia-aulia.png': nadiaSample, 'team-samples/dimas-prakoso.png': dimasSample,
   'team-samples/keisha-mahendra.png': keishaSample, 'team-samples/raka-adinata.png': rakaSample,
 }
-export function resolveMedia(path: string | null): string { return path ? existingMedia[path] ?? path : '' }
+export function resolveMedia(path: string | null): string {
+  if (!path) return ''
+  if (path.startsWith(peoplePhotoPrefix) && supabase) {
+    return supabase.storage.from('people').getPublicUrl(path.slice(peoplePhotoPrefix.length)).data.publicUrl
+  }
+  return existingMedia[path] ?? path
+}

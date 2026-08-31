@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.cms-tailadmin button, .cms-tailadmin input, .cms-tailadmin select { font: inherit; }
+.cms-tailadmin button, .cms-tailadmin input, .cms-tailadmin select, .cms-tailadmin textarea { font: inherit; }
 .cms-tailadmin button { border: 0; }
 .cms-eyebrow { margin: 0; color: var(--cms-gray-400); font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
 .cms-eyebrow--error { color: #f97066; }
@@ -155,12 +155,24 @@
 .cms-editor-card { margin-top: 1.5rem; border: 1px solid var(--cms-gray-800); border-radius: .8rem; background: var(--cms-gray-900); padding: clamp(1.25rem,4vw,2rem); }
 .cms-form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.25rem; margin-top: 2rem; }
 .cms-form-field--wide { grid-column: 1 / -1; }
+.cms-textarea { width: 100%; min-height: 130px; resize: vertical; border: 1px solid var(--cms-gray-700); border-radius: .5rem; outline: none; background: var(--cms-gray-900); padding: .75rem 1rem; color: white; line-height: 1.55; }
+.cms-textarea:focus { border-color: var(--cms-brand-400); box-shadow: 0 0 0 3px rgba(70,95,255,.16); }
 .cms-select { width: 100%; height: 44px; border: 1px solid var(--cms-gray-700); border-radius: .5rem; outline: none; background: var(--cms-gray-900); padding: .65rem 1rem; color: white; text-transform: capitalize; }
 .cms-select:focus { border-color: var(--cms-brand-400); box-shadow: 0 0 0 3px rgba(70,95,255,.16); }
 .cms-form-actions { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--cms-gray-800); }
 .cms-editor-card > .cms-alert { margin-top: 1.5rem; }
 .cms-state-group { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
 .cms-team-table td:first-child span { max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cms-tabs { display: flex; width: fit-content; gap: .25rem; margin-top: 2rem; border: 1px solid var(--cms-gray-800); border-radius: .65rem; background: var(--cms-gray-900); padding: .25rem; }
+.cms-tabs button { min-width: 120px; border-radius: .45rem; background: transparent; padding: .65rem 1rem; color: var(--cms-gray-400); font-weight: 500; }
+.cms-tabs button.is-active { background: var(--cms-gray-700); color: white; }
+.cms-photo-editor { display: grid; grid-template-columns: 180px minmax(0,1fr); gap: 1.5rem; align-items: center; margin-top: 2rem; border: 1px solid var(--cms-gray-800); border-radius: .75rem; background: var(--cms-gray-950); padding: 1rem; }
+.cms-photo-preview { aspect-ratio: 4/5; overflow: hidden; border: 1px solid var(--cms-gray-700); border-radius: .6rem; background: var(--cms-gray-900); }
+.cms-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.cms-photo-preview > div { display: grid; width: 100%; height: 100%; place-content: center; justify-items: center; gap: .6rem; color: var(--cms-gray-500); font-size: .75rem; }
+.cms-photo-actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.cms-photo-actions > p { flex-basis: 100%; margin: 0; color: var(--cms-gray-500); font-size: .75rem; line-height: 1.5; }
+.cms-visually-hidden { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }
 .cms-detail-card { margin-top: 1.5rem; border: 1px solid var(--cms-gray-800); border-radius: .8rem; background: var(--cms-gray-900); padding: clamp(1.25rem,4vw,2rem); }
 .cms-detail-card__heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
 .cms-detail-card__heading h1 { margin: .5rem 0 0; color: white; font-size: clamp(1.6rem,4vw,2.2rem); }
@@ -198,6 +210,10 @@
   .cms-form-actions { flex-direction: column-reverse; }
   .cms-form-actions .cms-button { width: 100%; }
   .cms-state-group { align-items: stretch; flex-direction: column; }
+  .cms-tabs { width: 100%; }
+  .cms-tabs button { min-width: 0; flex: 1; }
+  .cms-photo-editor { grid-template-columns: 1fr; }
+  .cms-photo-preview { width: min(100%,220px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .cms-tailadmin *, .cms-tailadmin *::before, .cms-tailadmin *::after { transition-duration: .01ms!important; }
