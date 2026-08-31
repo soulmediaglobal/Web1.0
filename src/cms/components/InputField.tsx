@@ -10,6 +10,7 @@ type InputFieldProps = {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   disabled?: boolean
   required?: boolean
+  minLength?: number
   error?: boolean
   hint?: string
 }
@@ -24,6 +25,7 @@ export function InputField({
   onChange,
   disabled = false,
   required = false,
+  minLength,
   error = false,
   hint,
 }: InputFieldProps) {
@@ -39,6 +41,7 @@ export function InputField({
         onChange={onChange}
         disabled={disabled}
         required={required}
+        minLength={minLength}
         aria-invalid={error || undefined}
         aria-describedby={hint && id ? `${id}-hint` : undefined}
         className={`cms-input${error ? ' cms-input--error' : ''}`}

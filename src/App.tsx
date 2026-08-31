@@ -14,6 +14,7 @@ import { WorkDetailPage } from './pages/WorkDetailPage';
 import { AuthProvider } from './auth/AuthProvider';
 import { RequireCmsUser } from './auth/RequireCmsUser';
 import { CmsLoginPage } from './pages/cms/CmsLoginPage';
+import { CmsSetupPasswordPage } from './pages/cms/CmsSetupPasswordPage';
 import { CmsShell } from './pages/cms/CmsShell';
 import logo from './assets/Logo.png';
 import { ContentProvider } from './content/ContentProvider';
@@ -42,6 +43,7 @@ export function App() {
       <AuthProvider>
         <Routes>
           <Route path="/cms/login" element={<CmsLoginPage />} />
+          <Route path="/cms/setup-password" element={<CmsSetupPasswordPage />} />
           <Route element={<RequireCmsUser />}>
             <Route path="/cms" element={<CmsShell />} />
           </Route>
