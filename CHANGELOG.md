@@ -6,6 +6,59 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.7.1] — 2026-08-31
+
+### Status
+
+Documentation Complete / Awaiting Review
+
+### Category
+
+Changed
+
+### Summary
+
+Synchronized repository documentation with the completed and deployed Issue #19 state without changing application behavior.
+
+### Changes
+
+- Recorded PR #20, implementation commit `68d37a7`, and merge commit `4b5046a` as complete.
+- Corrected the stale post-implementation state from the append-only `1.7.0` entry: remote migrations, authenticated CMS checks, responsive checks, CI, Netlify preview, merge, production deployment, and TLS verification are complete.
+- Updated Development Rules from Document v1.1.9 / Web v1.3.0 to Document v1.1.10 / Web v1.7.1.
+- Replaced the starter README with project, setup, CMS, migration, documentation, and deployment guidance.
+- Documented People CMS authorization, group isolation, Storage paths, staged photo behavior, managed-object cleanup, legacy-asset protection, and public rendering.
+- Marked the Issue #19 PRD complete and recorded its final verification boundary.
+
+### Files / Areas Affected
+
+- `Development-Rules.md`
+- `CHANGELOG.md`
+- `README.md`
+- `docs/prd/19-expand-people-cms-photo-uploads.md`
+- `docs/architecture/supabase-content-runtime.md`
+- `docs/architecture/people-cms-and-storage.md`
+
+### Reason
+
+Ensure canonical repository documentation reflects the already merged and production-verified People CMS release.
+
+### Testing / Verification
+
+- Documentation links and references reviewed against the repository structure.
+- `git diff --check` passed.
+- No application source, database migration, production content, or remote state changed.
+
+### Known Issues
+
+- The four fictional Team profiles still require approved replacement content.
+- Persisted production photo mutation was intentionally excluded from Issue #19 smoke testing to protect live profile data.
+
+### Next Action
+
+Ray reviews the documentation-only diff, then performs the normal commit, push, PR, CI, and merge workflow.
+
+---
+
 ## [1.7.0] — 2026-08-31
 
 ### Status
