@@ -133,7 +133,7 @@ export function CmsLoginPage() {
   )
 }
 
-function CmsAuthBrand() {
+export function CmsAuthBrand() {
   return (
     <aside className="cms-auth-brand" aria-label="Soul Media Global CMS">
       <div className="cms-auth-brand__mark" aria-hidden="true">SMG</div>

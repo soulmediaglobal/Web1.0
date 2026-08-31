@@ -6,6 +6,64 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.8.0] — 2026-08-31
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Added a secure CMS invitation password-setup flow so invited active administrators can choose their own credentials without administrator-generated passwords.
+
+### Changes
+
+- Added the `/cms/setup-password` route for Supabase invitation and recovery callbacks.
+- Enabled Supabase Auth callback-session detection while retaining the isolated persistent CMS session.
+- Restricted the password-setup screen to invite or recovery callbacks received on the approved setup route.
+- Reused the existing active-admin `public.cms_users` authorization check before allowing password setup.
+- Added new-password and confirmation fields with a 12-character minimum and mismatch validation.
+- Used the authenticated Supabase `updateUser` flow so the invited user sets their own password directly.
+- Added invalid, expired, unauthorized, loading, and update-failure states without introducing public signup or a parallel profile/role system.
+- Extended the existing CMS input primitive with native `minLength` support.
+
+### Files / Areas Affected
+
+- `src/App.tsx`
+- `src/auth/`
+- `src/lib/supabaseCms.ts`
+- `src/pages/cms/CmsLoginPage.tsx`
+- `src/pages/cms/CmsSetupPasswordPage.tsx`
+- `src/cms/components/InputField.tsx`
+- `CHANGELOG.md`
+
+### Reason
+
+Complete the canonical Supabase invitation lifecycle securely after production Auth redirects were corrected, without exposing or inventing administrator-managed credentials.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Local `/cms/setup-password` smoke check confirmed a request without an invitation callback is rejected as an invalid link.
+- The local smoke check produced no browser console errors or warnings.
+
+### Known Issues
+
+- End-to-end invitation callback and password creation require this branch to be deployed and the Supabase Site URL to target `https://soulmedia.id/cms/setup-password`.
+- The existing invitation for `dimasdoc.id@gmail.com` was generated with the previous redirect and must be resent only after deployment and URL configuration are complete.
+
+### Next Action
+
+Ray commits and pushes the Issue #22 branch, verifies CI and the Netlify deploy preview, updates the production Supabase Site URL to the setup route, then resends and tests the CMS invitation before merge approval.
+
+---
+
 ## [1.7.1] — 2026-08-31
 
 ### Status
