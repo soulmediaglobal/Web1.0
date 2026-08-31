@@ -6,6 +6,59 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.8.1] — 2026-08-31
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Changed
+
+### Summary
+
+Redesigned the CMS authentication experience with the approved Soul Media Global Focused Monolith layout and editorial red atmospheric background.
+
+### Changes
+
+- Replaced the generic split TailAdmin authentication presentation with a centered Focused Monolith composition.
+- Added the approved editorial red glow and oversized CMS watermark treatment on the existing dark foundation.
+- Reused the current Soul Media Global logo asset instead of maintaining a separate CMS mark.
+- Added a shared CMS authentication layout for login, password setup, loading, invalid-link, expired-link, and access-denied states.
+- Restyled authentication inputs, labels, buttons, typography, and security metadata to match the public website visual language.
+- Preserved all existing Supabase authentication, active-admin authorization, invitation, and password-setup behavior.
+- Added responsive mobile treatment without changing the authenticated CMS dashboard shell.
+
+### Files / Areas Affected
+
+- `src/cms/components/CmsAuthLayout.tsx`
+- `src/pages/cms/CmsLoginPage.tsx`
+- `src/pages/cms/CmsSetupPasswordPage.tsx`
+- `src/cms/tailadmin.css`
+- `CHANGELOG.md`
+
+### Reason
+
+Make the protected CMS entry experience feel like part of the Soul Media Global brand system while retaining the established secure authentication architecture.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Ray manually verified the login page, mobile behavior, invalid-link state, and return-to-login navigation on the Issue #24 branch preview.
+
+### Known Issues
+
+None.
+
+### Next Action
+
+Ray commits and pushes the Issue #24 branch, verifies CI and the Netlify deploy preview, then proceeds through PR and production smoke checks.
+
+---
+
 ## [1.8.0] — 2026-08-31
 
 ### Status
