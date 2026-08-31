@@ -2,6 +2,12 @@
 
 **GitHub Issue:** [#19 — Expand People CMS with Founder management and photo uploads](https://github.com/soulmediaglobal/Web1.0/issues/19)
 
+**Status:** Complete — merged through PR #20 on 2026-08-31
+
+**Implementation Commit:** `68d37a7bb847ff6d997b03d6e27b97ec6aec6dd8`
+
+**Merge Commit:** `4b5046ab9d085ad01338497de51ff7b9db4bd993`
+
 ## Target Persona
 
 Ray and authorized Soul Media Global CMS administrators managing public Founder and Team profiles.
@@ -46,3 +52,11 @@ Expand Team CMS into one protected People area with separate Founder and Team ma
 - RLS prevents broad authenticated content or Storage writes.
 - Public missing-photo states do not render broken images.
 - Local quality gates and authenticated/public smoke checks pass.
+
+## Completion Verification
+
+- Both People/Storage migrations were applied remotely and migration history was synchronized.
+- Authentication and active-admin authorization passed in the local CMS.
+- Founder/Team tab isolation, empty-form validation, file validation, staged upload/edit/remove behavior, and responsive layouts passed without changing production profile content.
+- Public About, protected `/cms`, CI, Netlify deploy preview, production deployment, apex-domain TLS, and `www` redirect checks passed.
+- Persisted upload, replacement, and removal were intentionally not exercised against production profile data; this is a production-data safety boundary, not an open Issue #19 task.

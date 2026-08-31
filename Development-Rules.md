@@ -1,7 +1,7 @@
 # Development-Rules
 
-**Document Version:** v1.1.9
-**Web Version:** v1.3.0
+**Document Version:** v1.1.10
+**Web Version:** v1.7.1
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
 **Description:** Soul Media Global Website adalah official company website sekaligus portfolio platform untuk menampilkan identitas, capability, selected works, case studies, dan positioning Soul Media Global sebagai IT consulting, digital transformation, creative, digital product, and technology company. Website ini dirancang sebagai pengalaman editorial yang premium, modern, art-directed, dan portfolio-led — bukan sekadar company profile atau agency template generik.
@@ -67,7 +67,7 @@ Production domain: `soulmedia.id`
 - Routes: `/`, `/solutions`, `/work`, `/work/:slug`, `/about`, `/contact`.
 - Content/data layer: typed read-only content layer di `src/content/` digunakan oleh public website untuk membaca approved published content dari Supabase CMS.
 - UI/visual: `lucide-react`; Three.js tersedia untuk advanced visual/3D tetapi tidak boleh digunakan secara arbitrary.
-- Backend/data capability: Supabase CMS database foundation tersedia, dan public website membaca approved published content melalui typed read-only content layer. Authentication, write access, storage, dan admin UI masih pending.
+- Backend/data capability: Supabase menyediakan CMS database foundation, Auth, active-admin authorization melalui `cms_users`, RLS-protected content writes, Contact Inquiries, serta public `people` Storage bucket. Public website membaca approved published content melalui typed read-only content layer.
 - Tooling: ESLint, TypeScript ESLint, React Hooks ESLint, React Refresh, dan Vite React Plugin.
 
 Existing stack adalah default foundation. Prioritas: **Use existing stack → Extend existing stack → Add dependency only when necessary.** Jangan menambah framework, UI kit, state-management library, animation framework, CMS framework, atau backend framework tanpa kebutuhan teknis jelas.
@@ -93,7 +93,9 @@ Perubahan global Header atau Footer harus diuji pada seluruh route. Actual curre
 
 ### B. CMS
 
-Supabase CMS database foundation dan public read integration sudah tersedia. Public website membaca approved published content melalui typed read-only content layer. Authentication, write access, storage, dan admin UI belum tersedia.
+Supabase CMS database foundation, public read integration, authentication, active-admin authorization, protected admin UI, dan scoped write access sudah tersedia.
+
+CMS berada di protected `/cms` routes dengan TailAdmin-based responsive shell. Capability yang tersedia mencakup Contact Inquiries dan People CMS. People CMS memiliki tab Founder dan Team yang terisolasi, list/create/edit, numeric ordering, status draft/published/archived, serta staged Upload/Edit/Remove photo. Foto CMS disimpan pada public `people` bucket di folder `founder/` atau `team/`; hanya active admin yang menerima object select/insert/update/delete policy. Bundled legacy images tidak pernah dihapus oleh CMS.
 
 ## C2P4 — Hermes, Guardian of The Document
 
@@ -650,7 +652,7 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 
 ## C6P1 — Existing State
 
-- Current Web Version adalah **v1.3.0**.
+- Current Web Version adalah **v1.7.1**.
 - Public website memiliki Home, Solutions, Work, Work Detail / Case Study, About, dan Contact.
 - Supabase CMS Database Foundation tersedia dan sudah diverifikasi, termasuk sembilan CMS tables, Row Level Security, public read policies, required indexes, dan `updated_at` triggers.
 - Public website membaca approved published case studies dan relations, featured work, solutions/capabilities, leadership, pages metadata, dan essential shared/page copy dari Supabase melalui typed read-only content layer.
@@ -658,6 +660,11 @@ Pekerjaan yang masih gantung, belum selesai, belum diverifikasi, atau belum diek
 - CMS authentication foundation tersedia menggunakan Supabase Auth dengan email/password sign-in, session persistence, protected CMS routing, dan logout.
 - CMS authorization dipisahkan dari authentication melalui active-admin allowlist pada `public.cms_users`.
 - CMS memiliki TailAdmin-based authenticated UI foundation dengan login page, responsive header/sidebar shell, dan isolated CMS styling tanpa mengubah public website.
+- CMS memiliki Contact Inquiries management dan People management untuk Founder serta Team dengan group isolation, create/edit, numeric ordering, dan draft/published/archived workflow.
+- People photo URL entry telah diganti dengan staged upload, replacement, dan removal untuk JPG, PNG, WebP, dan AVIF hingga 5 MB.
+- Public `people` Storage bucket dan active-admin policies tersedia untuk object di folder `founder/` dan `team/`; replacement/removal menggunakan database-first cleanup dan tidak menghapus bundled legacy assets.
+- Home dan About memiliki safe missing-photo states.
+- Issue #19 selesai melalui PR #20 dan merge commit `4b5046ab9d085ad01338497de51ff7b9db4bd993`; CI, Netlify preview, production deployment, TLS, authenticated CMS, responsive CMS, dan public smoke checks sudah terverifikasi.
 
 ## C6P2 — Active Work
 
@@ -665,9 +672,9 @@ None.
 
 ## C6P3 — Next / Pending
 
-- CMS write-access and content-management capability.
-- Media and storage implementation.
-- CMS content CRUD, publish workflow, and related administrative features.
+- Replace or archive the four fictional Team profiles when approved official content and photos are available.
+- Complete final Founder contact and social content when approved.
+- General media library, cropping, and broad image-editing capability remain outside the implemented People photo scope.
 
 ---
 
@@ -1283,6 +1290,25 @@ Synchronized the branch-local project state after completion and Ray approval of
 
 **Previous Version:** v1.1.8
 **Current Version:** v1.1.9
+
+### v1.1.10 — 31 August 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- C2P2
+- C2P3
+- Chapter 6
+- C6P1
+- C6P3
+
+**Summary:**
+Synchronized the canonical post-merge state through documentation-only Web v1.7.1 after Issue #19. Recorded completed People CMS Founder/Team management, staged photo upload/replacement/removal, scoped Supabase Storage and RLS, safe public missing-photo behavior, final CI/Netlify/production verification, and the remaining content-only follow-up work.
+
+**Previous Version:** v1.1.9
+**Current Version:** v1.1.10
 
 ---
 

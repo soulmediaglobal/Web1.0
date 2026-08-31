@@ -2,7 +2,7 @@
 
 The public website uses the browser-safe Supabase publishable key and `select` operations only. `ContentProvider` loads one snapshot for each content domain on page load, while `api.ts` owns database response transformation and deterministic child ordering. Components receive presentation-ready typed content through the shared context.
 
-Supabase is the canonical runtime source. There is no static editorial fallback. The small `media.ts` map preserves the existing bundled Phase 1 assets until a separate Supabase Storage task is approved.
+Supabase is the canonical runtime source. There is no static editorial fallback. The small `media.ts` map preserves bundled legacy assets, while People photos uploaded through CMS are served from the public Supabase Storage `people` bucket. See `people-cms-and-storage.md` for the managed-photo boundary and lifecycle.
 
 ## Published domains
 
@@ -42,6 +42,7 @@ All keys are typed in `src/content/types.ts`. Missing keys fall back only to str
 - Loading renders an announced loading state.
 - Invalid, draft, archived, or missing work slugs render an explicit case-study not-found state.
 - Error details are visible only in development.
+- Missing People photos render an intentional empty-photo state on Home and About rather than a broken image.
 
 ## Environment
 
