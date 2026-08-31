@@ -6,6 +6,68 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.7.0] — 2026-08-31
+
+### Status
+
+Implementation Complete / Awaiting Ray Approval
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Expanded Team CMS into protected People management for Founder and Team profiles and introduced secure Supabase Storage photo upload, replacement, and removal.
+
+### Changes
+
+- Replaced the Team-only navigation with a People area containing separate Founder and Team tabs.
+- Added Founder list, create, edit, publish, archive, ordering, description, email, LinkedIn, and image-alt management.
+- Preserved Team list, create, edit, publish, archive, ordering, LinkedIn, and image-alt management.
+- Removed manual photo URL entry and added staged photo preview with Upload/Edit photo and Remove actions.
+- Added JPG, PNG, WebP, and AVIF validation with a 5 MB maximum.
+- Added a public `people` Storage bucket with active-admin-only insert, update, and delete policies scoped to Founder and Team folders.
+- Added Founder leadership RLS without weakening existing public published-content access or Team policies.
+- Added managed-photo references and database-first replacement cleanup while preserving bundled legacy assets.
+- Added safe public missing-photo states on Home and About.
+
+### Files / Areas Affected
+
+- `src/pages/cms/CmsShell.tsx`
+- `src/pages/cms/PeoplePage.tsx`
+- `src/people/`
+- `src/content/media.ts`
+- `src/components/Leadership.tsx`
+- `src/pages/AboutPage.tsx`
+- `src/cms/tailadmin.css`
+- `supabase/migrations/20260831200000_add_people_cms_and_storage.sql`
+- `supabase/migrations/20260831201000_add_people_storage_admin_read.sql`
+- `docs/prd/19-expand-people-cms-photo-uploads.md`
+- Removed the superseded `src/pages/cms/TeamPage.tsx` and `src/team/` module.
+
+### Reason
+
+Allow authorized administrators to manage both public People groups and their photos without manually hosting or pasting image URLs.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Authenticated CMS, Storage, responsive, and public smoke checks remain pending until the local migration is applied.
+
+### Known Issues
+
+- General media browsing, cropping, and image editing remain outside scope.
+- Bundled legacy photos remain repository assets until each profile is replaced through CMS.
+
+### Next Action
+
+Apply and verify the People/Storage migration, complete authenticated CMS and public smoke checks, then proceed through Ray-owned commit, push, PR, CI, and merge.
+
+---
+
 ## [1.6.0] — 2026-08-31
 
 ### Status

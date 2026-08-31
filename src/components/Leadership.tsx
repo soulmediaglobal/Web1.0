@@ -65,13 +65,13 @@ export function Leadership() {
                 className="founder-panel group cursor-pointer overflow-hidden border border-white/10 bg-[#111] transition-colors duration-500 hover:border-white/20 focus-visible:border-[#D0190F] focus-visible:outline-none"
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-[#0b0b0b] md:aspect-[5/4] lg:aspect-[4/5]">
-                  <img
+                  {founder.image ? <img
                     src={founder.image}
                     alt={founder.name}
                     loading="lazy"
                     decoding="async"
                     className="founder-image h-full w-full object-center lg:object-[center_12%] object-cover grayscale transition-[filter,opacity] duration-700 opacity-75 group-hover:opacity-90 group-hover:grayscale-0"
-                  />
+                  /> : <div className="grid h-full place-items-center font-mono text-[9px] uppercase tracking-[0.16em] text-gray-700">Photo unavailable</div>}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/5" />
                   <span className="absolute left-6 top-6 font-mono text-[10px] uppercase tracking-[0.18em] text-[#ffb4a8] md:left-8 md:top-8">Founder {founder.number}</span>
                 </div>
