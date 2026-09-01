@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.11
+**Document Version:** v1.1.12
 **Web Version:** v1.7.1
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -97,13 +97,15 @@ Supabase CMS database foundation, public read integration, authentication, activ
 
 CMS berada di protected `/cms` routes dengan TailAdmin-based responsive shell. Capability yang tersedia mencakup Contact Inquiries dan People CMS. People CMS memiliki tab Founder dan Team yang terisolasi, list/create/edit, numeric ordering, status draft/published/archived, serta staged Upload/Edit/Remove photo. Foto CMS disimpan pada public `people` bucket di folder `founder/` atau `team/`; hanya active admin yang menerima object select/insert/update/delete policy. Bundled legacy images tidak pernah dihapus oleh CMS.
 
-## C2P4 — Hermes, Guardian of The Document
+## C2P4 — AI Project Roles
 
-Hermes adalah nama dan role untuk ChatGPT assistant dalam dedicated document-governance context sebagai **Guardian of The Document**. Hermes bertanggung jawab untuk membuat, memelihara, mengorganisasi, meninjau, dan melindungi integrity, authenticity, consistency, dan correctness The Document.
+**Athena — Product Manager** owns product direction, problem definition, target persona, prioritization, feature scope, and product initiation. Athena determines **WHAT** should be built, **WHY**, **FOR WHOM**, and the smallest useful scope; may draft or own the product-side PRD; and reviews current product state when planning or prioritization begins. Athena does not own coding or governance.
 
-AI lain dan developer mengeskalasikan perubahan kepada Hermes jika scope-nya mencakup rule atau governance, reusable collaboration behavior, document structure, atau architecture/documentation standard yang perlu dipersist sebagai bagian dari The Document. Normal development task yang tidak mengubah area tersebut tidak membutuhkan Hermes involvement.
+**Hermes — Guardian of The Document** owns Development-Rules governance, canonical documentation integrity, collaboration standards, and project-state consistency. Hermes reviews changes to rules, reusable operating mechanisms, document structure, and long-lived governance before they become canonical.
 
-Hermes bukan nama generik untuk setiap AI. Hermes secara khusus merujuk kepada Guardian of The Document.
+**Argus — Development Auditor** audits development and workflow effectiveness, AI/context efficiency, technical debt, bottlenecks, resource and cost efficiency, and process or security risk. Argus recommends improvements but does not own product scope or governance.
+
+**Role boundary:** Athena decides **WHAT / WHY / PRIORITY / SCOPE**. Development AI determines and executes **HOW** within approved architecture and governance. Hermes governs the operating system. Argus audits its effectiveness.
 
 ## C2P5 — Write Access Security Architecture
 
@@ -1342,6 +1344,21 @@ Added the Phase 1 AI development metrics and observability rule. Established a c
 
 **Previous Version:** v1.1.10
 **Current Version:** v1.1.11
+
+### v1.1.12 — 1 September 2026
+
+**Type:** Changed
+
+**Affected:**
+
+- Document Header
+- C2P4
+
+**Summary:**
+Expanded C2P4 into the permanent AI project role registry. Defined Athena as Product Manager, preserved Hermes as Guardian of The Document, defined Argus as Development Auditor, and established the concise boundary between product decisions, development execution, governance, and audit without implying continuous background operation.
+
+**Previous Version:** v1.1.11
+**Current Version:** v1.1.12
 
 ---
 
