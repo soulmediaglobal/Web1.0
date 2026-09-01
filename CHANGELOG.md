@@ -6,6 +6,74 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.10.0] — 2026-09-01
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Added / Changed / Security
+
+### Summary
+
+Added Work CMS Phase 1 so active administrators can manage the existing Supabase-backed case-study content without changing the approved public Work experience.
+
+### Changes
+
+- Added Work navigation, a responsive case-study list, and create/edit forms to the existing protected CMS shell.
+- Added editing for every case-study field currently consumed by Home Selected Work, `/work`, and `/work/:slug`, including filter tags, ordered system points, and an optional complete testimonial.
+- Added draft, published, and archived workflow with archive as the non-destructive removal path, controlled `published_at` transitions, manual project numbering, independent sort ordering, featured state, and editable unique slugs.
+- Added publish validation requiring complete public fields, an image with alt text, and at least one complete system point; incomplete drafts remain allowed.
+- Added lowercase kebab-case tag normalization, staged image validation, preview, replacement, removal, and managed-media cleanup behavior.
+- Added active-admin RLS policies for case-study reads and parent writes plus relation management, without adding a hard-delete policy for parent case studies.
+- Added an RLS-protected security-invoker database function that saves the case-study parent and all relations atomically.
+- Added a public `work` Storage bucket scoped to `case-studies/` with active-admin object read/write/delete policies and JPG, PNG, WebP, and AVIF support up to 5 MB.
+- Extended the public media resolver for `storage://work/` references while preserving every existing bundled project image mapping.
+- Added the canonical Issue #31 PRD and Work CMS/media architecture documentation.
+- Applied the Work RLS/Storage and atomic-save migrations to the linked remote Supabase project.
+
+### Files / Areas Affected
+
+- `src/pages/cms/CmsShell.tsx`
+- `src/pages/cms/WorkPage.tsx`
+- `src/work/`
+- `src/content/media.ts`
+- `src/cms/tailadmin.css`
+- `supabase/migrations/20260901090000_add_work_cms_and_storage.sql`
+- `supabase/migrations/20260901100000_add_atomic_work_case_study_save.sql`
+- `docs/prd/31-work-cms-phase-1.md`
+- `docs/architecture/work-cms-and-storage.md`
+- `CHANGELOG.md`
+
+### Reason
+
+Allow authorized administrators to maintain published portfolio and case-study content through the existing CMS and Supabase foundation instead of requiring code or direct database changes.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Supabase migration dry-run identified only the Issue #31 migration; remote push completed successfully and local/remote migration state matches.
+- Authenticated CMS verification loaded all seven existing published case studies with correct order, featured state, status, and identifying metadata.
+- Existing MinerbaOne editor verification confirmed parent fields, bundled image preview, tag, four ordered system points, status, and featured state loaded correctly.
+- Empty published-form verification showed required-field, image, alt-text, and system-point validation without writing test data.
+- CMS Work list verification at 390 px confirmed the responsive navigation and no horizontal page overflow.
+- Public `/work` regression verification retained seven case studies, existing filters, Cinematic Reveal content, and no browser console errors or warnings.
+- Ray reviewed the authenticated CMS implementation and approved continuation.
+
+### Known Issues
+
+- End-to-end media upload/replacement/removal was not performed against published content during verification to avoid changing approved production content. The implementation follows the established staged People media lifecycle and is covered by the applied Storage policies.
+
+### Next Action
+
+Ray commits and pushes the Issue #31 branch, verifies CI and the deploy preview, then proceeds through Pull Request and merge-ready verification.
+
+---
+
 ## [1.9.0] — 2026-09-01
 
 ### Status
