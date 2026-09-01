@@ -18,6 +18,7 @@ import rakaSample from '../assets/team-samples/raka-adinata.png'
 import { supabase } from '../lib/supabase'
 
 const peoplePhotoPrefix = 'storage://people/'
+const workImagePrefix = 'storage://work/'
 
 const existingMedia: Record<string, string> = {
   'projects/minerba-one.png': minerbaOneVisual, 'projects/bri-command-center.png': briCommandCenterVisual,
@@ -33,6 +34,9 @@ export function resolveMedia(path: string | null): string {
   if (!path) return ''
   if (path.startsWith(peoplePhotoPrefix) && supabase) {
     return supabase.storage.from('people').getPublicUrl(path.slice(peoplePhotoPrefix.length)).data.publicUrl
+  }
+  if (path.startsWith(workImagePrefix) && supabase) {
+    return supabase.storage.from('work').getPublicUrl(path.slice(workImagePrefix.length)).data.publicUrl
   }
   return existingMedia[path] ?? path
 }
