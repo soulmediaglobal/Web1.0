@@ -6,6 +6,66 @@ This changelog starts from the current production baseline. Historical changes b
 
 ---
 
+## [1.9.0] — 2026-09-01
+
+### Status
+
+Implementation Complete / Ray Approved
+
+### Category
+
+Changed
+
+### Summary
+
+Redesigned the public `/work` index with the approved Cinematic Reveal direction and deterministic, gap-free editorial rows.
+
+### Changes
+
+- Replaced the featured/standard row-span grid with curated deterministic 12-column recipes: `7+5`, `3+5+4`, and `5+7`.
+- Kept project positions stable across refreshes and made a final unpaired project occupy a full-width row.
+- Standardized card height within desktop rows and removed masonry or row-span behavior that could create holes.
+- Added darkened, slightly enlarged, and desaturated default imagery that clarifies and settles toward natural scale on desktop hover or keyboard focus.
+- Kept client/category, project number, title, case-study action, red accent, and directional arrow available without depending on hover.
+- Added an upward concise-preview reveal for wider desktop cards and reduced copy density for narrow cards.
+- Added stable gap-free tablet rows and uniform full-width single-column mobile cards with previews shown directly.
+- Added subtle interaction timing and explicit reduced-motion treatment without adding a dependency.
+- Preserved the existing filters, published Supabase content, case-study navigation, SMG colors, typography, trusted-client presentation, and unrelated routes.
+- Added the canonical Issue #29 PRD.
+
+### Files / Areas Affected
+
+- `src/pages/WorkPage.tsx`
+- `src/index.css`
+- `docs/prd/29-redesign-work-index-cinematic-reveal.md`
+- `CHANGELOG.md`
+
+### Reason
+
+Give prospective clients and decision-makers a more curated, image-led portfolio experience while keeping the existing content and visual system stable.
+
+### Testing / Verification
+
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed with the existing non-blocking bundle-size warning.
+- Browser verification passed at 1440 px desktop, 900 px tablet, and 390 px mobile widths.
+- Desktop rows rendered as `7+5`, `3+5+4`, and `5+7`, with equal 464 px card heights and full container coverage.
+- Tablet rows filled their available width without holes; mobile rendered seven uniform 342 × 464 px cards with visible previews.
+- Filter verification confirmed a single result occupies a 12-column full-width row.
+- No horizontal page overflow, browser console errors, or warnings were observed.
+- Ray manually reviewed the local `/work` implementation and approved it.
+
+### Known Issues
+
+- A future high-volume portfolio enhancement may add Load More behavior after product decisions define the initial card count, increment size, filter reset behavior, and CMS/API pagination boundary.
+
+### Next Action
+
+Ray commits and pushes the Issue #29 branch, verifies CI and the deploy preview, then proceeds through Pull Request and merge-ready verification.
+
+---
+
 ## [1.8.1] — 2026-08-31
 
 ### Status
