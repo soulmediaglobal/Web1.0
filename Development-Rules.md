@@ -1,6 +1,6 @@
 # Development-Rules
 
-**Document Version:** v1.1.10
+**Document Version:** v1.1.11
 **Web Version:** v1.7.1
 **Project:** Soul Media Global Website  
 **Purpose:** Master rules for building, continuing, modifying, and maintaining the Soul Media Global website.  
@@ -609,6 +609,22 @@ Jika semua kondisi terpenuhi, Kamu sebagai AI menyatakan branch **Merge Ready** 
 Final merge dilakukan oleh Ray melalui terminal.
 
 Kamu sebagai AI tidak melakukan final merge atau Git/GitHub write operation lain secara langsung kecuali Ray secara eksplisit meminta execution tersebut.
+
+## C4P12 — Development Metrics / Observability
+
+Setiap meaningful completed GitHub Issue wajib menghasilkan tepat satu compact machine-readable metrics record di `docs/audit/task-metrics.jsonl`.
+
+Canonical schema, fixed enums, dan metric definitions berada di `docs/audit/README.md` dan tidak diduplikasi di The Document.
+
+Development AI mencatat metrics satu kali sebagai bagian dari task closure, setelah Merge-Ready Verification dan compact checkpoint, serta sebelum final task-branch synchronization dan Ray merge.
+
+Metrics adalah development telemetry, bukan final audit conclusion. Tidak ada continuous analytics selama implementation.
+
+Metrics tidak boleh membuat approval step, commit, Pull Request, verification ceremony, atau Argus approval flow tersendiri.
+
+Quality dan security selalu lebih penting daripada metric optimization.
+
+Argus melakukan aggregate review setiap 5 completed meaningful Issues, termasuk sample validation dan investigation terhadap anomaly atau high-risk failure.
 
 ---
 
@@ -1309,6 +1325,23 @@ Synchronized the canonical post-merge state through documentation-only Web v1.7.
 
 **Previous Version:** v1.1.9
 **Current Version:** v1.1.10
+
+### v1.1.11 — 1 September 2026
+
+**Type:** Added
+
+**Affected:**
+
+- Document Header
+- C4P12
+- `docs/audit/README.md`
+- `docs/audit/task-metrics.jsonl`
+
+**Summary:**
+Added the Phase 1 AI development metrics and observability rule. Established a compact prospective JSONL telemetry record at task closure, a canonical schema protocol under `docs/audit/`, non-ceremonial persistence, quality and security guardrails, and aggregate Argus review every five completed meaningful Issues.
+
+**Previous Version:** v1.1.10
+**Current Version:** v1.1.11
 
 ---
 
